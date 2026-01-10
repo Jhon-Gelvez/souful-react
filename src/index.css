@@ -1,4 +1,18 @@
-* {
-    background-color: #212121;
-    color: #ddd;
+@import "tailwindcss";
+
+@theme {
+    --color-primary: #2bee79;
+    --color-background-light: #f6f8f7;
+    --color-background-dark: #102217;
+    --color-surface-dark: #1c2e24;
+}
+
+body {
+    background-color: var(--color-background-dark);
+    color: var(--primary);
+    font-family: "Inter", Arial;
+}
+
+#scrool-bar::-webkit-scrollbar {
+    display: none;
 }
