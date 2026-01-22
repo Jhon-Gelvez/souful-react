@@ -14,7 +14,6 @@ export default function App() {
             <FilterBar />
             <ProductGrid />
             <BottomNavbar />
-            <Cloudinary />
             <Footer />
         </>
     );
