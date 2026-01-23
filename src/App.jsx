@@ -1,7 +1,10 @@
-import { Home } from './UI/pages/Home'
+import { AppRouter } from "./routes/AppRouter";
+import { Home } from "./UI/pages/Home";
 
 export default function App() {
     return (
-        < Home />
+        <>
+            <AppRouter />
+        </>
     );
 }
