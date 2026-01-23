@@ -1,6 +1,6 @@
 import { HiSearch } from "react-icons/hi";
 import { Button } from "./Button";
-import logo from "../../../public/assets/soulful_logo.jpeg"
+import logo from "../../asset/soulful_logo.jpeg"
 
 export default function Header() {
     return (
