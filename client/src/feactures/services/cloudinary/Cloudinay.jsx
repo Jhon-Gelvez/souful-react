@@ -1,42 +1,9 @@
-import { useState } from "react";
-
-// poner /q_auto/f_auto despues de la /upload en la url entregada hara mas eficiente el peso de la img
+import { useCloudinary } from "../../../hook/useCloudinary";
 
 export const Cloudinary = () => {
-    const presetName = import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET; //16 Pegamos el "name" rescatado en el punto 24
-    const cloudName = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME; //16.2 Pegamos el cloudName rescatado en punto 20
-
-    const [image, setImage] = useState(""); //12 Creamos estado local que guarde la url de la imagen subida
-    const [loading, setLoading] = useState(false); //7 Creamos un estado local con valor incial boolean "false" para saber si la imagen esta cargando.
-    const [imageBeenUpload, setImageBeenUpload] = useState(false);
-    const uploadImage = async (e) => {
-        //2 Preparamos para recibir el evento al ejecutarse la función async
-        const files = e.target.files; //3 recuperamos el array de e.target.files
-        const data = new FormData(); //4 Creamos/Instanciamos un FormData objeto con nombre data
-        data.append("file", files[0]); //5 Utilizando metodo append() agregamos al data el archivo desde files[0]
-        data.append("upload_preset", presetName); //6 Como prop "upload preset" le pasamos la variable de la linea 6 (punto 16.2).
-
-        setLoading(true); //8 Ponemos en true el estado local que indica que la imagen esta cargándose.
-
-        try {
-            console.log(data);
-            //10 enviamos el pedido de upload con el data en body
-            const response = await fetch(`https://api.cloudinary.com/v1_1/${cloudName}/image/upload`, {
-                method: "POST",
-                body: data,
-            });
-
-            const file = await response.json(); //11 Traducimos la respuesta de JSON
-            setImage(file.secure_url); //13 Recuperamos la url de la imagen en estado local
-            setLoading(false); //14 Dejamos el loading en false para que intente mostrar la magen
-            //await actions.sendPhoto(file.secure_url) //15 Enviamos la url a un action para hacer algo en back. Lo dejamos bloqueado para que no de error de importacion de Context actions o de la función.
-            setImageBeenUpload(true);
-        } catch (error) {
-            console.error("Error uploading image:", error);
-            setLoading(false);
-        }
-    };
-
+    
+    const { loading, imageBeenUpload, image, uploadImage } = useCloudinary();
+    
     return (
         <div className="backdrop-blur-xs flex items-center justify-center flex-col my-4">
             <h1 className="text-white font-bold underline tracking-wide text-2xl">Upload Image</h1>
