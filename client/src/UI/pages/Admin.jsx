@@ -1,7 +1,7 @@
-import { UploadImage } from "../components/admin/UploadImage";
+import { Form} from "../components/admin/Form";
 
 export const Admin = () => {
     return <>
-    < UploadImage />;
+    < Form />;
     </>
 };
