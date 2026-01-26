@@ -6,8 +6,8 @@ import { Button } from "../Button";
 
 export const UploadImage = () => {
     return (
-        <main className="flex flex-col justify-center items-center min-w-[80dvw] text-primary mx-auto">
-            <div className="rounded-xl p-8 pb-2 shadow-[0_0_3rem_rgba(0,0,0)] shadow-black bg-background-dark">
+        <main className="flex flex-col justify-center items-center min-w-[50dvw]! w-[80%] text-primary mx-auto">
+            <div className="rounded-xl px-3 sm:p-8 sm:pb-2 shadow-[0_0_3rem_rgba(0,0,0)] shadow-black bg-background-dark">
                 <h1 className="text-3xl font-bold text-center my-2">Pagina para el Admin</h1>
                 <p className="text-xl text-center my-3">sube aca tus imagenes</p>
                 <form action="#" className="flex flex-col w-auto">
