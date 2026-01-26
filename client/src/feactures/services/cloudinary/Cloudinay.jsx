@@ -47,7 +47,7 @@ export const Cloudinary = () => {
                 className="text-white rounded-md p-1 m-3 cursor-pointer hover:scale-103 transition-all mx-auto border-3 border-primary/70 max-w-[80%]"
                 type="file"
                 name="file"
-                
+                required
                 // accept='image/png, image/jpeg'
                 onChange={(e) => uploadImage(e)}
             />
