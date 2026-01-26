@@ -1,5 +1,5 @@
 import { FaHome } from "react-icons/fa";
-import { Button } from "./Button";
+import { Button } from "../common/Button";
 import { FaWhatsapp } from "react-icons/fa";
 
 

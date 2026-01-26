@@ -1,4 +1,4 @@
-import { Button } from './Button'
+import { Button } from "../common/Button";
 import { FaCartShopping } from "react-icons/fa6";
 
 export const ProductCard = ({ img, altImg, name, price }) => {
@@ -13,9 +13,7 @@ export const ProductCard = ({ img, altImg, name, price }) => {
                     <p className="font-bold text-primary">${price}</p>
                 </div>
 
-            <Button Icon={FaCartShopping
-                
-            }/>              
+                <Button Icon={FaCartShopping} />
             </div>
         </div>
     );

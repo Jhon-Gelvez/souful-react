@@ -1,7 +1,7 @@
 // meter un main y darle grid con minimo 1 col max las que quepan usarndo repeat
 import { ProductCard } from "./ProductCard";
-import img2 from "../../asset/portada-tejidos.jpg";
-import img from "../../asset/portada-bisuteria.jpg";
+import img2 from "../../../asset/portada-tejidos.jpg";
+import img from "../../../asset/portada-bisuteria.jpg";
 
 export const ProductGrid = () => {
     return (

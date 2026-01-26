@@ -1,8 +1,8 @@
 import { HiSearch } from "react-icons/hi";
 import { Button } from "./Button";
-import logo from "../../asset/soulful_logo.jpeg"
+import logo from "../../../asset/soulful_logo.jpeg"
 
-export default function Header() {
+export function Header() {
     return (
         <header id="inicio" className="flex items-center justify-between bg-transparent px-4 py-3">
             <div>
