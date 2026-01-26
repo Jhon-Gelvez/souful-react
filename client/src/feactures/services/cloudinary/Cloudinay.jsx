@@ -1,13 +1,14 @@
 import { useState } from "react";
-import { cloudNameENV, apiKeyENV, apiSecretENV, apiEnvVariableENV, uploadPresetNameENV } from "../../../../env";
+
+// poner /q_auto/f_auto despues de la /upload en la url entregada hara mas eficiente el peso de la img
 
 export const Cloudinary = () => {
-    const presetName = uploadPresetNameENV; //16 Pegamos el "name" rescatado en el punto 24
-    const cloudName = cloudNameENV; //16.2 Pegamos el cloudName rescatado en punto 20
+    const presetName = import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET; //16 Pegamos el "name" rescatado en el punto 24
+    const cloudName = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME; //16.2 Pegamos el cloudName rescatado en punto 20
 
     const [image, setImage] = useState(""); //12 Creamos estado local que guarde la url de la imagen subida
     const [loading, setLoading] = useState(false); //7 Creamos un estado local con valor incial boolean "false" para saber si la imagen esta cargando.
-
+    const [imageBeenUpload, setImageBeenUpload] = useState(false);
     const uploadImage = async (e) => {
         //2 Preparamos para recibir el evento al ejecutarse la función async
         const files = e.target.files; //3 recuperamos el array de e.target.files
@@ -29,6 +30,7 @@ export const Cloudinary = () => {
             setImage(file.secure_url); //13 Recuperamos la url de la imagen en estado local
             setLoading(false); //14 Dejamos el loading en false para que intente mostrar la magen
             //await actions.sendPhoto(file.secure_url) //15 Enviamos la url a un action para hacer algo en back. Lo dejamos bloqueado para que no de error de importacion de Context actions o de la función.
+            setImageBeenUpload(true);
         } catch (error) {
             console.error("Error uploading image:", error);
             setLoading(false);
@@ -36,16 +38,16 @@ export const Cloudinary = () => {
     };
 
     return (
-        <div className="backdrop-blur-xs flex items-center justify-center flex-col">
-            <h1 className="text-white text-2xl">Upload Image</h1>
+        <div className="backdrop-blur-xs flex items-center justify-center flex-col my-4">
+            <h1 className="text-white font-bold underline tracking-wide text-2xl">Upload Image</h1>
 
             {/*1 - El siguiente input type file envia la imagen por el evento al handler uploadImage */}
 
             <input
-                className="bg-white rounded-md p-1 m-3 cursor-pointer hover:scale-103 transition-all"
+                className="text-white rounded-md p-1 m-3 cursor-pointer hover:scale-103 transition-all mx-auto border-3 border-primary/70 max-w-[80%]"
                 type="file"
                 name="file"
-                placeholder="Upload an image"
+                
                 // accept='image/png, image/jpeg'
                 onChange={(e) => uploadImage(e)}
             />
@@ -53,7 +55,9 @@ export const Cloudinary = () => {
             {/* ------------------------------------------------------------------------------------ */}
 
             {/* 9 - Si loading true, Mostramos Loading, si no mostramos la imagen la cual su url deberia estar cargada en un estado local */}
-            {loading ? <h3>Loading...</h3> : <img className="w-125 h-auto" src={image} alt="imagen subida" />}
+            {loading && <h3 className="text-white">Loading...</h3>}
+
+            {imageBeenUpload && <img className="w-125 h-auto text-white" src={image} alt="imagen subida" />}
             {/* ------------------------------------------------------------------------------------ */}
         </div>
     );
