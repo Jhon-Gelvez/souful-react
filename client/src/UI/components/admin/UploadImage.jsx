@@ -21,7 +21,7 @@ export const UploadImage = () => {
                     <Label text="Categoria del producto" />
                     <Input />
                     <div className="block mx-auto mt-2">
-                    <Button Icon={IoSend} />
+                        <Button Icon={IoSend} />
                     </div>
                 </form>
                 <div className="w-4 h-3"></div>
