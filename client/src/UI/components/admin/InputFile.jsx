@@ -1,8 +1,8 @@
 import { handleUploadFile } from "../../../hook/handleUploadFile";
 
-export const InputFile = () => {
+export const InputFile = ({setOnChange}) => {
     
-    const {loading, imageBeenUpload } = handleUploadFile();
+    const {loading, imageBeenUpload , imageUrl , alt} = handleUploadFile();
     
     return (
         <div className="backdrop-blur-xs flex items-center justify-center flex-col my-4">
@@ -11,6 +11,7 @@ export const InputFile = () => {
             {/*1 - El siguiente input type file envia la imagen por el evento al handler uploadImage */}
 
             <input
+            onChange={setOnChange}
                 className="text-white rounded-md p-1 m-3 cursor-pointer hover:scale-103 transition-all mx-auto border-3 border-primary/70 max-w-[80%]"
                 type="file"
                 name="file"
@@ -25,7 +26,7 @@ export const InputFile = () => {
             {/* 9 - Si loading true, Mostramos Loading, si no mostramos la imagen la cual su url deberia estar cargada en un estado local */}
             {loading && <h3 className="text-white">Loading...</h3>}
 
-            {imageBeenUpload && <img className="w-125 h-auto text-white" src={image} alt="imagen subida" />}
+            {imageBeenUpload && <img className="w-125 h-auto text-white" src={imageUrl} alt={alt} />}
             {/* ------------------------------------------------------------------------------------ */}
         </div>
     );
