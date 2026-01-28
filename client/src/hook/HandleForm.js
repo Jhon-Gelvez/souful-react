@@ -1,9 +1,9 @@
+//  recibe datos sobre del formulario y los prepara para enviarlos a handleUploadFile()
+
 import { useState } from "react";
 import { handleUploadFile } from "./handleUploadFile";
 
-
-// le pasamos el archivo y los datos del input desde react y handleUploadFile se encarga del resto 
-
+// le pasamos el archivo y los datos del input desde react y handleUploadFile se encarga del resto
 
 // setea los datos para pasarlos al api en handleUploadFile y los retorna
 export const HandleForm = () => {
@@ -15,16 +15,19 @@ export const HandleForm = () => {
         category: "",
     });
 
+    const [imageUrl, setImageUrl] = useState(null);
+
     // 2. Estado para el archivo físico (sin subir aún)
     const [selectedFile, setSelectedFile] = useState(null);
 
     // 3. Traemos la lógica de subida del hook
     const { uploadImage } = handleUploadFile();
 
+    // aca capturo los datos
     const handleFormChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
-
+    // aca capturo el archivo
     const handleFileChange = (e) => {
         setSelectedFile(e.target.files[0]);
     };
@@ -32,6 +35,8 @@ export const HandleForm = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         if (!selectedFile) return alert("Por favor selecciona una imagen");
+
+        // IMPORTANTE de aca obtenemos datos como el formato, el peso en bytes, el typo de archivo
 
         try {
             // PASO A: Subir imagen y obtener URL
@@ -50,8 +55,8 @@ export const HandleForm = () => {
         } catch (error) {
             console.error("Error en el proceso:", error);
         }
-
-
     };
     return { formData, selectedFile, imageUrl, handleSubmit, handleFileChange, handleFormChange };
 };
+
+// no se le esta pasando correctamente el file ni la MediaMetadata
