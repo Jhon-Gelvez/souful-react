@@ -1,8 +1,5 @@
-// import mysql from "mysql2"; 
-import {createPool} from "mysql2/promise"
-// usar la version con promesas "mysql2/promise"
+import { createPool } from "mysql2/promise";
 import "dotenv/config";
-import { version } from "react";
 
 export const db = createPool({
     host: process.env.DB_HOST,
@@ -11,7 +8,15 @@ export const db = createPool({
     database: process.env.DB_NAME,
 });
 
-db.connect((err) => {
-    if (err) throw err;
-    console.log("✅ Conectado a la base de datos MySQL");
-});
+// Para probar la conexión inmediatamente
+async function testConnection() {
+    try {
+        const connection = await db.getConnection();
+        console.log("✅ Conectado a la base de datos MySQL con Promises");
+        connection.release(); // Muy importante liberar la conexión al terminar la prueba
+    } catch (err) {
+        console.error("❌ Error conectando a la base de datos:", err.message);
+    }
+}
+
+testConnection();
