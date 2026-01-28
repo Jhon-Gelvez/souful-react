@@ -6,6 +6,6 @@ import * as itemController from '../controller/itemController.js';
 
 router.get('/', itemController.getAllItemsDB);
 router.post('/', itemController.createItemDB);
-router.delete('/:id', itemController.deleteItemDB_cdl);
+router.delete('/:public_id', itemController.deleteItemDB_cdl);
 
 export default router;
