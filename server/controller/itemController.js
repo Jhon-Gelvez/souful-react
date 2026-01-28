@@ -2,7 +2,19 @@ import { v4 as uuidv4 } from "uuid";
 import { db } from "../config/mysql.js";
 import { deleteImage } from "../services/deleteImage.js";
 
-// Obtener todos los items
+export const getItem = async (req, res) => {
+    const { public_id } = req.params;
+    const sql = "SELECT * FROM product_images WHERE public_id = ?";
+
+    try {
+        const [result] = await db.query(sql, [public_id]);
+        res.json(result);
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({error})
+    }
+};
+
 export const getAllItemsDB = async (req, res) => {
     const sql = "SELECT * FROM product_images";
 
@@ -19,13 +31,11 @@ export const getAllItemsDB = async (req, res) => {
         console.log("Resultados:", result);
     } catch (err) {
         console.error("Error en la consulta:", err.message);
-        if (res) {
-            return res.status(500).json({ error: err.message });
-        }
+
+        return res.status(500).json({ error: err.message });
     }
 };
 
-// Crear un item
 export const createItemDB = async (req, res) => {
     // Generamos el ID aquí mismo
     const id = uuidv4();
@@ -89,39 +99,5 @@ export const deleteItemDB_cdl = async (req, res) => {
     } catch (error) {
         console.error("Error en el proceso de borrado:", error);
         return res.status(500).json({ error: "Error interno al eliminar el recurso" });
-    }
-};
-
-// obtener una img
-export const getImage = async (req, res) => {
-    const { id } = req.params;
-};
-
-//  anadir una nueva categoria
-export const addCategory = async (req, res) => {
-    const { name } = req.params;
-    const sql = "INSERT INTO categories (name) VALUES (?)";
-    try {
-        const { result } = await db.query(sql, [name]);
-        res.status(201).json({
-            message: "Categoría creada con éxito",
-            categoryId: result.insertId,
-            name,
-        });
-    } catch (error) {
-        console.error("Error al añadir categoría:", error);
-        res.status(500).json({ error: "Error interno del servidor" });
-    }
-};
-
-// obtener todas las categorias
-export const getAllCategories = async (req, res) => {
-    const sql = "SELECT * FROM categories";
-    try {
-        const [result] = await db.query(sql);
-        res.json(result);
-    } catch (error) {
-        console.error("Error al listar categorías:", error);
-        res.status(500).json({ error: "Error al obtener las categorías" });
     }
 };
