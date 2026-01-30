@@ -41,8 +41,12 @@ export const handleUploadFile = () => {
             });
 
             const result = await response.json();
-            console.log("este es el resultado de la peticion at handle... ", result);
-            console.log("url a la img ", imageUrl);
+
+            if (!response.ok) {
+                throw new Error(result.error?.message || "Error al subir a Cloudinary");
+            }
+
+            console.log("este es el resultado de la peticion ", result);
             setImageUrl(result.secure_url.replace("/upload/", "/upload/f_auto,q_auto/"));
             setImageBeenUpload(true);
             // Retornamos la URL optimizada automáticamente
