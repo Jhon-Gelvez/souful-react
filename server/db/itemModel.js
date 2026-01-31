@@ -19,11 +19,27 @@ export const itemModel = {
         const [result] = await db.query(sql, values);
         return result;
     },
+    updateItemDB: async (id, data) => {
+        // 1. Extraemos las llaves (nombres de campos) que vienen en el objeto
+        const fields = Object.keys(data);
+        if (fields.length === 0) return null; // No hay nada que actualizar
+
+        // 2. Construimos la parte "SET campo1 = ?, campo2 = ?"
+        const setQuery = fields.map((field) => `${field} = ?`).join(", ");
+
+        // 3. Los valores en orden, agregando el ID al final para el WHERE
+        const values = [...Object.values(data), id];
+
+        const sql = `UPDATE products SET ${setQuery} WHERE id = ?`;
+
+        const [result] = await db.query(sql, values);
+        return result;
+    },
     deleteItemDB_cdl: async (public_id) => {
         const sql = "DELETE FROM product_images WHERE public_id = ?";
 
         const [result] = await db.query(sql, [public_id]);
 
-        return result
+        return result;
     },
 };
