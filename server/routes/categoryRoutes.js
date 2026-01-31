@@ -4,6 +4,7 @@ import * as categoryController from "../controller/categoryController.js";
 const router = express.Router();
 
 router.get("/", categoryController.getAllCategories);
-router.post("/:name",categoryController.addCategory);
+router.post("/", categoryController.addCategory);
+router.delete("/:id", categoryController.deleteCategory);
 
-export default router
+export default router;
