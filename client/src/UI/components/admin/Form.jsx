@@ -18,7 +18,7 @@ export const Form = () => {
             try {
                 const data = await listCategories();
                 // 3. Guardamos los datos reales en el estado
-                setCategories(data); 
+                setCategories(data);
             } catch (error) {
                 console.error("Error al traer categorías:", error);
             }
@@ -26,10 +26,6 @@ export const Form = () => {
 
         fetchCategories();
     }, []);
-
-    if (categories.length 
-        != 0) console.log(categories);
-
     return (
         <main className="flex flex-col justify-center items-center min-w-[50dvw]! w-[80%] text-primary mx-auto">
             <div className="rounded-xl pb-2 px-3 sm:p-8 sm:pb-4 shadow-[0_0_3rem_rgba(0,0,0)] shadow-black bg-background-dark">
