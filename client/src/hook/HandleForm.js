@@ -12,7 +12,8 @@ export const HandleForm = () => {
         title: "",
         description: "",
         price: "",
-        category: "",
+        category_id: "",
+        categoryName: "",
     });
 
     const [imageUrl, setImageUrl] = useState(null);
@@ -24,8 +25,22 @@ export const HandleForm = () => {
     const { uploadImage } = handleUploadFile();
 
     // aca capturo los datos
+    // Dentro de HandleForm.js
     const handleFormChange = (e) => {
-        setFormData({ ...formData, [e.target.name]: e.target.value });
+        const { name, value } = e.target;
+
+        if (name === "category_id") {
+            // Accedemos al texto del <option> que el usuario seleccionó
+            const selectedText = e.target.options[e.target.selectedIndex].text;
+
+            setFormData({
+                ...formData,
+                [name]: value, // Guarda el ID (ej: "1")
+                categoryName: selectedText, // Guarda el Nombre (ej: "anime")
+            });
+        } else {
+            setFormData({ ...formData, [name]: value });
+        }
     };
     // aca capturo el archivo
     const handleFileChange = (e) => {
@@ -42,35 +57,34 @@ export const HandleForm = () => {
             // PASO A: Subir imagen y obtener URL
             console.log("Subiendo imagen...");
             const cloudinaryData = await uploadImage(selectedFile, formData);
+            // guardamos la url
+            setImageUrl(cloudinaryData.optimized_url);
 
             // TODO
             // PASO B: Enviar todo a tu API Rest
             const bodyForDB = {
-                name_product: cloudinaryData.context.custom.caption,
-                alt: cloudinaryData.context.custom.alt, 
+                name_product: cloudinaryData.context?.custom?.caption || formData.title,
+                alt: cloudinaryData.context?.custom?.alt || formData.description,
                 price: parseInt(formData.price),
                 image_url: cloudinaryData.optimized_url,
                 public_id: cloudinaryData.public_id,
                 file_size: parseInt(cloudinaryData.bytes),
                 mime_type: `${cloudinaryData.resource_type}/${cloudinaryData.format}`,
                 dimensions: `${cloudinaryData.width}x${cloudinaryData.height}`,
-                // fix
-                // solo toma la primera categoria del producto
-                // toma el nombre que se pasa del form pero necesitamos el id
-                category_id: `${cloudinaryData.tags[0]}`,
+                category_id: parseInt(formData.category_id),
             };
 
             // peticion a al api
 
-            console.log(`Datos para enviar al backend ${JSON.stringify(bodyForDB) }`);
+            console.log(`Datos para enviar al backend ${JSON.stringify(bodyForDB)}`);
 
             alert("¡Producto y metadata guardados!");
             // Aquí iría tu fetch('/api/products', { method: 'POST', ... })
         } catch (error) {
+            console.log(selectedFile, formData);
+
             console.error("Error en el proceso:", error);
         }
     };
     return { formData, selectedFile, imageUrl, handleSubmit, handleFileChange, handleFormChange };
 };
-
-// no se le esta pasando correctamente el file ni la MediaMetadata

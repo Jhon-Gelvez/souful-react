@@ -7,6 +7,20 @@ import { HandleForm } from "../../../hook/HandleForm";
 
 export const Form = () => {
     const { handleSubmit, handleFileChange, handleFormChange } = HandleForm();
+    const categories = [
+        {
+            name: "anime",
+            id: 1,
+        },
+        {
+            name: "animales",
+            id: 2,
+        },
+        {
+            name: "munecas",
+            id: 3,
+        },
+    ];
     return (
         <main className="flex flex-col justify-center items-center min-w-[50dvw]! w-[80%] text-primary mx-auto">
             <div className="rounded-xl pb-2 px-3 sm:p-8 sm:pb-4 shadow-[0_0_3rem_rgba(0,0,0)] shadow-black bg-background-dark">
@@ -19,9 +33,20 @@ export const Form = () => {
                     <Label text="Descripcion del producto" />
                     <textarea name="description" onChange={handleFormChange} className="text-white p-2 mb-3 border-white border rounded-lg w-full max-w-89.5 resize-none block field-sizing-content" />
                     <Label text="Precio del producto" />
-                    <Input name="price" setOonChange={handleFormChange} />
+                    <Input name="price" type="number" setOonChange={handleFormChange} />
                     <Label text="Categoria del producto" />
-                    <Input name="category" setOonChange={handleFormChange} />
+                    <select name="category_id" defaultValue="" onChange={handleFormChange} className="border border-white  rounded-lg py-1.5 pl-1 caret-white text-white mb-2 w-full">
+                        <option value="" disabled className="bg-background-dark text-white">
+                            Selecciona categoría
+                        </option>
+                        {categories.map((cat) => (
+                            // El value es el ID para la DB, el texto es el nombre para el usuario
+                            <option key={cat.id} value={cat.id} className="bg-background-dark text-white">
+                                {cat.name}
+                            </option>
+                        ))}
+                    </select>
+
                     <div className="block mx-auto mt-2">
                         <Button Icon={IoSend} />
                     </div>
