@@ -1,6 +1,8 @@
+const URL = import.meta.env.VITE_URL;
+
 export const getItem = async (public_id) => {
     try {
-        const response = await fetch(`localhost:3001/api/items/${public_id}`, {
+        const response = await fetch(`${URL}/api/items/${public_id}`, {
             method: "GET",
             headers: { "Content-Type": "application/json" },
         });
@@ -16,7 +18,7 @@ export const getItem = async (public_id) => {
 };
 export const listItems = async () => {
     try {
-        const response = await fetch(`localhost:3001/api/items`, {
+        const response = await fetch(`${URL}/api/items`, {
             method: "GET",
             headers: { "Content-Type": "application/json" },
         });
@@ -32,7 +34,7 @@ export const listItems = async () => {
 };
 export const createItem = async (itemData) => {
     try {
-        const response = await fetch(`localhost:3001/api/items`, {
+        const response = await fetch(`${URL}/api/items`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(itemData)
@@ -49,7 +51,7 @@ export const createItem = async (itemData) => {
 };
 export const updateItem = async (public_id, itemData) => {
  try {
-        const response = await fetch(`localhost:3001/api/items/${public_id}`, {
+        const response = await fetch(`${URL}/api/items/${public_id}`, {
             method: "PATCH",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(itemData)
@@ -66,7 +68,7 @@ export const updateItem = async (public_id, itemData) => {
 };
 export const deleteItem = async (publicId) => {
      try {
-        const response = await fetch(`localhost:3001/api/items`, {
+        const response = await fetch(`${URL}/api/items`, {
             method: "DELETE",
         });
 
