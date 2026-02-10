@@ -1,26 +1,35 @@
+import { useState, useEffect } from "react";
 import { InputFile } from "./InputFile";
 import { IoSend } from "react-icons/io5";
 import { Label } from "./Label";
 import { Input } from "./Input";
 import { Button } from "../common/Button";
 import { HandleForm } from "../../../hook/HandleForm";
+import { listCategories } from "../../../api/categoryApi";
 
 export const Form = () => {
     const { handleSubmit, handleFileChange, handleFormChange } = HandleForm();
-    const categories = [
-        {
-            name: "anime",
-            id: 1,
-        },
-        {
-            name: "animales",
-            id: 2,
-        },
-        {
-            name: "munecas",
-            id: 3,
-        },
-    ];
+    // 2. Definir el estado para las categorías
+    const [categories, setCategories] = useState([]);
+
+    useEffect(() => {
+        // 2. Definimos una función async dentro del useEffect
+        const fetchCategories = async () => {
+            try {
+                const data = await listCategories();
+                // 3. Guardamos los datos reales en el estado
+                setCategories(data); 
+            } catch (error) {
+                console.error("Error al traer categorías:", error);
+            }
+        };
+
+        fetchCategories();
+    }, []);
+
+    if (categories.length 
+        != 0) console.log(categories);
+
     return (
         <main className="flex flex-col justify-center items-center min-w-[50dvw]! w-[80%] text-primary mx-auto">
             <div className="rounded-xl pb-2 px-3 sm:p-8 sm:pb-4 shadow-[0_0_3rem_rgba(0,0,0)] shadow-black bg-background-dark">
