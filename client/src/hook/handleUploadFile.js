@@ -40,13 +40,21 @@ export const handleUploadFile = () => {
                 body: data,
             });
 
-            const result = await response.json();
-            console.log("este es el resultado de la peticion at handle... ", result);
-            console.log("url a la img ", imageUrl);
-            setImageUrl(result.secure_url.replace("/upload/", "/upload/f_auto,q_auto/"));
+            let result = await response.json();
+            console.log(result)
+            let defaultUrl = result.secure_url
+            const optimizedUrl = defaultUrl.replace("/upload/", "/upload/f_auto,q_auto/");
+
+            setImageUrl(optimizedUrl);
             setImageBeenUpload(true);
-            // Retornamos la URL optimizada automáticamente
-            return result.secure_url.replace("/upload/", "/upload/f_auto,q_auto/");
+            
+
+            // console.log(`result = ${result}`);
+
+            return {
+                ...result,
+                optimized_url: optimizedUrl,
+            };
         } catch (error) {
             console.error("Error uploading image:", error);
         } finally {
@@ -56,3 +64,24 @@ export const handleUploadFile = () => {
 
     return { uploadImage, loading, imageBeenUpload, imageUrl, alt };
 };
+// 3 / february / 2026 sube correctamente las tags,el title(caption),la description (alt)
+
+// {title: 'urabe', description: 'img de urabe mikoto', price: '1000', category: 'anime', image: 'https://res.cloudinary.com/dnucajsxn/image/upload/f_auto,q_auto/v1770130089/g2ebzk3bqskknm5pyd9p.jpg'}
+// category
+// :
+// "anime"
+// description
+// :
+// "img de urabe mikoto"
+// image
+// :
+// "https://res.cloudinary.com/dnucajsxn/image/upload/f_auto,q_auto/v1770130089/g2ebzk3bqskknm5pyd9p.jpg"
+// price
+// :
+// "1000"
+// title
+// :
+// "urabe"
+// [[Prototype]]
+// :
+// Object
