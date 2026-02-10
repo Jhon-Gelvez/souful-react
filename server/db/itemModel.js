@@ -11,11 +11,17 @@ export const itemModel = {
         const [result] = await db.query(sql);
         return result;
     },
-    createItemDB: async (id, name_product, alt, price, image_url, public_id, file_size, mime_type, dimensions, category_id) => {
-        const sql = `INSERT INTO product_images 
-    (id, name_product, alt, price, image_url, public_id, file_size, mime_type, dimensions, category_id) 
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
-        const values = [id, name_product, alt, price, image_url, public_id, file_size, mime_type, dimensions, category_id];
+    createItemDB: async (data) => {
+        // data es un objeto que ya incluye el id generado
+        const fields = Object.keys(data);
+        const values = Object.values(data);
+
+        // Creamos los placeholders (?, ?, ?) dinámicamente
+        const placeholders = fields.map(() => "?").join(", ");
+        const columnNames = fields.join(", ");
+
+        const sql = `INSERT INTO product_images (${columnNames}) VALUES (${placeholders})`;
+
         const [result] = await db.query(sql, values);
         return result;
     },

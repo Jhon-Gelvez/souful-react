@@ -25,15 +25,14 @@ export const getAllItemsDB = async (req, res) => {
 };
 
 export const createItemDB = async (req, res) => {
-    // Generamos el ID aquí mismo
     const id = uuidv4();
 
-    // le tenemos que pasar el id
-
-    const { name_product, alt, price, image_url, public_id, file_size, mime_type, dimensions, category_id } = req.body;
+    // Combinamos el ID con los datos que vienen del body
+    const newItem = { id, ...req.body };
 
     try {
-        const result = await itemModel.createItemDB(id, name_product, alt, price, image_url, public_id, file_size, mime_type, dimensions, category_id);
+        // Pasamos el objeto completo
+        const result = await itemModel.createItemDB(newItem);
 
         if (!result || result.affectedRows === 0) {
             return res.status(404).json({ message: "Item no creado" });
@@ -41,22 +40,10 @@ export const createItemDB = async (req, res) => {
 
         res.status(201).json({
             message: "Creado con éxito con UUID",
-            id: id,
-            data: {
-                id,
-                name_product,
-                alt,
-                price,
-                image_url,
-                public_id,
-                file_size,
-                mime_type,
-                dimensions,
-                category_id,
-            },
+            data: newItem, // Ya contiene el id y todos los campos
         });
     } catch (error) {
-        return res.status(500).json({ error: err.message });
+        return res.status(500).json({ error: error.message });
     }
 };
 
@@ -97,7 +84,6 @@ export const deleteItemDB_cdl = async (req, res) => {
             item: result,
             item_cld: response_cld,
         });
-        
     } catch (error) {
         return res.status(500).json({ error: "Error interno al eliminar el recurso" });
     }
