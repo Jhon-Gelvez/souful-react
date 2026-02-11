@@ -2,6 +2,8 @@
 
 import { useState } from "react";
 import { handleUploadFile } from "./handleUploadFile";
+import { createItem } from "../api/itemApi";
+
 
 // le pasamos el archivo y los datos del input desde react y handleUploadFile se encarga del resto
 
@@ -78,8 +80,12 @@ export const HandleForm = () => {
 
             console.log(`Datos para enviar al backend ${JSON.stringify(bodyForDB)}`);
 
-            alert("¡Producto y metadata guardados!");
-            // Aquí iría tu fetch('/api/products', { method: 'POST', ... })
+            // Llamamos a la función createItem 
+            const dbResult = await createItem(bodyForDB);
+
+            console.log("Respuesta de la DB:", dbResult);
+            alert("¡Producto creado con éxito en Nube y DB!");
+            
         } catch (error) {
             console.log(selectedFile, formData);
 
