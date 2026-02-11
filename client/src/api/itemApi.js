@@ -1,37 +1,46 @@
 const URL = import.meta.env.VITE_URL;
 
+const handleResponse = async (response, context) => {
+    if (!response.ok) {
+        let errorMessage = "Error desconocido";
+        try {
+            const errorData = await response.json();
+            errorMessage = errorData.message || errorData.error || errorMessage;
+        } catch (e) {
+            errorMessage = response.statusText;
+        }
+
+        const fullError = `[${context}] Falló ${response.status}: ${errorMessage}`;
+        console.error(fullError);
+        throw new Error(fullError);
+    }
+    return await response.json();
+};
+
 export const getItem = async (public_id) => {
     try {
         const response = await fetch(`${URL}/api/items/${public_id}`, {
             method: "GET",
             headers: { "Content-Type": "application/json" },
         });
-
-        if (!response.ok) {
-            throw new Error("Error al obtener el item");
-        }
-
-        return await response.json();
+        return await handleResponse(response, "getItem");
     } catch (error) {
-        console.error(error);
+        throw error;
     }
 };
+
 export const listItems = async () => {
     try {
         const response = await fetch(`${URL}/api/items`, {
             method: "GET",
             headers: { "Content-Type": "application/json" },
         });
-
-        if (!response.ok) {
-            throw new Error("Error al obtener el item");
-        }
-
-        return await response.json();
+        return await handleResponse(response, "listItems");
     } catch (error) {
-        console.error(error);
+        throw error;
     }
 };
+
 export const createItem = async (itemData) => {
     try {
         const response = await fetch(`${URL}/api/items`, {
@@ -39,16 +48,12 @@ export const createItem = async (itemData) => {
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(itemData),
         });
-
-        if (!response.ok) {
-            throw new Error("Error al obtener el item");
-        }
-
-        return await response.json();
+        return await handleResponse(response, "createItem");
     } catch (error) {
-        console.error(error);
+        throw error;
     }
 };
+
 export const updateItem = async (public_id, itemData) => {
     try {
         const response = await fetch(`${URL}/api/items/${public_id}`, {
@@ -56,28 +61,20 @@ export const updateItem = async (public_id, itemData) => {
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(itemData),
         });
-
-        if (!response.ok) {
-            throw new Error("Error al obtener el item");
-        }
-
-        return await response.json();
+        return await handleResponse(response, "updateItem");
     } catch (error) {
-        console.error(error);
+        throw error;
     }
 };
+
 export const deleteItem = async (publicId) => {
     try {
-        const response = await fetch(`${URL}/api/items`, {
+        // Nota: Asegúrate de pasar el publicId en la URL si tu API lo requiere
+        const response = await fetch(`${URL}/api/items/${publicId}`, {
             method: "DELETE",
         });
-
-        if (!response.ok) {
-            throw new Error("Error al obtener el item");
-        }
-
-        return await response.json();
+        return await handleResponse(response, "deleteItem");
     } catch (error) {
-        console.error(error);
+        throw error;
     }
 };
