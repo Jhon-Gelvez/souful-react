@@ -41,15 +41,12 @@ export const handleUploadFile = () => {
             });
 
             let result = await response.json();
-            console.log(result)
-            let defaultUrl = result.secure_url
+            console.log(result);
+            let defaultUrl = result.secure_url;
             const optimizedUrl = defaultUrl.replace("/upload/", "/upload/f_auto,q_auto/");
 
             setImageUrl(optimizedUrl);
             setImageBeenUpload(true);
-            
-
-            // console.log(`result = ${result}`);
 
             return {
                 ...result,
