@@ -36,7 +36,7 @@ export const itemModel = {
         // 3. Los valores en orden, agregando el ID al final para el WHERE
         const values = [...Object.values(data), public_id];
 
-        const sql = `UPDATE products SET ${setQuery} WHERE public_id = ?`;
+        const sql = `UPDATE product_images SET ${setQuery} WHERE public_id = ?`;
 
         const [result] = await db.query(sql, values);
         return result;
