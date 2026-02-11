@@ -52,18 +52,32 @@ export const updateItemDB = async (req, res) => {
     const data = req.body;
 
     try {
+        // Validación básica de entrada
+        if (!data || Object.keys(data).length === 0) {
+            return res.status(400).json({ message: "No se enviaron datos para actualizar" });
+        }
+
         const result = await itemModel.updateItemDB(public_id, data);
 
         if (!result || result.affectedRows === 0) {
-            return res.status(404).json({ message: "Producto no encontrado o sin cambios" });
+            return res.status(404).json({ message: "Producto no encontrado o no hubo cambios en los datos" });
         }
 
         res.json({
             message: "Producto actualizado correctamente",
-            updatedFields: Object.keys(updateData),
+            updatedFields: Object.keys(data), // Corregido: antes tenías updateData
         });
+
     } catch (error) {
-        return res.status(500).json({ error: "Error interno al eliminar el recurso" });
+        // 1. Loguea el error real en la consola de tu servidor (Node)
+        console.error(`[Error updateItemDB]: ${error.message}`);
+
+        // 2. Envía un mensaje útil al frontend
+        // En producción podrías querer ocultar error.message, pero en desarrollo es vital.
+        return res.status(500).json({ 
+            message: "Error interno al actualizar el recurso",
+            error: error.message // Esto lo leerá tu handleResponse del frontend
+        });
     }
 };
 
