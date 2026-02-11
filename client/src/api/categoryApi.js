@@ -68,7 +68,7 @@ export const updateCategory = async (categoryData) => {
 };
 export const deleteCategory = async (id) => {
     try {
-        const response = await fetch(`${URL}/api/categories`, {
+        const response = await fetch(`${URL}/api/categories/${id}`, {
             method: "DELETE",
         });
 
