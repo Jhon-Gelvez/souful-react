@@ -37,7 +37,7 @@ export const createItem = async (itemData) => {
         const response = await fetch(`${URL}/api/items`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(itemData)
+            body: JSON.stringify(itemData),
         });
 
         if (!response.ok) {
@@ -50,11 +50,11 @@ export const createItem = async (itemData) => {
     }
 };
 export const updateItem = async (public_id, itemData) => {
- try {
+    try {
         const response = await fetch(`${URL}/api/items/${public_id}`, {
             method: "PATCH",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(itemData)
+            body: JSON.stringify(itemData),
         });
 
         if (!response.ok) {
@@ -67,7 +67,7 @@ export const updateItem = async (public_id, itemData) => {
     }
 };
 export const deleteItem = async (publicId) => {
-     try {
+    try {
         const response = await fetch(`${URL}/api/items`, {
             method: "DELETE",
         });
