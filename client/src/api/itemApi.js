@@ -14,7 +14,7 @@ const handleResponse = async (response, context) => {
         console.error(fullError);
         throw new Error(fullError);
     }
-    return await response.json();
+    return await response();
 };
 
 export const getItem = async (public_id) => {
