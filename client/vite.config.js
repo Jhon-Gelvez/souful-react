@@ -8,9 +8,6 @@ export default defineConfig({
 
     base: "/souful-react/", // Añades esta línea
     server: {
-    host: true,         // Permite conexiones externas (móvil)
-    strictPort: true,
-    origin: 'https://2pnz8d41-5173.use2.devtunnels.ms', // Fuerza el origen del túnel
-    hmr: false
-  }
+        host: true,
+    },
 });
