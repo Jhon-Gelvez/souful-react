@@ -1,8 +1,11 @@
 import React, { useState } from "react";
 import { getItem, listItems, createItem, updateItem, deleteItem } from "../../../api/itemApi";
+import { SearchForm } from "./SearchForm";
+import { InfoItem } from "./InfoItem";
+import { EditForm } from "./EditForm";
 
 export const ItemManager = () => {
-    const [searchId, setSearchId] = useState("");
+    const [editingin, setEditingin] = useState(false);
     const [results, setResults] = useState([]);
     const [singleItem, setSingleItem] = useState(null);
 
@@ -12,7 +15,27 @@ export const ItemManager = () => {
 
     // --- OPERACIONES ---
 
-    const handleSearch = async () => {
+    const handleDelete = async (id) => {
+        if (window.confirm("¿Seguro que quieres borrar este ítem?")) {
+            await deleteItem(id);
+            alert("imagen borrada");
+            handleListAll();
+            if (singleItem?.public_id === id) setSingleItem(null);
+        }
+    };
+
+    const handleEdit = (item) => {
+        setEditingin(true);
+        setResults([]);
+        setEditingId(item.public_id || item.id);
+        setFormData({ name_product: item.name_product, price: item.price });
+    };
+
+    const handleCopy = (text) => {
+        navigator.clipboard.writeText(text);
+    };
+
+    const handleSearch = async (searchId) => {
         if (!searchId.trim()) return;
         const data = await getItem(searchId);
         if (data) {
@@ -27,6 +50,7 @@ export const ItemManager = () => {
         const data = await listItems();
         if (data) {
             setResults(data);
+            setEditingin(false);
             setSingleItem(null);
         }
     };
@@ -46,35 +70,8 @@ export const ItemManager = () => {
         handleListAll(); // Refrescar lista
     };
 
-    const handleDelete = async (id) => {
-        if (window.confirm("¿Seguro que quieres borrar este ítem?")) {
-            try {
-                // 'data' ya son los datos finales porque handleResponse hizo el trabajo sucio
-                const data = await deleteItem(id);
-
-                console.log("Datos recibidos:", data);
-
-                // IMPORTANTE: Como handleResponse ya procesó la respuesta,
-                // no tienes el "response.ok".
-                // Debes validar según lo que devuelva tu API (ej. data.success o data.id)
-                if (data) {
-                    alert("Imagen borrada exitosamente!");
-                    handleListAll();
-                    if (singleItem?.public_id === id) setSingleItem(null);
-                }
-            } catch (error) {
-                console.error("Error en la petición:", error);
-            }
-        }
-    };
-
-    const startEdit = (item) => {
-        setEditingId(item.public_id || item.id);
-        setFormData({ name_product: item.name_product, price: item.price });
-    };
-
     return (
-        <div className="mx-auto p-6">
+        <div className="mx-auto p-6 space-y-6">
             {/* 1. Formulario de Creación / Edición */}
             {/* <div className="p-6 bg-white shadow-lg rounded-xl border border-gray-100">
                 <h2 className="text-xl font-bold mb-4 text-gray-800">
@@ -108,67 +105,25 @@ export const ItemManager = () => {
 
             {/* 2. Búsqueda y Listado */}
             <div className="flex flex-col justify-center items-center w-fit text-primary mx-auto shadow-[0_0_3rem_rgba(0,0,0)] rounded-xl p-4 ">
-                <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-4 mb-8">
-                    <div className="w-full md:w-1/2 space-y-2">
-                        <label className="text-md font-bold text-white underline">Buscar por ID</label>
-                        <div className="flex gap-2 mt-1.5">
-                            <input type="text" className="flex-1 px-4 py-2 border border-primary rounded-lg  focus:ring-2    outline-none" placeholder="ID del producto..." value={searchId} onChange={(e) => setSearchId(e.target.value)} />
-                            <button onClick={handleSearch} className="bg-white/10 text-white px-4 py-2 rounded-lg focus:bg-primary focus:text-black focus:font-bold active:scale-95 transition-transform">
-                                Buscar
-                            </button>
-                        </div>
-                    </div>
-                    <button onClick={handleListAll} className="bg-white/10 text-white px-4 py-2 rounded-lg focus:bg-primary focus:text-black focus:font-bold active:scale-95 transition-transform">
-                        Listar Todos
-                    </button>
-                </div>
+                <SearchForm onSearch={handleSearch} onListAll={handleListAll} />
 
                 {/* 3. Resultados */}
                 <div className="space-y-4">
                     {/* Caso: Búsqueda individual */}
-                    {singleItem && (
-                        <div className="p-4 bg-blue-50 border border-blue-200 rounded-lg flex justify-between items-center animate-pulse">
-                            <div>
-                                <p className="font-bold text-blue-900">
-                                    {singleItem.name_product} <span className="text-sm font-normal opacity-70">({singleItem.public_id})</span>
-                                </p>
-                                <p className="text-blue-700">${singleItem.price}</p>
-                            </div>
-                            <div className="flex gap-2">
-                                <button onClick={() => startEdit(singleItem)} className="text-blue-600 font-bold hover:underline">
-                                    Editar
-                                </button>
-                                <button onClick={() => handleDelete(singleItem.public_id)} className="text-red-600 font-bold hover:underline">
-                                    Borrar
-                                </button>
-                            </div>
-                        </div>
-                    )}
+                    {singleItem && <InfoItem name={singleItem.name_product} price={singleItem.price} public_id={singleItem.public_id} image_url={singleItem.image_url} onCopy={handleCopy} onDelete={handleDelete} onEdit={handleEdit} singleItem={singleItem} />}
 
                     {/* Caso: Lista completa */}
                     <ul>
-                        {results.map((item) => (
-                            <li key={item.public_id} className="py-4 flex justify-between items-center  px-2 rounded-lg border border-primary/60 mb-2">
-                                <div>
-                                    <p className="font-medium text-white">{item.name_product}</p>
-                                    <p className="text-sm text-white">
-                                        ${item.price} • <span className="text-xs uppercase">{item.public_id}</span>
-                                    </p>
-                                    <span> {item.image_url}</span>
-                                </div>
-                                <div className="flex gap-3">
-                                    <button onClick={() => startEdit(item)} className="text-2xl p-2 text-primary bg-white/5 rounded-full ml-2 cursor-pointer hover:bg-primary hover:text-black hover:font-bold active:scale-95 transition-transform">
-                                        ✎
-                                    </button>
-                                    <button onClick={() => handleDelete(item.public_id)} className="text-2xl p-2 text-red-500 bg-white/5 rounded-full cursor-pointer hover:bg-primary hover:text-black font-bold active:scale-95 transition-transform">
-                                        ✕
-                                    </button>
-                                </div>
-                            </li>
-                        ))}
+                        {results &&
+                            results.map((item) => (
+                                <li key={item.public_id}>
+                                    <InfoItem name={item.name_product} price={item.price} public_id={item.public_id} image_url={item.image_url} onCopy={handleCopy} onDelete={handleDelete} onEdit={handleEdit} singleItem={singleItem} />
+                                </li>
+                            ))}
                     </ul>
                 </div>
             </div>
+            <div>{editingin && <EditForm />}</div>
         </div>
     );
 };
