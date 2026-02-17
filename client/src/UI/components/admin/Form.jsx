@@ -34,11 +34,11 @@ export const Form = () => {
                 <form onSubmit={handleSubmit} className="flex flex-col w-auto">
                     <InputFile setOnChange={handleFileChange} />
                     <Label text="Nombre del producto" />
-                    <Input name="title" setOonChange={handleFormChange} />
+                    <Input name="title" setOnChange={handleFormChange} />
                     <Label text="Descripcion del producto" />
                     <textarea name="description" onChange={handleFormChange} className="text-white p-2 mb-3 border-white border rounded-lg w-full max-w-89.5 resize-none block field-sizing-content" />
                     <Label text="Precio del producto" />
-                    <Input name="price" type="number" setOonChange={handleFormChange} />
+                    <Input name="price" type="number" setOnChange={handleFormChange} />
                     <Label text="Categoria del producto" />
                     <select name="category_id" defaultValue="" onChange={handleFormChange} className="border border-white  rounded-lg py-1.5 pl-1 caret-white text-white mb-2 w-full">
                         <option value="" disabled className="bg-background-dark text-white">
