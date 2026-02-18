@@ -5,7 +5,7 @@ import "tippy.js/dist/tippy.css";
 // ancho del texto de la image_url
 // fix tippy
 
-export const InfoItem = ({ name, price, public_id, image_url, singleItem , onCopy, onEdit, onDelete}) => {
+export const InfoItem = ({ name, price, public_id, image_url, singleItem, onCopy, onEdit, onDelete }) => {
     return (
         <div className="w-full">
             <div className="py-4 flex justify-between items-center  px-2 rounded-lg border border-primary/60 mb-2">
@@ -20,7 +20,7 @@ export const InfoItem = ({ name, price, public_id, image_url, singleItem , onCop
                         </Tippy>
                     </p>
                     <Tippy content={"Clip para copiar"}>
-                        <span onClick={() => onCopy(image_url)} className=" underline cursor-pointer truncate block max-w-62.5 mt-1">
+                        <span onClick={() => onCopy(image_url)} className="text-primary underline cursor-pointer truncate block max-w-62.5 mt-1">
                             {image_url}
                         </span>
                     </Tippy>
