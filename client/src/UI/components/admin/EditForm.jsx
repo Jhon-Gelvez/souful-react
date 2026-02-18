@@ -3,9 +3,10 @@ import { Input } from "./Input";
 import { Button } from "../common/Button";
 import { FiCheck } from "react-icons/fi";
 
-export const EditForm = ({ name, price }) => {
+export const EditForm = ({ name, price, onSubmit }) => {
     return (
-        <div className="flex flex-col justify-center items-start text-primary mx-auto shadow-[0_0_3rem_rgba(0,0,0)] rounded-xl p-4 w-sm md:w-lg px-9">
+        <div className="flex flex-col justify-center items-start text-primary mx-auto shadow-[0_0_3rem_rgba(0,0,0)] rounded-xl p-4 w-sm md:w-md px-9">
+            <h1 className="text-3xl font-bold  my-2 self-center">Editar producto</h1>
             <Label text={"Nombre del producto"} />
 
             <Input
@@ -24,7 +25,7 @@ export const EditForm = ({ name, price }) => {
                 }}
             />
             <div className="flex justify-center items-center w-full mt-2">
-                <Button Icon={FiCheck} />
+                <Button Icon={FiCheck} onClick={onSubmit}/>
             </div>
         </div>
     );
