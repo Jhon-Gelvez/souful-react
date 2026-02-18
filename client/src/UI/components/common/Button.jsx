@@ -1,6 +1,6 @@
-export const Button = ({ Icon}) => {
+export const Button = ({ Icon, onClick=null}) => {
     return (
-        <button
+        <button onClick={onClick}
             className={`group flex h-12 w-12 items-center justify-center  
              bg-white/10 border border-transparent cursor-pointer rounded-full
              hover:bg-blue-500/20 transition-all 
