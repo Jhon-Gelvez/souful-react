@@ -4,7 +4,7 @@ import { handleUploadFile } from "./handleUploadFile.js";
 import { createItem } from "../api/itemApi.js";
 
 // setea los datos para pasarlos al api en handleUploadFile y los retorna
-export const HandleForm = (formElement) => {
+export const handleForm = (formElement) => {
     
     // 1. Estados para los textos (Ahora variables de objeto simple)
     let formData = {
@@ -90,20 +90,5 @@ export const HandleForm = (formElement) => {
         }
     };
 
-    // --- Vincular con el DOM ---
-    // Buscamos los inputs dentro del formulario pasado por parámetro
-    const inputs = formElement.querySelectorAll('input, select, textarea');
-    const fileInput = formElement.querySelector('input[type="file"]');
-
-    inputs.forEach(input => {
-        if (input.type !== 'file') {
-            input.addEventListener('change', handleFormChange);
-        }
-    });
-
-    if (fileInput) {
-        fileInput.addEventListener('change', handleFileChange);
-    }
-
-    formElement.addEventListener('submit', handleSubmit);
+    return { formData, selectedFile, imageUrl, handleSubmit, handleFileChange, handleFormChange }
 };
