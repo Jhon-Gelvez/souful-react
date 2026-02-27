@@ -23,7 +23,7 @@ export const itemModel = {
         const sql = `INSERT INTO product_images (${columnNames}) VALUES (${placeholders})`;
 
         const [result] = await db.query(sql, values);
-        return result;
+        return result; 
     },
     updateItemDB: async (public_id, data) => {
         // 1. Extraemos las llaves (nombres de campos) que vienen en el objeto
