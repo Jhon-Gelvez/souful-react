@@ -1,38 +1,42 @@
 // toma los datos que le pasen y los envia por el APIrest
 
-import { useState } from "react";
-
 // inputFile usa loading y imageBeenUpload para render algunas partes de la UI
 // handleForm usa la funcion uploadImage(e)
 
 export const handleUploadFile = () => {
-    const [imageUrl, setImageUrl] = useState("");
-    const [loading, setLoading] = useState(false);
-    const [imageBeenUpload, setImageBeenUpload] = useState(false);
-    const [alt, setAlt] = useState("");
+    // Variables de estado (en JS puro no disparan re-renders automáticos)
+    let imageUrl = "";
+    let loading = false;
+    let imageBeenUpload = false;
+    let alt = "";
 
+    // Mantenemos la compatibilidad con Vite para variables de entorno
     const presetName = import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET;
     const cloudName = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME;
 
     const uploadImage = async (file, metadata) => {
-        // obtenemos el atl para la imagen render en el form
-        setAlt(metadata.description);
+        // obtenemos el alt para la imagen render en el form
+        alt = metadata.description;
 
         if (!metadata || !file) {
             throw new Error("categoria no encontrada");
         }
+        
         const data = new FormData();
-        // anadimos el archivo
+        // añadimos el archivo
         data.append("file", file);
-        // aque instancia de Cloudinary lo queremos subir
+        // a que instancia de Cloudinary lo queremos subir
         data.append("upload_preset", presetName);
 
         const contextData = `alt=${metadata.description}|caption=${metadata.title}`;
         data.append("context", contextData);
 
-        data.append("tags", `${metadata.category}`);
+        // nota: en tu código original usabas metadata.category, 
+        // asegúrate que el objeto que pases tenga esa propiedad o cámbialo a categoryName
+        data.append("tags", `${metadata.categoryName || metadata.category}`);
 
-        setLoading(true);
+        loading = true;
+        console.log("Cargando..."); // Feedback manual
 
         try {
             const response = await fetch(`https://api.cloudinary.com/v1_1/${cloudName}/image/upload`, {
@@ -40,13 +44,16 @@ export const handleUploadFile = () => {
                 body: data,
             });
 
+            if (!response.ok) throw new Error("Error en la subida a Cloudinary");
+
             let result = await response.json();
-            console.log(result);
+            console.log("Resultado Cloudinary:", result);
+            
             let defaultUrl = result.secure_url;
             const optimizedUrl = defaultUrl.replace("/upload/", "/upload/f_auto,q_auto/");
 
-            setImageUrl(optimizedUrl);
-            setImageBeenUpload(true);
+            imageUrl = optimizedUrl;
+            imageBeenUpload = true;
 
             return {
                 ...result,
@@ -54,8 +61,10 @@ export const handleUploadFile = () => {
             };
         } catch (error) {
             console.error("Error uploading image:", error);
+            throw error;
         } finally {
-            setLoading(false);
+            loading = false;
+            console.log("Carga finalizada.");
         }
     };
 
