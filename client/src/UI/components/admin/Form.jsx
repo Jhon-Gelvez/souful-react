@@ -4,11 +4,11 @@ import { IoSend } from "react-icons/io5";
 import { Label } from "./Label";
 import { Input } from "./Input";
 import { Button } from "../common/Button";
-import { HandleForm } from "../../../hook/HandleForm";
+import { handleForm } from "../../../hook/handleForm";
 import { listCategories } from "../../../api/categoryApi";
 
 export const Form = () => {
-    const { handleSubmit, handleFileChange, handleFormChange } = HandleForm();
+    const { handleSubmit, handleFileChange, handleFormChange } = handleForm();
     // 2. Definir el estado para las categorías
     const [categories, setCategories] = useState([]);
 
