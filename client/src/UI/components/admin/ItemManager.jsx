@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { getItem, listItems, createItem, updateItem, deleteItem } from "../../../api/itemApi";
 import { SearchForm } from "./SearchForm";
 import { InfoItem } from "./InfoItem";
@@ -24,18 +24,18 @@ export const ItemManager = () => {
     const [results, setResults] = useState([]);
     const [singleItem, setSingleItem] = useState(null);
     // Estado para el formulario (Crear y Editar)
-    const [formData, setFormData] = useState({ name_product: "", price: "", public_id: "" });
+    const [formData, setFormData] = useState({ name_product: "", alt: "", price: "" });
     const [editingId, setEditingId] = useState(null);
     // input settings
     // pasa dinamicamente un array con los input que se deben render en el formulario de edicion
     // el type del input esta hardodeado
     const [InputSettings, setInputSettings] = useState([]);
-    
+
     useEffect(() => {
         if (singleItem !== null) {
             setInputSettings([
-                { htmlFor: singleItem.name_product, textLabel: "Nombre del producto", id: singleItem.name_product, name: singleItem.name_product, placeholder: "name_product", type: "text" },
-                { htmlFor: singleItem.alt, textLabel: "Descripcion", id: singleItem.alt, name: "alt", placeholder: singleItem.alt, type: "number" },
+                { htmlFor: singleItem.name_product, textLabel: "Nombre del producto", id: singleItem.name_product, name: "name_product", placeholder: singleItem.name_product, type: "text" },
+                { htmlFor: singleItem.alt, textLabel: "Descripcion", id: singleItem.alt, name: "alt", placeholder: singleItem.alt, type: "text" },
                 { htmlFor: singleItem.price, textLabel: "Precio", id: singleItem.price, name: "price", placeholder: singleItem.price, type: "number" },
             ]);
         }
@@ -57,13 +57,14 @@ export const ItemManager = () => {
         setSingleItem(item);
         setResults([]);
         setEditingId(item.public_id || item.id);
-
-        // obtener los valores desdes las llamadas a componentes anidados
-        setFormData({ name_product: "", price: "", public_id: "" });
     };
 
     const handleOnChange = (e) => {
-        setNombre(e.target.value);
+        const { name, value } = e.target;
+        console.log(formData);
+        console.log(name);
+        setFormData({ ...formData, [name]: value });
+        formData ? console.log(formData) : console.log("campo nulo");
     };
 
     const handleCopy = (text) => {
@@ -72,6 +73,7 @@ export const ItemManager = () => {
 
     const handleSearch = async (searchId) => {
         if (!searchId.trim()) return;
+        setFormData({ name_product: "", alt: "", price: "" });
         const data = await getItem(searchId);
         if (data) {
             // Usamos data[0] si es un array, si no el objeto directo
@@ -87,6 +89,7 @@ export const ItemManager = () => {
             setResults(data);
             setEditingin(false);
             setSingleItem(null);
+            setFormData({ name_product: "", alt: "", price: "" });
         }
     };
 
@@ -94,13 +97,14 @@ export const ItemManager = () => {
         e.preventDefault();
         if (editingId) {
             // Actualizar
+            setFormData(handleOnChange());
             console.log(formData);
             const response = await updateItem(editingId, formData);
             if (!response.ok) console.error(response);
             alert("item actualizado");
             setEditingId(null);
         }
-        setFormData({ name_product: "", price: "" });
+        setFormData({ name_product: "", price: "", public_id: "" });
         handleSearch(formData.public_id);
     };
 
