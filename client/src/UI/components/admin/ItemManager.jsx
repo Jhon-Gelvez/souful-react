@@ -29,17 +29,35 @@ export const ItemManager = () => {
     // input settings
     // pasa dinamicamente un array con los input que se deben render en el formulario de edicion
     // el type del input esta hardodeado
-    const [InputSettings, setInputSettings] = useState([]);
 
-    useEffect(() => {
-        if (singleItem !== null) {
-            setInputSettings([
-                { htmlFor: singleItem.name_product, textLabel: "Nombre del producto", id: singleItem.name_product, name: "name_product", placeholder: singleItem.name_product, type: "text" },
-                { htmlFor: singleItem.alt, textLabel: "Descripcion", id: singleItem.alt, name: "alt", placeholder: singleItem.alt, type: "text" },
-                { htmlFor: singleItem.price, textLabel: "Precio", id: singleItem.price, name: "price", placeholder: singleItem.price, type: "number" },
-            ]);
-        }
-    }, [singleItem]);
+    const InputSettings = singleItem
+        ? [
+              {
+                  htmlFor: "name_product",
+                  textLabel: "Nombre del producto",
+                  id: "name_product",
+                  name: "name_product",
+                  placeholder: singleItem.name_product,
+                  type: "text",
+              },
+              {
+                  htmlFor: "alt",
+                  textLabel: "Descripción",
+                  id: "alt",
+                  name: "alt",
+                  placeholder: singleItem.alt,
+                  type: "text",
+              },
+              {
+                  htmlFor: "price",
+                  textLabel: "Precio",
+                  id: "price",
+                  name: "price",
+                  placeholder: singleItem.price?.toString(),
+                  type: "number",
+              },
+          ]
+        : [];
 
     // --- OPERACIONES ---
 
@@ -61,10 +79,7 @@ export const ItemManager = () => {
 
     const handleOnChange = (e) => {
         const { name, value } = e.target;
-        console.log(formData);
-        console.log(name);
         setFormData({ ...formData, [name]: value });
-        formData ? console.log(formData) : console.log("campo nulo");
     };
 
     const handleCopy = (text) => {
@@ -72,6 +87,7 @@ export const ItemManager = () => {
     };
 
     const handleSearch = async (searchId) => {
+        setEditingin(false);
         if (!searchId.trim()) return;
         setFormData({ name_product: "", alt: "", price: "" });
         const data = await getItem(searchId);
@@ -96,16 +112,30 @@ export const ItemManager = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         if (editingId) {
-            // Actualizar
-            setFormData(handleOnChange());
-            console.log(formData);
-            const response = await updateItem(editingId, formData);
+            const formDataClean = Object.keys(formData).reduce((accumulator, key) => {
+                if (formData[key]) {
+                    accumulator[key] = formData[key];
+                }
+                return accumulator;
+            }, {});
+
+            if (Object.keys(formDataClean).length === 0) {
+                console.log("No hay cambios para enviar");
+                alert("No hay cambios para enviar");
+
+                return;
+            }
+
+            console.log(`data que se le envia al server ${JSON.stringify(formDataClean)} RTEVISAR que el campo de price no sea '' al enviar el campo vacio (deber ser el valor previo si no pone nada, lo que esta en el placeholder)`);
+            const response = await updateItem(editingId, formDataClean);
             if (!response.ok) console.error(response);
             alert("item actualizado");
             setEditingId(null);
         }
         setFormData({ name_product: "", price: "", public_id: "" });
-        handleSearch(formData.public_id);
+        // al hacer la edicion que ponga el item editado en la misma vista cuando se busca un item solo
+        handleSearch(editingId);
+        setEditingId(false);
     };
 
     return (
