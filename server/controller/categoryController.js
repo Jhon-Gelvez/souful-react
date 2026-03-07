@@ -13,6 +13,7 @@ export const addCategory = async (req, res) => {
             name,
         });
     } catch (error) {
+        console.log(error);
         res.status(500).json({ error: `Error al añadir categoría: ${error}` });
     }
 };
@@ -24,6 +25,7 @@ export const getCategory = async (req, res) => {
         const result = await categoryModel.getCategory(id);
         res.json(result);
     } catch (error) {
+        console.log(error);
         res.status(500).json({ error: `Categoria no encontrada: ${error}` });
     }
 };
@@ -33,6 +35,7 @@ export const getAllCategories = async (req, res) => {
         const result = await categoryModel.getAllCategories();
         res.json(result);
     } catch (error) {
+        console.log(error);
         res.status(500).json({ error: `Error al listar categorías: ${error}` });
     }
 };
@@ -52,6 +55,7 @@ export const deleteCategory = async (req, res) => {
             affectedRows: result.affectedRows,
         });
     } catch (error) {
+        console.log(error);
         res.status(500).json({ error: `Error al eliminar categoria: ${error}` });
     }
 };
@@ -74,6 +78,7 @@ export const updateCategory = async (req, res) => {
             affectedRows: result.affectedRows,
         });
     } catch (error) {
+        console.log(error);
         res.status(500).json({ error: `Error al actualizar categoria: ${error}` });
     }
 };
