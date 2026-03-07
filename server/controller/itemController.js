@@ -19,8 +19,9 @@ export const getAllItemsDB = async (req, res) => {
         const result = await itemModel.getAllItemsDB();
 
         return res.json(result);
-    } catch (err) {
-        return res.status(500).json({ error: err.message });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ error });
     }
 };
 
@@ -43,7 +44,8 @@ export const createItemDB = async (req, res) => {
             data: newItem, // Ya contiene el id y todos los campos
         });
     } catch (error) {
-        return res.status(500).json({ error: error.message });
+        console.error(error);
+        return res.status(500).json({ error });
     }
 };
 
@@ -67,17 +69,9 @@ export const updateItemDB = async (req, res) => {
             message: "Producto actualizado correctamente",
             updatedFields: Object.keys(data), // Corregido: antes tenías updateData
         });
-
     } catch (error) {
-        // 1. Loguea el error real en la consola de tu servidor (Node)
-        console.error(`[Error updateItemDB]: ${error.message}`);
-
-        // 2. Envía un mensaje útil al frontend
-        // En producción podrías querer ocultar error.message, pero en desarrollo es vital.
-        return res.status(500).json({ 
-            message: "Error interno al actualizar el recurso",
-            error: error.message // Esto lo leerá tu handleResponse del frontend
-        });
+        console.error(error);
+        return res.status(500).json({ error });
     }
 };
 
@@ -99,6 +93,7 @@ export const deleteItemDB_cdl = async (req, res) => {
             item_cld: response_cld,
         });
     } catch (error) {
-        return res.status(500).json({ error: "Error interno al eliminar el recurso" });
+        console.error(error);
+        return res.status(500).json({ error });
     }
 };
