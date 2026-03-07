@@ -14,6 +14,7 @@ export const SearchForm = ({ onSearch, onListAll }) => {
                         text={"Buscar"}
                         handleClick={() => {
                             onSearch(searchId);
+                            setSearchId("");
                         }}
                     />
                 </div>
