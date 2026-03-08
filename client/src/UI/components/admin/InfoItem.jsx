@@ -5,7 +5,7 @@ import "tippy.js/dist/tippy.css";
 // ancho del texto de la image_url
 // fix tippy
 
-export const InfoItem = ({ name, price, public_id, image_url, singleItem, onCopy, onEdit, onDelete }) => {
+export const InfoItem = ({ name = "", price = "", public_id = "", image_url = "", singleItem = null, onCopy = null, onEdit = null, onDelete = null }) => {
     return (
         <div className="w-full">
             <div className="py-4 flex justify-between items-center  px-2 rounded-lg border border-primary/60 mb-2">
