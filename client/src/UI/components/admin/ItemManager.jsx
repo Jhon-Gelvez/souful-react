@@ -20,7 +20,7 @@ import { EditForm } from "./EditForm";
 // updated_at
 
 export const ItemManager = () => {
-    const [editingin, setEditingin] = useState(false);
+    const [editing, setEditing] = useState(false);
     const [results, setResults] = useState([]);
     const [singleItem, setSingleItem] = useState(null);
     // Estado para el formulario (Crear y Editar)
@@ -71,7 +71,7 @@ export const ItemManager = () => {
     };
 
     const handleEdit = (item) => {
-        setEditingin(true);
+        setEditing(true);
         setSingleItem(item);
         setResults([]);
         setEditingId(item.public_id || item.id);
@@ -87,7 +87,7 @@ export const ItemManager = () => {
     };
 
     const handleSearch = async (searchId) => {
-        setEditingin(false);
+        setEditing(false);
         if (!searchId.trim()) return;
         setFormData({ name_product: "", alt: "", price: "" });
         const data = await getItem(searchId);
@@ -103,7 +103,7 @@ export const ItemManager = () => {
         const data = await listItems();
         if (data) {
             setResults(data);
-            setEditingin(false);
+            setEditing(false);
             setSingleItem(null);
             setFormData({ name_product: "", alt: "", price: "" });
         }
@@ -159,7 +159,7 @@ export const ItemManager = () => {
                     </ul>
                 </div>
             </div>
-            <div>{editingin && <EditForm InputSettings={InputSettings} onSubmit={handleSubmit} onChange={handleOnChange} />}</div>
+            <div>{editing && <EditForm InputSettings={InputSettings} onSubmit={handleSubmit} onChange={handleOnChange} />}</div>
         </div>
     );
 };
