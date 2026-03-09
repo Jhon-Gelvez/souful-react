@@ -49,9 +49,9 @@ export const createCategory = async (categoryData) => {
         console.error(error);
     }
 };
-export const updateCategory = async (categoryData) => {
+export const updateCategory = async (id,categoryData) => {
     try {
-        const response = await fetch(`${URL}/api/categories`, {
+        const response = await fetch(`${URL}/api/categories/${id}`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(categoryData),
