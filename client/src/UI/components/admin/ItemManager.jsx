@@ -139,7 +139,7 @@ export const ItemManager = () => {
     };
 
     return (
-        <div className="mx-auto p-6 space-y-6">
+        <div className="mx-auto pt-6 space-y-6">
             <div className="flex flex-col justify-center items-center w-fit text-primary mx-auto shadow-[0_0_3rem_rgba(0,0,0)] rounded-xl p-4 ">
                 <SearchForm textLabel={"Buscar item por ID"} onSearch={handleSearch} onListAll={handleListAll} />
 
