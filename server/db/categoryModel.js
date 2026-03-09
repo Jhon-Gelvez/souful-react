@@ -3,7 +3,7 @@ import { db } from "../config/mysql.js";
 export const categoryModel = {
     getCategory: async (id) => {
         const sql = "SELECT * FROM categories WHERE id = ?";
-        const [result] = await db.query(sql);
+        const [result] = await db.query(sql,id);
         return result;
     },
 
