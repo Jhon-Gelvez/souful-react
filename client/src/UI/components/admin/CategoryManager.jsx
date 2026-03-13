@@ -1,90 +1,167 @@
-import React, { useState, useEffect } from 'react';
-import { listCategories, createCategory, deleteCategory } from '../../../api/categoryApi'; 
+import React, { useState, useEffect } from "react";
+import { listCategories, createCategory, deleteCategory, getCategory, updateCategory } from "../../../api/categoryApi";
+import { SearchForm } from "./SearchForm";
+import { EditForm } from "./EditForm";
+import { CreateForm } from "./CreateForm";
+import { InfoCategory } from "./InfoCategory";
+import { FiCloudLightning } from "react-icons/fi";
 
-const CategoryManager = () => {
-  const [categories, setCategories] = useState([]);
-  const [newCategory, setNewCategory] = useState({ name: '' });
+// created_at
+// :
+// "2026-02-10T15:44:52.000Z"
+// id
+// :
+// 1
+// name
+// :
+// "anime"
 
-  useEffect(() => {
-    fetchData();
-  }, []);
+export const CategoryManager = () => {
+    const [categories, setCategories] = useState([]);
+    const [category, setCategory] = useState(null);
 
-  const fetchData = async () => {
-    const data = await listCategories();
-    if (data) setCategories(data);
-  };
+    const [newCategory, setNewCategory] = useState({ name: "" });
+    const [editCategory, setEditCategory] = useState({ name: "" });
 
-  const handleCreate = async (e) => {
-    e.preventDefault();
-    if (!newCategory.name.trim()) return;
-    
-    const result = await createCategory(newCategory);
-    if (result) {
-      setNewCategory({ name: '' });
-      fetchData();
-    }
-  };
+    const [editing, setEditing] = useState(false);
+    const [creating, setCreating] = useState(false);
 
-  const handleDelete = async (id) => {
-    if (window.confirm("¿Estás seguro de eliminar esta categoría?")) {
-      await deleteCategory(id);
-      fetchData();
-    }
-  };
+    const InputSettings = editCategory
+        ? [
+              {
+                  htmlFor: "name",
+                  textLabel: "Nombre de la categoria",
+                  id: "name",
+                  name: "name",
+                  placeholder: editCategory.name,
+                  type: "text",
+              },
+          ]
+        : [];
 
-  return (
-    <div className="max-w-4xl mx-auto mt-8 p-6 bg-white shadow-lg rounded-2xl border border-gray-100">
-      <h2 className="text-xl font-bold text-gray-800 mb-6 flex items-center gap-2">
-        <span className="bg-emerald-500 w-2 h-8 rounded-full"></span>
-        Gestión de Categorías
-      </h2>
-      
-      {/* Formulario de Creación */}
-      <form onSubmit={handleCreate} className="flex gap-3 mb-8">
-        <input 
-          type="text" 
-          className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:outline-none transition-all"
-          placeholder="Nombre de la nueva categoría..."
-          value={newCategory.name}
-          onChange={(e) => setNewCategory({ name: e.target.value })}
-        />
-        <button 
-          type="submit"
-          className="bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-2 px-6 rounded-lg transition-colors shadow-sm"
-        >
-          Agregar
-        </button>
-      </form>
+    const createInputSettings = [
+        {
+            htmlFor: "name",
+            textLabel: "Nombre de la categoria",
+            id: "name",
+            name: "name",
+            placeholder: "Nombre de la categoria",
+            type: "text",
+        },
+    ];
 
-      {/* Lista de Categorías */}
-      <div className="bg-gray-50 rounded-xl p-2">
-        <ul className="divide-y divide-gray-200">
+    const handleListAll = async () => {
+        const data = await listCategories();
+        if (data) {
+            setCategories(data);
+            setCategory(null);
+        }
+        setEditing(false);
+        setCreating(false);
+    };
 
-            {console.log(categories)}
-          {categories.length > 0 ? (
-            categories.map((cat) => (
-              <li 
-                key={cat.id || cat._id} 
-                className="flex items-center justify-between p-4 hover:bg-white hover:shadow-sm rounded-lg transition-all group"
-              >
-                <span className="text-gray-700 font-medium capitalize">
-                  {cat.name}
-                </span>
-                <button 
-                  onClick={() => handleDelete(cat.id || cat._id)}
-                  className="opacity-0 group-hover:opacity-100 bg-red-50 text-red-600 hover:bg-red-600 hover:text-white px-3 py-1 rounded-md text-sm font-medium transition-all duration-200"
-                >
-                  Eliminar
-                </button>
-              </li>
-            ))
-          ) : (
-            <p className="text-center py-6 text-gray-400 italic">No hay categorías disponibles.</p>
-          )}
-        </ul>
-      </div>
-    </div>
-  );
+    const handleSearch = async (id) => {
+        const data = await getCategory(id);
+        setCategory(data[0]);
+        setCategories([]);
+        setEditing(false);
+        setCreating(false);
+    };
+
+    const handleCreate = async (e) => {
+        setEditing(false);
+
+        e.preventDefault();
+        if (!newCategory.name.trim()) return;
+
+        const result = await createCategory(newCategory);
+        if (result) {
+            setNewCategory({ name: "" });
+            setCreating(false);
+            setEditing(false);
+            handleSearch(result.id);
+        }
+    };
+    // al enviar el formulario de edicion el objeto se sobre escribe y solo queda el name
+    // TODO
+    // necesita recibir el objeto completo no solo el editCategory
+    // parche horrible
+
+    const handleSubmitEdit = async (e) => {
+        e.preventDefault();
+        if (!editCategory.name.trim()) return;
+        console.log(editCategory.id, { name: editCategory.name });
+        const result = await updateCategory(editCategory.id, { name: editCategory.name });
+        console.log(result);
+        if (result) {
+            setEditCategory({ name: "" });
+            setCategory(result);
+            handleSearch(result.id);
+        }
+    };
+
+    const handleDelete = async (id) => {
+        if (window.confirm("¿Estás seguro de eliminar esta categoría?")) {
+            await deleteCategory(id);
+            handleListAll();
+        }
+    };
+
+    // extrae el valor de un input
+    const handleOnChange = (e) => {
+        const value = e.target.value;
+        setNewCategory({ name: value });
+    };
+
+    const handleOnChangeEdit = (e) => {
+        const value = e.target.value;
+        setEditCategory({ ...editCategory, name: value });
+    };
+    // controla el estado al crear una categoria
+    const handleCreatingState = () => {
+        setCreating(true);
+        setCategories([]);
+        setEditing(false);
+        setCategory(false);
+    };
+
+    //pasar a info item
+    // controla el estado para el menu de edicion
+    const handleEdit = async (category) => {
+        setEditing(true);
+        setEditCategory(category);
+        setCategory(null);
+        setCategories([]);
+        console.log(category);
+    };
+
+    const handleCopy = (text) => {
+        navigator.clipboard.writeText(text);
+    };
+
+    return (
+        <div className="mx-auto pb-6 space-y-6">
+            <div className="flex flex-col justify-center items-center w-fit text-primary mx-auto shadow-[0_0_3rem_rgba(0,0,0)] rounded-xl p-4 ">
+                <SearchForm create onCreate={handleCreatingState} textLabel={"Buscar categoria por ID"} onSearch={handleSearch} onListAll={handleListAll} />
+
+                {/* 3. Resultados */}
+                <div className="space-y-4">
+                    {/* Caso: Búsqueda individual */}
+                    {category && <InfoCategory category={category} onCopy={handleCopy} onEdit={handleEdit} onDelete={handleDelete} />}
+
+                    {/* Caso: Lista completa */}
+                    <ul>
+                        {categories &&
+                            categories.map((category, i) => (
+                                <li key={i}>
+                                    <InfoCategory category={category} onCopy={handleCopy} onEdit={handleEdit} onDelete={handleDelete} />
+                                </li>
+                            ))}
+                    </ul>
+                </div>
+            </div>
+            <div>{editing && <EditForm label="Editar Categoria" InputSettings={InputSettings} onSubmit={handleSubmitEdit} onChange={handleOnChangeEdit} />}</div>
+            <div>{creating && <CreateForm InputSettings={createInputSettings} onSubmit={handleCreate} onChange={handleOnChange} />}</div>
+        </div>
+    );
 };
-
-export default CategoryManager;
