@@ -1,8 +1,20 @@
+import { useState } from "react";
 import { HiSearch } from "react-icons/hi";
 import { Button } from "./Button";
-import logo from "../../../asset/soulful_logo.jpeg"
+import logo from "../../../asset/soulful_logo.jpeg";
+import { Input } from "./../admin/Input";
 
-export function Header() {
+export function Header({ onSearch = null }) {
+    const [search, setSearch] = useState(false);
+    const [term, setTerm] = useState("");
+    const handleSearch = () => {
+        setSearch(true);
+    };
+
+    const handleClick = () => {
+        handleSearch();
+        onSearch(term.toLowerCase().trim());
+    };
     return (
         <header id="inicio" className="flex items-center justify-between bg-transparent px-4 py-3">
             <div>
@@ -15,8 +27,17 @@ export function Header() {
             >
                 <img src={logo} alt="" className="w-14 lg:w-18 rounded-full p-0" />
             </div>
+            <div className="mr-2 mt-2">
+                {search && (
+                    <Input
+                        setOnChange={(e) => {
+                            setTerm(e.target.value);
+                        }}
+                    />
+                )}
+            </div>
             <div className="flex items-center gap-3">
-                <Button Icon={HiSearch} />
+                <Button Icon={HiSearch} onClick={handleClick} />
             </div>
         </header>
     );

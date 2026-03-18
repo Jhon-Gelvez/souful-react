@@ -1,19 +1,8 @@
 // meter un main y darle grid con minimo 1 col max las que quepan usarndo repeat
-import { useState, useEffect } from "react";
 import { ProductCard } from "./ProductCard";
-import { listItems } from "../../../api/itemApi";
 
-export const ProductGrid = () => {
-    // 1. Usar useState para que React re-renderice cuando cambien los datos
-    const [images, setImages] = useState([]);
+export const ProductGrid = ({images}) => {
 
-    useEffect(() => {
-        const getImages = async () => {
-            const results = await listItems();
-            setImages(results); // Actualizamos el estado
-        };
-        getImages();
-    }, []);
 
     return (
         <main className="w-full p-2 ">
