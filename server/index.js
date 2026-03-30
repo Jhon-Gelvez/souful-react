@@ -11,15 +11,18 @@ app.use(express.json()); // Para poder leer JSON en los POST
 
 // --- RUTAS ---
 // ruta de prueba
-app.use("/", (req, res) => {
-    res.json({ message: "server running on port 3001" });
-});
 
 // Usar las rutas
 app.use("/api/items", itemRoutes);
 
 app.use("/api/categories", categoryRoutes);
 
+app.get("/", (req, res) => {
+    res.json({ 
+        status: "online",
+        message: "Server running on port 3001" 
+    });
+});
 // PUERTO
 const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
