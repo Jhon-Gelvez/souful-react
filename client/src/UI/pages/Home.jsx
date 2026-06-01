@@ -7,6 +7,7 @@ import { FilterBar } from "../components/home/FilterBar";
 import { BottomNavbar } from "../components/home/BottomNavbar";
 import { ProductGrid } from "../components/home/ProductGrid";
 import { Footer } from "../components/common/Footer";
+import { ModalView } from "../components/home/ModalView";
 
 /*
 home hace la peticion
@@ -23,6 +24,7 @@ export function Home() {
     useEffect(() => {
         const getImages = async () => {
             const results = await listItems();
+            console.log(results);
             setImages(results); // Actualizamos el estado
         };
         getImages();
@@ -62,6 +64,7 @@ export function Home() {
             <ProductGrid images={sortItems} />
             <BottomNavbar />
             <Footer />
+            {/* <ModalView /> */}
         </>
     );
 }

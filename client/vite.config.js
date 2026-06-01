@@ -9,5 +9,6 @@ export default defineConfig({
     base: "/souful-react/", // Añades esta línea
     server: {
         host: true,
+        allowedHosts: [".loca.lt", "localhost"], // This allows any localtunnel URL
     },
 });

@@ -1,7 +1,12 @@
+import { useState } from 'react'
 import { Button } from "../common/Button";
 import { FaCartShopping } from "react-icons/fa6";
 
 export const ProductCard = ({ img, altImg, name, price }) => {
+    const [buy, setBuy] = useState(false)
+    const onShoppingCard = () => {
+        setBuy(true)
+    }
     return (
         <div className="group flex w-60 flex-col gap-3">
             {/* Contenedor de Imagen como Background */}
@@ -13,7 +18,7 @@ export const ProductCard = ({ img, altImg, name, price }) => {
                     <p className="font-bold text-primary">${price}</p>
                 </div>
 
-                <Button Icon={FaCartShopping} />
+                <Button onClick={onShoppingCard} Icon={FaCartShopping} />
             </div>
         </div>
     );
