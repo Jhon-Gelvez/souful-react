@@ -4,7 +4,7 @@ import { IoSend } from "react-icons/io5";
 import { Label } from "./Label";
 import { Input } from "./Input";
 import { Button } from "../common/Button";
-import { handleForm } from "../../../hook/handleForm";
+import { handleForm } from "../../../hook/HandleForm";
 import { listCategories } from "../../../api/categoryApi";
 
 export const Form = () => {
