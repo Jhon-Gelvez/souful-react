@@ -1,4 +1,5 @@
 import { categoryModel } from "../db/categoryModel.js";
+import { dbExport } from "../services/dbExport.js";
 
 export const addCategory = async (req, res) => {
     const { name } = req.body;
@@ -12,6 +13,7 @@ export const addCategory = async (req, res) => {
             categoryId: result.insertId,
             name,
         });
+        dbExport();
     } catch (error) {
         console.log(error);
         res.status(500).json({ error: `Error al añadir categoría: ${error}` });
@@ -54,6 +56,7 @@ export const deleteCategory = async (req, res) => {
             id,
             affectedRows: result.affectedRows,
         });
+        dbExport();
     } catch (error) {
         console.log(error);
         res.status(500).json({ error: `Error al eliminar categoria: ${error}` });
@@ -77,6 +80,7 @@ export const updateCategory = async (req, res) => {
             name,
             affectedRows: result.affectedRows,
         });
+        dbExport();
     } catch (error) {
         console.log(error);
         res.status(500).json({ error: `Error al actualizar categoria: ${error}` });

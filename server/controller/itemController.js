@@ -1,6 +1,7 @@
 import { v4 as uuidv4 } from "uuid";
 import { deleteImage } from "../services/deleteImage.js";
 import { itemModel } from "../db/itemModel.js";
+import { dbExport } from "../services/dbExport.js";
 
 export const getItem = async (req, res) => {
     const { public_id } = req.params;
@@ -43,6 +44,7 @@ export const createItemDB = async (req, res) => {
             message: "Creado con éxito con UUID",
             data: newItem, // Ya contiene el id y todos los campos
         });
+        dbExport();
     } catch (error) {
         console.error(error);
         return res.status(500).json({ error });
@@ -69,6 +71,7 @@ export const updateItemDB = async (req, res) => {
             message: "Producto actualizado correctamente",
             updatedFields: Object.keys(data), // Corregido: antes tenías updateData
         });
+        dbExport();
     } catch (error) {
         console.error(error);
         return res.status(500).json({ error });
@@ -87,6 +90,7 @@ export const deleteItemDB_cdl = async (req, res) => {
 
         const response_cld = await deleteImage(public_id);
 
+        dbExport();
         return res.json({
             message: "Eliminado con éxito de DB y Cloudinary",
             item: result,
