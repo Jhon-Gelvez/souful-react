@@ -1,3 +1,4 @@
+// todo cambiar el icono por una x que limpie el texto escrito y deshaga la busqueda
 import { useState } from "react";
 import { HiSearch } from "react-icons/hi";
 import { Button } from "./Button";
