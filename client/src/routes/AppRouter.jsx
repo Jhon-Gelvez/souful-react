@@ -4,7 +4,7 @@ import { Admin } from "../UI/pages/Admin";
 
 export function AppRouter() {
     return (
-        <Router basename="/souful-react">
+        <Router>
             <nav className="text-white text-xl font-bold m-4">
                 <Link to="/">Inicio</Link> <Link to="/admin">Admin</Link>
             </nav>

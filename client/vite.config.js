@@ -6,7 +6,6 @@ import tailwindcss from "@tailwindcss/vite";
 export default defineConfig({
     plugins: [react(), tailwindcss()],
 
-    base: "/souful-react/", // Añades esta línea
     server: {
         host: true,
         allowedHosts: [".loca.lt", "localhost"], // This allows any localtunnel URL
