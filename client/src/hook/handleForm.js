@@ -61,7 +61,6 @@ export const handleForm = (formElement) => {
             // guardamos la url
             imageUrl = cloudinaryData.optimized_url;
 
-            // TODO
             // PASO B: Enviar todo a tu API Rest
             const bodyForDB = {
                 name_product: cloudinaryData.context?.custom?.caption || formData.title,
