@@ -58,7 +58,7 @@ export const CategoryManager = () => {
         if (result) {
             setFormData({ name: "" });
             setMode("idle");
-            handleSearch(result.id);
+            await handleSearch(result.id);
         }
     };
 
@@ -108,14 +108,14 @@ export const CategoryManager = () => {
                 {mode === "editing" && (
                     <EditForm
                         label="Editar Categoria"
-                        InputSettings={{
+                        InputSettings={[{
                             htmlFor: "name",
                             textLabel: "Nombre de la categoria",
                             id: "name",
                             name: "name",
                             placeholder: items[0].name,
                             type: "text",
-                        }}
+                        }]}
                         onSubmit={handleSubmitEdit}
                         onChange={handleOnChange}
                     />
@@ -124,14 +124,14 @@ export const CategoryManager = () => {
             <div>
                 {mode === "creating" && (
                     <CreateForm
-                        InputSettings={{
+                        InputSettings={[{
                             htmlFor: "name",
                             textLabel: "Nombre de la categoria",
                             id: "name",
                             name: "name",
                             placeholder: "Nombre de la categoria",
                             type: "text",
-                        }}
+                        }]}
                         onSubmit={handleCreate}
                         onChange={handleOnChange}
                     />
