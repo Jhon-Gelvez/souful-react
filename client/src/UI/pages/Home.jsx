@@ -1,13 +1,14 @@
 // arquitecture of soulfulArt and cloudinary file in downloads
-import { useState, useEffect } from "react";
+import { useState, useEffect, createContext } from "react";
 import { listItems } from "../../api/itemApi";
-
 import { Header } from "../components/common/Header";
 import { FilterBar } from "../components/home/FilterBar";
 import { BottomNavbar } from "../components/home/BottomNavbar";
 import { ProductGrid } from "../components/home/ProductGrid";
 import { Footer } from "../components/common/Footer";
 import { ModalView } from "../components/home/ModalView";
+import { handleModal } from "../../hook/handleModal";
+export const modalContext = createContext();
 
 /*
 home hace la peticion
@@ -21,10 +22,13 @@ export function Home() {
     const [images, setImages] = useState([]);
     const [searchTerm, setSearchTerm] = useState("");
 
+    // logica para las modales
+    const modal = handleModal(false);
+    const { isOpenModal, openModal, closeModal, selectedItem } = modal;
+
     useEffect(() => {
         const getImages = async () => {
             const results = await listItems();
-            console.log(results);
             setImages(results); // Actualizamos el estado
         };
         getImages();
@@ -57,14 +61,15 @@ export function Home() {
 
         return 0;
     });
+
     return (
-        <>
+        <modalContext.Provider value={modal}>
             <Header onSearch={handleSearch} />
             <FilterBar />
             <ProductGrid images={sortItems} />
             <BottomNavbar />
             <Footer />
-            {/* <ModalView /> */}
-        </>
+            {isOpenModal && <ModalView item={selectedItem} />}
+        </modalContext.Provider>
     );
 }
