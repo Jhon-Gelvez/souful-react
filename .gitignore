@@ -2,6 +2,7 @@
 .env
 
 planing.txt
+.vite/
 
 # Logs
 logs

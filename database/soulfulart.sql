@@ -15,9 +15,6 @@
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
-CREATE DATABASE IF NOT EXISTS  soulfulart;
-USE soulfulart;
-
 --
 -- Table structure for table `categories`
 --
@@ -76,7 +73,7 @@ CREATE TABLE `product_images` (
 
 LOCK TABLES `product_images` WRITE;
 /*!40000 ALTER TABLE `product_images` DISABLE KEYS */;
-INSERT INTO `product_images` VALUES ('171052aa-84aa-4ecf-a630-fd6e8d379163','dragon wallpaper garuda','dragon wallpaper garuda x2 xd',1.00,'https://res.cloudinary.com/dnucajsxn/image/upload/f_auto,q_auto/v1771190935/m0gf2kdfmpzkylzyseyp.png','m0gf2kdfmpzkylzyseyp',670499,'image/png','1920x1080',1,1,'2026-02-15 21:28:57','2026-03-08 20:41:38'),('4fcfb4f0-3ce4-4c37-aa2b-e23b5dd90aa2','garuda','foto estilo hacker ',3.00,'https://res.cloudinary.com/dnucajsxn/image/upload/f_auto,q_auto/v1771190968/trnedaauxhmx9qa9n5ms.png','trnedaauxhmx9qa9n5ms',7828290,'image/png','3840x2160',1,1,'2026-02-15 21:29:29','2026-03-07 19:15:34'),('9f914f49-12bb-4749-a712-18277bab7d5f','aguila durisima e un palo','aguila durisima e un palo 🗣️',1.00,'https://res.cloudinary.com/dnucajsxn/image/upload/f_auto,q_auto/v1771333757/gcpllxsz9yyf9quewyqh.png','gcpllxsz9yyf9quewyqh',1463960,'image/png','1920x1080',4,1,'2026-02-17 13:09:19','2026-03-08 20:42:32'),('c55f8e55-797c-4c12-a15d-57cbc3b7528d','garuda wallpaper neon','garuda neon',1.00,'https://res.cloudinary.com/dnucajsxn/image/upload/f_auto,q_auto/v1771190944/ixv1adylk5mfuuardrii.jpg','ixv1adylk5mfuuardrii',1108620,'image/jpg','5120x2880',1,1,'2026-02-15 21:29:05','2026-03-08 23:10:48'),('cbc79715-b4a4-42fb-b521-f45849795367','mona china de garuda','solo un dato',45.00,'https://res.cloudinary.com/dnucajsxn/image/upload/f_auto,q_auto/v1771190929/rntbdlmchwtyivwl0j3o.png','rntbdlmchwtyivwl0j3o',655869,'image/png','1920x1080',1,1,'2026-02-15 21:28:51','2026-03-07 19:14:34');
+INSERT INTO `product_images` VALUES ('14eaa04d-f46b-4bec-bfb3-74811fb59804','olas','olas',8.00,'https://res.cloudinary.com/dnucajsxn/image/upload/f_auto,q_auto/v1780345213/kodjaqifkyis8kwycgql.jpg','kodjaqifkyis8kwycgql',96881,'image/jpg','736x736',4,1,'2026-06-01 20:20:14','2026-06-01 20:20:14'),('171052aa-84aa-4ecf-a630-fd6e8d379163','dragon wallpaper garuda','dragon wallpaper garuda x2 xd',1.00,'https://res.cloudinary.com/dnucajsxn/image/upload/f_auto,q_auto/v1771190935/m0gf2kdfmpzkylzyseyp.png','m0gf2kdfmpzkylzyseyp',670499,'image/png','1920x1080',1,1,'2026-02-15 21:28:57','2026-03-08 20:41:38'),('4fcfb4f0-3ce4-4c37-aa2b-e23b5dd90aa2','garuda','foto estilo hacker ',3.00,'https://res.cloudinary.com/dnucajsxn/image/upload/f_auto,q_auto/v1771190968/trnedaauxhmx9qa9n5ms.png','trnedaauxhmx9qa9n5ms',7828290,'image/png','3840x2160',1,1,'2026-02-15 21:29:29','2026-03-07 19:15:34'),('9f914f49-12bb-4749-a712-18277bab7d5f','aguila','un aguila 🦅',1.00,'https://res.cloudinary.com/dnucajsxn/image/upload/f_auto,q_auto/v1771333757/gcpllxsz9yyf9quewyqh.png','gcpllxsz9yyf9quewyqh',1463960,'image/png','1920x1080',4,1,'2026-02-17 13:09:19','2026-06-01 20:49:09'),('c55f8e55-797c-4c12-a15d-57cbc3b7528d','garuda wallpaper neon','garuda neon',1.00,'https://res.cloudinary.com/dnucajsxn/image/upload/f_auto,q_auto/v1771190944/ixv1adylk5mfuuardrii.jpg','ixv1adylk5mfuuardrii',1108620,'image/jpg','5120x2880',1,1,'2026-02-15 21:29:05','2026-03-08 23:10:48'),('cbc79715-b4a4-42fb-b521-f45849795367','arch','solo un dato',45.00,'https://res.cloudinary.com/dnucajsxn/image/upload/f_auto,q_auto/v1771190929/rntbdlmchwtyivwl0j3o.png','rntbdlmchwtyivwl0j3o',655869,'image/png','1920x1080',1,1,'2026-02-15 21:28:51','2026-06-01 20:48:39');
 /*!40000 ALTER TABLE `product_images` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -89,4 +86,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2026-06-01 14:58:57
+-- Dump completed on 2026-06-24 15:33:37
