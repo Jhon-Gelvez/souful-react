@@ -1,3 +1,5 @@
+// todo combox para cambiar la categoria
+
 import { useState, useEffect } from "react";
 import { getItem, listItems, createItem, updateItem, deleteItem } from "../../../api/itemApi";
 import { SearchForm } from "./SearchForm";

@@ -1,10 +1,12 @@
+// todo limpir el form al terminar una request exitosa
+
 import { useState, useEffect } from "react";
 import { InputFile } from "./InputFile";
 import { IoSend } from "react-icons/io5";
 import { Label } from "./Label";
 import { Input } from "./Input";
 import { Button } from "../common/Button";
-import { handleForm } from "../../../hook/HandleForm";
+import { handleForm } from "../../../hook/handleForm";
 import { listCategories } from "../../../api/categoryApi";
 
 export const Form = () => {
