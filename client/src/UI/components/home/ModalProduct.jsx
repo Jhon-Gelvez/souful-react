@@ -1,10 +1,10 @@
 import { useContext } from "react";
 import { Button } from "../common/Button";
 import { FaCartShopping } from "react-icons/fa6";
-import { modalContext } from "../../../context/modalContext";
+import { modalProductContext } from "../../../context/modalProductContext";
 
 export const ModalProduct = () => {
-    const { selectedItem } = useContext(modalContext);
+    const { selectedItem } = useContext(modalProductContext);
 
     return (
         <>

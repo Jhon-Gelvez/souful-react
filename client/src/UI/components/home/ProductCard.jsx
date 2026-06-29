@@ -1,27 +1,18 @@
-// todo que todo el componente tome el click y lo abra pero si le dan al btn de comprar se abre la modal de redireccion
-import { useContext, useState } from "react";
+import { useContext } from "react";
 import { Button } from "../common/Button";
 import { FaCartShopping } from "react-icons/fa6";
-import { modalContext } from "../../../context/modalContext.js";
+import { modalProductContext } from "../../../context/modalProductContext.js";
+import { modalShoppingContext } from "../../../context/modalShoppingContext.js";
 
 export const ProductCard = ({ item }) => {
-    const modal = useContext(modalContext);
-    const [buy, setBuy] = useState(false);
-
-    const onShoppingCard = () => {
-        setBuy(true);
-    };
-
-    const handleClick = () => {
-        onShoppingCard();
-    };
+    const { openModal: openProductModal } = useContext(modalProductContext);
+    const { openModal: openShoppingModal } = useContext(modalShoppingContext);
 
     return (
         <div className="group flex w-60 flex-col gap-3">
-            {/* Contenedor de Imagen como Background */}
             <div
                 className="relative aspect-4/5 overflow-hidden rounded-2xl bg-gray-800"
-                onClick={() => modal.openModal(item)}
+                onClick={() => openProductModal(item)}
             >
                 <img
                     src={item.image_url}
@@ -36,7 +27,7 @@ export const ProductCard = ({ item }) => {
                     <p className="font-bold text-primary">${item.price}</p>
                 </div>
                 <Button
-                    onClick={handleClick}
+                    onClick={() => openShoppingModal(item)}
                     Icon={FaCartShopping}
                 />
             </div>

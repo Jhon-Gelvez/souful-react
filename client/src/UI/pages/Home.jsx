@@ -8,8 +8,10 @@ import { ProductGrid } from "../components/home/ProductGrid";
 import { Footer } from "../components/common/Footer";
 import { ModalView } from "../components/home/ModalView";
 import { ModalProduct } from "../components/home/ModalProduct";
+import { ModalShopping } from "../components/home/ModalShopping";
 import { handleModal } from "../../hook/handleModal";
-import { modalContext } from "../../context/modalContext";
+import { modalProductContext } from "../../context/modalProductContext";
+import { modalShoppingContext } from "../../context/modalShoppingContext";
 
 /*
 home hace la peticion
@@ -24,8 +26,11 @@ export function Home() {
     const [searchTerm, setSearchTerm] = useState("");
 
     // logica para las modales
-    const modal = handleModal(false);
-    const { isOpenModal, openModal, closeModal, selectedItem } = modal;
+    const modalProduct = handleModal(false);
+    const { isOpenModal: isOpenModalProduct, openModal: openModalProduct, closeModal: closeModalProduct, selectedItem: selectedProduct } = modalProduct;
+
+    const modalShopping = handleModal(false);
+    const { isOpenModal: isOpenModalShopping, openModal: openModalShopping, closeModal: closeModalShopping, selectedItem: selectedShopping } = modalShopping;
 
     useEffect(() => {
         const getImages = async () => {
@@ -62,19 +67,25 @@ export function Home() {
 
         return 0;
     });
-
     return (
-        <modalContext.Provider value={modal}>
-            <Header onSearch={handleSearch} />
-            <FilterBar />
-            <ProductGrid images={sortItems} />
-            <BottomNavbar />
-            <Footer />
-            {isOpenModal && (
-                <ModalView>
-                    <ModalProduct />
-                </ModalView>
-            )}
-        </modalContext.Provider>
+        <modalProductContext.Provider value={modalProduct}>
+            <modalShoppingContext.Provider value={modalShopping}>
+                <Header onSearch={handleSearch} />
+                <FilterBar />
+                <ProductGrid images={sortItems} />
+                <BottomNavbar />
+                <Footer />
+                {isOpenModalProduct && (
+                    <ModalView onClose={closeModalProduct}>
+                        <ModalProduct />
+                    </ModalView>
+                )}
+                {isOpenModalShopping && (
+                    <ModalView onClose={closeModalShopping}>
+                        <ModalShopping item={selectedShopping} onClose={closeModalShopping} />
+                    </ModalView>
+                )}
+            </modalShoppingContext.Provider>
+        </modalProductContext.Provider>
     );
 }
