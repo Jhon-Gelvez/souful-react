@@ -1,5 +1,5 @@
 // arquitecture of soulfulArt and cloudinary file in downloads
-import { useState, useEffect, createContext } from "react";
+import { useState, useEffect } from "react";
 import { listItems } from "../../api/itemApi";
 import { Header } from "../components/common/Header";
 import { FilterBar } from "../components/home/FilterBar";
@@ -7,8 +7,9 @@ import { BottomNavbar } from "../components/home/BottomNavbar";
 import { ProductGrid } from "../components/home/ProductGrid";
 import { Footer } from "../components/common/Footer";
 import { ModalView } from "../components/home/ModalView";
+import { ModalProduct } from "../components/home/ModalProduct";
 import { handleModal } from "../../hook/handleModal";
-export const modalContext = createContext();
+import { modalContext } from "../../context/modalContext";
 
 /*
 home hace la peticion
@@ -69,7 +70,11 @@ export function Home() {
             <ProductGrid images={sortItems} />
             <BottomNavbar />
             <Footer />
-            {isOpenModal && <ModalView item={selectedItem} />}
+            {isOpenModal && (
+                <ModalView>
+                    <ModalProduct />
+                </ModalView>
+            )}
         </modalContext.Provider>
     );
 }
