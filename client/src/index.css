@@ -13,12 +13,25 @@ body {
     font-family: "Inter", Arial;
 }
 
+@layer utilities {
+    /* Ocultar en Chrome, Safari y Opera */
+    .no-scrollbar::-webkit-scrollbar {
+        display: none;
+    }
+
+    /* Ocultar en Firefox */
+    .no-scrollbar {
+        -ms-overflow-style: none; /* IE y Edge */
+        scrollbar-width: none;
+    }
+}
+
 #scrool-bar::-webkit-scrollbar {
     display: none;
 }
 
 .no-spinner::-webkit-outer-spin-button,
 .no-spinner::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
+    -webkit-appearance: none;
+    margin: 0;
 }
