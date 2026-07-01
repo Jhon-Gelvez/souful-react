@@ -2,9 +2,11 @@ import { useContext } from "react";
 import { Button } from "../common/Button";
 import { FaCartShopping } from "react-icons/fa6";
 import { modalProductContext } from "../../../context/modalProductContext";
+import { modalShoppingContext } from "../../../context/modalShoppingContext";
 
 export const ModalProduct = () => {
-    const { selectedItem } = useContext(modalProductContext);
+    const { selectedItem, closeModal: closeProductModal } = useContext(modalProductContext);
+    const { openModal: openShoppingModal } = useContext(modalShoppingContext);
 
     return (
         <>
@@ -23,7 +25,7 @@ export const ModalProduct = () => {
             <div className="w-full flex flex-row justify-between items-center text-primary px-1 pb-2">
                 <span className="text-primary font-bold block">${selectedItem.price}</span>
 
-                <Button Icon={FaCartShopping} />
+                <Button onClick={() => { closeProductModal(); openShoppingModal(selectedItem); }} Icon={FaCartShopping} />
             </div>
         </>
     );
