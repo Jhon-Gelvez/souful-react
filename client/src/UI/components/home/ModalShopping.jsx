@@ -1,4 +1,18 @@
+import { useState } from "react";
+
+const PHONE_NUMBER = "573183328721";
+
 export const ModalShopping = ({ item, onClose }) => {
+    const [message, setMessage] = useState("");
+
+    const handleWhatsApp = () => {
+        const mensajeCompleto = `Hola, estoy interesado en este producto:\n\n*Nombre:* ${item?.name_product || "Producto"}\n*Precio:* $${item?.price || "0.00"}\n*URL:* ${item?.image_url || ""}\n\n${message ? `Mensaje adicional: ${message}` : "¿Podrían darme más información?"}`;
+        const mensajeCodificado = encodeURIComponent(mensajeCompleto);
+        const urlWhatsApp = `https://wa.me/${PHONE_NUMBER}?text=${mensajeCodificado}`;
+        window.open(urlWhatsApp, "_blank");
+        onClose();
+    };
+
     return (
         <div className="w-full flex flex-col">
             <div className="flex items-center justify-between px-3 py-3 border-b border-white/10">
@@ -55,8 +69,9 @@ export const ModalShopping = ({ item, onClose }) => {
                     <label className="block text-xs font-semibold text-gray-400 uppercase tracking-wider mb-1.5">Mensaje Adicional</label>
                     <textarea
                         rows="2"
-                        className="w-full text-sm border border-white/20 rounded-lg p-2.5 bg-background-dark text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent resize-none no-scrollbar min-h-20 max-h-37.5"
-                        style={{ fieldSizing: "content" }}
+                        value={message}
+                        onChange={(e) => setMessage(e.target.value)}
+                        className="w-full text-sm border border-white/20 rounded-lg p-2.5 bg-background-dark text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent resize-none min-h-20 max-h-37.5"
                         placeholder="Ej: ¿Tienen envío gratis a mi dirección?"
                     ></textarea>
                 </div>
@@ -70,7 +85,7 @@ export const ModalShopping = ({ item, onClose }) => {
                     Cancelar
                 </button>
                 <button
-                    onClick={onClose}
+                    onClick={handleWhatsApp}
                     className="w-full sm:w-auto bg-[#25D366] hover:bg-[#20ba59] active:scale-[0.98] text-white font-semibold px-4 py-2 text-xs rounded-xl shadow-md transition-all flex items-center justify-center gap-2"
                 >
                     <svg
