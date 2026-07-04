@@ -20,31 +20,19 @@ export const BottomNavbar = () => {
                     shadow-lg shadow-black/10 dark:shadow-black/40 
                     gap-3"
             >
-                <a
-                    href="#inicio"
-                    className="hover:scale-110 transition-transform active:scale-95"
-                    onClick={(e) => {
-                        e.preventDefault();
-                        document.getElementById("inicio")?.scrollIntoView({ behavior: "smooth" });
-                    }}
-                >
-                    <Button
-                        Icon={FaHome}
-                        className="text-zinc-800 dark:text-white"
-                    />
-                </a>
+                <Button
+                    Icon={FaHome}
+                    className="text-zinc-800 dark:text-white hover:scale-110 transition-transform active:scale-95"
+                    onClick={() => document.getElementById("inicio")?.scrollIntoView({ behavior: "smooth" })}
+                />
 
                 <div className="w-px h-6 bg-zinc-300 dark:bg-zinc-700"></div>
 
-                <button
+                <Button
+                    Icon={FaWhatsapp}
+                    className="text-green-600 dark:text-green-400 hover:scale-110 transition-transform active:scale-95 cursor-pointer"
                     onClick={handleWhatsApp}
-                    className="hover:scale-110 transition-transform active:scale-95 cursor-pointer"
-                >
-                    <Button
-                        Icon={FaWhatsapp}
-                        className="text-green-600 dark:text-green-400"
-                    />
-                </button>
+                />
             </div>
         </div>
     );
