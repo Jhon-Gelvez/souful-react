@@ -1,11 +1,13 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { listCategories, createCategory, deleteCategory, getCategory, updateCategory } from "../../../api/categoryApi";
 import { SearchForm } from "./SearchForm";
 import { EditForm } from "./EditForm";
 import { CreateForm } from "./CreateForm";
 import { InfoCategory } from "./InfoCategory";
+import { categoriesContext } from "../../../context/categoriesContext";
 
 export const CategoryManager = () => {
+    const { refreshCategories } = useContext(categoriesContext);
     const [items, setItems] = useState([]);
     const [mode, setMode] = useState("idle"); // idle | creating | editing
     const [formData, setFormData] = useState({ name: "" });
@@ -34,6 +36,7 @@ export const CategoryManager = () => {
             setFormData({ name: "" });
             setMode("idle");
             handleSearch(result.id);
+            refreshCategories();
         }
     };
 
@@ -47,6 +50,7 @@ export const CategoryManager = () => {
         if (window.confirm("¿Estás seguro de eliminar esta categoría?")) {
             await deleteCategory(id);
             handleListAll();
+            refreshCategories();
         }
     };
 
@@ -59,6 +63,7 @@ export const CategoryManager = () => {
             setFormData({ name: "" });
             setMode("idle");
             await handleSearch(result.id);
+            refreshCategories();
         }
     };
 
