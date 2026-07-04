@@ -22,7 +22,7 @@ export const ProductCard = ({ item }) => {
             </div>
 
             <div className="flex items-center justify-between px-1">
-                <div>
+                <div className="flex-1 min-w-0">
                     <h3 className="font-semibold text-gray-900 dark:text-white line-clamp-1 text-lg tracking-wide">{item.name_product}</h3>
                     <p className="font-bold text-primary">${item.price}</p>
                 </div>
