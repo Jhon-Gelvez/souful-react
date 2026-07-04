@@ -145,16 +145,15 @@ export const ItemManager = () => {
         const { name, value } = e.target;
 
         if (name === "category_id") {
-            // Accedemos al texto del <option> que el usuario seleccionó
             const selectedText = e.target.options[e.target.selectedIndex].text;
 
-            formData = {
-                ...formData,
-                [name]: value, // Guarda el ID (ej: "1")
-                categoryName: selectedText, // Guarda el Nombre (ej: "anime")
-            };
+            setFormData((prev) => ({
+                ...prev,
+                [name]: value,
+                categoryName: selectedText,
+            }));
         } else {
-            formData = { ...formData, [name]: value };
+            setFormData((prev) => ({ ...prev, [name]: value }));
         }
     };
 
