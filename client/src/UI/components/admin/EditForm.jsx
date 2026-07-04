@@ -6,8 +6,7 @@ import { Input } from "./Input";
 import { Button } from "../common/Button";
 import { FiCheck } from "react-icons/fi";
 
-// pensar en como hacer esto y pasarle bien las props para que sea dinamico
-export const EditForm = ({ label = "", InputSettings, onSubmit, onChange }) => {
+export const EditForm = ({ children, label = "", InputSettings, onSubmit, onChange }) => {
     return (
         <div className="flex flex-col justify-center items-start text-primary mx-auto shadow-[0_0_3rem_rgba(0,0,0)] rounded-xl p-4 w-sm md:w-md px-9">
             <h1 className="text-3xl font-bold  my-2 self-center">{label || "Editar producto"}</h1>
@@ -22,9 +21,9 @@ export const EditForm = ({ label = "", InputSettings, onSubmit, onChange }) => {
                         setOnChange={onChange} // Pasamos la referencia de la función directamente
                         {...input} // <--- ¡MAGIA! Esto pasa id, name, placeholder, type, etc. de un solo golpe
                     />
+                    {children}
                 </React.Fragment>
             ))}
-
             <div className="flex justify-center items-center w-full mt-2">
                 <Button
                     Icon={FiCheck}
