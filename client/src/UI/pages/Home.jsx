@@ -40,10 +40,6 @@ export function Home() {
         getImages();
     }, []);
 
-    // useEffect(() => {
-    //     sortItems();
-    // }, [searchTerm]);
-
     const handleSearch = (value) => {
         setSearchTerm(value);
     };
