@@ -1,6 +1,6 @@
 // todo cambiar el icono por una x que limpie el texto escrito y deshaga la busqueda
 import { useState } from "react";
-import { HiSearch } from "react-icons/hi";
+import { HiSearch, HiX } from "react-icons/hi";
 import { Button } from "./Button";
 import logo from "../../../asset/soulful_logo.jpeg";
 import { Input } from "./../admin/Input";
@@ -13,9 +13,15 @@ export function Header({ onSearch = null }) {
     };
 
     const handleClick = () => {
-        handleSearch();
-        onSearch(term.toLowerCase().trim());
+        if (search) {
+            setTerm("");
+            setSearch(false);
+            onSearch("");
+        } else {
+            setSearch(true);
+        }
     };
+
     return (
         <header
             id="inicio"
@@ -48,7 +54,7 @@ export function Header({ onSearch = null }) {
             </div>
             <div className="flex items-center gap-3">
                 <Button
-                    Icon={HiSearch}
+                    Icon={search ? HiX : HiSearch}
                     onClick={handleClick}
                 />
             </div>
