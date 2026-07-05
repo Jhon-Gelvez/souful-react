@@ -8,7 +8,7 @@ React 19 + Vite + Tailwind CSS 4 — Express 5 — MySQL 8 — Cloudinary
 
 ## Showcase
 
-![Vista Home](client/src/asset/showcase_01)
+![Vista Home](client/src/asset/showcase_01.png)
 ![Panel Admin](client/src/asset/showcase_02.png)
 ![Gestión de productos](client/src/asset/showcase_03.png)
 ![Catálogo y búsqueda](client/src/asset/showcase_04.png)
