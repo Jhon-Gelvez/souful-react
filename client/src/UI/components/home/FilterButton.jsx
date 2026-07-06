@@ -1,10 +1,12 @@
+import { CategoryIcon } from "../common/CategoryIcon";
+
 export const FilterButton = ({ Icon, text = "", onClick }) => {
     return (
         <button
             className="group flex p-1 lg:mb-2 items-center justify-center gap-x-2 rounded-full border border-white/20 bg-white/5 px-4 transition-transform active:scale-95 hover:border-white focus:outline-none focus:ring-0 focus:bg-primary active:ring-0"
             onClick={onClick}
         >
-            {Icon && <Icon className="text-white group-focus:text-black" />}
+            <CategoryIcon icon={Icon} />
             <span className="text-lg lg:text-base font-bold text-gray-300 group-focus:text-black select-none">{text}</span>
         </button>
     );
