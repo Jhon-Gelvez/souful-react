@@ -1,4 +1,5 @@
 // todo centralizar el create form y el edit form, son lo mismo
+// fix el children se renderiza 3 veces
 
 import React from "react";
 import { Label } from "./Label";
