@@ -1,6 +1,3 @@
-// todo adaptar la edicion para cambiar la categoria asociada al item
-// fix ciando solo se pone la caategoria a cambiar salta la alerta que no hay nada para cambiar
-
 const URL = import.meta.env.VITE_URL;
 
 const handleResponse = async (response, context) => {
