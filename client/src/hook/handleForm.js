@@ -5,14 +5,12 @@ import { createItem } from "../api/itemApi.js";
 
 // setea los datos para pasarlos al api en handleUploadFile y los retorna
 export const handleForm = (formElement) => {
-    
     // 1. Estados para los textos (Ahora variables de objeto simple)
     let formData = {
         title: "",
         description: "",
         price: "",
         category_id: "",
-        categoryName: "",
     };
 
     let imageUrl = null;
@@ -25,20 +23,9 @@ export const handleForm = (formElement) => {
 
     // aca capturo los datos
     const handleFormChange = (e) => {
-        const { name, value } = e.target;
-
-        if (name === "category_id") {
-            // Accedemos al texto del <option> que el usuario seleccionó
-            const selectedText = e.target.options[e.target.selectedIndex].text;
-
-            formData = {
-                ...formData,
-                [name]: value, // Guarda el ID (ej: "1")
-                categoryName: selectedText, // Guarda el Nombre (ej: "anime")
-            };
-        } else {
-            formData = { ...formData, [name]: value };
-        }
+        let { name, value } = e.target;
+        value = name === "category_id" ? parseInt(value) : value;
+        formData = { ...formData, [name]: value };
     };
 
     // aca capturo el archivo
@@ -48,7 +35,7 @@ export const handleForm = (formElement) => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        
+
         if (!selectedFile) return alert("Por favor selecciona una imagen");
 
         // IMPORTANTE de aca obtenemos datos como el formato, el peso en bytes, el typo de archivo
@@ -57,7 +44,7 @@ export const handleForm = (formElement) => {
             // PASO A: Subir imagen y obtener URL
             console.log("Subiendo imagen...");
             const cloudinaryData = await uploadImage(selectedFile, formData);
-            
+
             // guardamos la url
             imageUrl = cloudinaryData.optimized_url;
 
@@ -77,17 +64,16 @@ export const handleForm = (formElement) => {
             // peticion a al api
             console.log(`Datos para enviar al backend ${JSON.stringify(bodyForDB)}`);
 
-            // Llamamos a la función createItem 
+            // Llamamos a la función createItem
             const dbResult = await createItem(bodyForDB);
 
             console.log("Respuesta de la DB:", dbResult);
             alert("¡Producto creado con éxito en Nube y DB!");
-            
         } catch (error) {
             console.log(selectedFile, formData);
             console.error("Error en el proceso:", error);
         }
     };
 
-    return { formData, selectedFile, imageUrl, handleSubmit, handleFileChange, handleFormChange }
+    return { formData, selectedFile, imageUrl, handleSubmit, handleFileChange, handleFormChange };
 };
