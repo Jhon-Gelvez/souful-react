@@ -1,4 +1,4 @@
-// todo el mapeo del nombre de los icono esta hardcodeado
+// FIX el mapeo del nombre de los icono esta hardcodeado
 
 import { GiButterfly } from "react-icons/gi";
 import { LuBaby } from "react-icons/lu";
