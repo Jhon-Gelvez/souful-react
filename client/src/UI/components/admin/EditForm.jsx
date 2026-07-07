@@ -22,9 +22,9 @@ export const EditForm = ({ children, label = "", InputSettings, onSubmit, onChan
                         setOnChange={onChange} // Pasamos la referencia de la función directamente
                         {...input} // <--- ¡MAGIA! Esto pasa id, name, placeholder, type, etc. de un solo golpe
                     />
-                    {children}
                 </React.Fragment>
             ))}
+            {children}
             <div className="flex justify-center items-center w-full mt-2">
                 <Button
                     Icon={FiCheck}
