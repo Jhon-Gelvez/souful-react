@@ -1,3 +1,5 @@
+// todo la funcion handleFormChange se repite aca y en handleForm
+
 import { useState, useContext } from "react";
 import { getItem, listItems, createItem, updateItem, deleteItem } from "../../../api/itemApi";
 import { SearchForm } from "./SearchForm";
@@ -81,7 +83,8 @@ export const ItemManager = () => {
     };
 
     const handleOnChange = (e) => {
-        const { name, value } = e.target;
+        let { name, value } = e.target;
+        value = name === "category_id" ? parseInt(value) : value;
         setFormData({ ...formData, [name]: value });
     };
 
@@ -129,7 +132,7 @@ export const ItemManager = () => {
                 return;
             }
 
-            console.log(`data que se le envia al server ${JSON.stringify(formDataClean)} RTEVISAR que el campo de price no sea '' al enviar el campo vacio (deber ser el valor previo si no pone nada, lo que esta en el placeholder)`);
+            console.log(`data que se le envia al server \n ${JSON.stringify(formDataClean)}`);
             const response = await updateItem(editingId, formDataClean);
             if (!response.ok) console.error(response);
             alert("item actualizado");
@@ -139,22 +142,6 @@ export const ItemManager = () => {
         // al hacer la edicion que ponga el item editado en la misma vista cuando se busca un item solo
         handleSearch(editingId);
         setEditingId(false);
-    };
-
-    const handleFormChange = (e) => {
-        const { name, value } = e.target;
-
-        if (name === "category_id") {
-            const selectedText = e.target.options[e.target.selectedIndex].text;
-
-            setFormData((prev) => ({
-                ...prev,
-                [name]: value,
-                categoryName: selectedText,
-            }));
-        } else {
-            setFormData((prev) => ({ ...prev, [name]: value }));
-        }
     };
 
     return (
@@ -213,7 +200,7 @@ export const ItemManager = () => {
                         <select
                             name="category_id"
                             defaultValue={singleItem?.category_id || ""}
-                            onChange={handleFormChange}
+                            onChange={handleOnChange}
                             className="border border-white  rounded-lg py-1.5 pl-1 caret-white text-white mb-2 w-full"
                         >
                             <option
