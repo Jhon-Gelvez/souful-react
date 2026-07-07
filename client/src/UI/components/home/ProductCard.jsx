@@ -1,5 +1,3 @@
-// fix icon no se renderiza
-
 import { useContext } from "react";
 import { Button } from "../common/Button";
 import { CategoryIcon } from "../common/CategoryIcon";
