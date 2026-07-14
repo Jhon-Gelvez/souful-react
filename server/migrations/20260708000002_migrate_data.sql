@@ -36,5 +36,5 @@ SELECT COUNT(*) AS total FROM product_records;
 -- ========================================
 -- CLEANUP (run after verifying)
 -- ========================================
--- DROP TABLE product_images;
--- DROP TABLE old_categories;
+DROP TABLE product_images;
+DROP TABLE old_categories;
