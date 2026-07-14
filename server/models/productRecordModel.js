@@ -67,7 +67,7 @@ export const productRecordModel = {
             LEFT JOIN categories c ON pr.id_category = c.id_category
             WHERE pr.id_product = ?
         `;
-        const [result] = await db.query(sql, [categoryId]);
+        const [result] = await db.query(sql, [productId]);
         return result;
     },
     getByActive: async () => {
@@ -79,10 +79,10 @@ export const productRecordModel = {
             LEFT JOIN categories c ON pr.id_category = c.id_category
             WHERE pr.is_active = 1
         `;
-        const [result] = await db.query(sql, [categoryId]);
+        const [result] = await db.query(sql);
         return result;
     },
-    getByInactive: async (productId) => {
+    getByInactive: async () => {
         const sql = `
             SELECT pr.*, p.name AS product_name, p.price, i.image_url, i.public_id, i.alt, c.name AS category_name
             FROM product_records pr
@@ -91,7 +91,7 @@ export const productRecordModel = {
             LEFT JOIN categories c ON pr.id_category = c.id_category
             WHERE pr.is_active = 0
         `;
-        const [result] = await db.query(sql, [categoryId]);
+        const [result] = await db.query(sql);
         return result;
     },
 };

@@ -62,7 +62,7 @@ export const saleModel = {
             JOIN images i ON pr.id_image = i.id_image
             WHERE pr.id_record = ?
         `;
-        const [result] = await db.query(sql, [userId]);
+        const [result] = await db.query(sql, [productId]);
         return result;
     },
 };
