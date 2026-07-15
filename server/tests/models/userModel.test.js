@@ -141,4 +141,25 @@ describe("userModel", () => {
         const user = await userModel.getByEmail(`${TEST_EMAIL}nonexistent`);
         expect(user).toBeNull();
     });
+
+    it("getByName() returns user by name", async () => {
+        const name = "FindMe";
+        const data = {
+            first_name: name,
+            last_name: "User",
+            email: `${TEST_EMAIL}getByName`,
+            password: "hashed_password_123",
+        };
+        const result = await userModel.create(data);
+        createdId = result.insertId;
+
+        const user = await userModel.getByName(name);
+        expect(user).not.toBeNull();
+        expect(user.first_name).toBe(name);
+    });
+
+    it("getByName() returns null for non-existent name", async () => {
+        const user = await userModel.getByName("NonExistentName");
+        expect(user).toBeNull();
+    });
 });

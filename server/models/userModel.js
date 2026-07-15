@@ -33,6 +33,11 @@ export const userModel = {
         const [result] = await db.query(sql, [id]);
         return result;
     },
+    getByName: async (name) => {
+        const sql = "SELECT * FROM users WHERE first_name = ?";
+        const [result] = await db.query(sql, [name]);
+        return result[0] || null;
+    },
     getByEmail: async (email) => {
         const sql = "SELECT * FROM users WHERE email = ?";
         const [result] = await db.query(sql, [email]);
