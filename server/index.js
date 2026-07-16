@@ -1,30 +1,34 @@
 import express from "express";
 import cors from "cors";
 import "dotenv/config";
-import itemRoutes from "./routes/itemRoutes.js";
+import userRoutes from "./routes/userRoutes.js";
 import categoryRoutes from "./routes/categoryRoutes.js";
+import productRoutes from "./routes/productRoutes.js";
+import imageRoutes from "./routes/imageRoutes.js";
+import productRecordRoutes from "./routes/productRecordRoutes.js";
+import saleRoutes from "./routes/saleRoutes.js";
 
+const PORT = process.env.PORT || 3001;
 const app = express();
 
 app.use(cors());
-app.use(express.json()); // Para poder leer JSON en los POST
+app.use(express.json());
 
-// --- RUTAS ---
-// ruta de prueba
-
-// Usar las rutas
-app.use("/api/items", itemRoutes);
-
-app.use("/api/categories", categoryRoutes);
+// Routes
+app.use(userRoutes);
+app.use(categoryRoutes);
+app.use(productRoutes);
+app.use(imageRoutes);
+app.use(productRecordRoutes);
+app.use(saleRoutes);
 
 app.get("/", (req, res) => {
-    res.json({ 
+    res.status(200).json({
         status: "online",
-        message: "Server running on port 3001" 
+        message: `Server running on port ${PORT} (˶>⩊<˶)`,
     });
 });
-// PUERTO
-const PORT = process.env.PORT || 3001;
+
 app.listen(PORT, () => {
-    console.log(`🚀 Servidor corriendo en http://localhost:${PORT}`);
+    console.log(`Server running on http://localhost:${PORT} ₍^. .^₎⟆`);
 });
