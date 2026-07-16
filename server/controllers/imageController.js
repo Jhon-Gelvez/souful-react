@@ -7,7 +7,7 @@ export const imageController = {
     get: async (req, res) => {
         try {
             const images = await imageModel.get();
-            res.json(images);
+            res.status(200).json(images);
         } catch (error) {
             console.error(error);
             res.status(500).json({ error: error.message });
@@ -20,7 +20,7 @@ export const imageController = {
             if (!image) {
                 return res.status(404).json({ message: "Image not found" });
             }
-            res.json(image);
+            res.status(200).json(image);
         } catch (error) {
             console.error(error);
             res.status(500).json({ error: error.message });
@@ -69,7 +69,7 @@ export const imageController = {
             if (!result || result.affectedRows === 0) {
                 return res.status(404).json({ message: "Image not found or no changes" });
             }
-            res.status().json({ message: "Image updated successfully", id, ...updateData });
+            res.status(200).json({ message: "Image updated successfully", id, ...updateData });
             dbExport();
         } catch (error) {
             console.error(error);
@@ -87,7 +87,7 @@ export const imageController = {
             await imageModel.delete(id);
             await deleteImage(image.public_id);
 
-            res.json({ message: "Image deleted from DB and Cloudinary", id });
+            res.status(200).json({ message: "Image deleted from DB and Cloudinary", id });
             dbExport();
         } catch (error) {
             console.error(error);
@@ -101,7 +101,7 @@ export const imageController = {
             if (!image) {
                 return res.status(404).json({ message: "Image not found" });
             }
-            res.json(image);
+            res.status(200).json(image);
         } catch (error) {
             console.error(error);
             res.status(500).json({ error: error.message });

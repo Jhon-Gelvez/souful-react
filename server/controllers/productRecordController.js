@@ -6,7 +6,7 @@ export const productRecordController = {
     get: async (req, res) => {
         try {
             const records = await productRecordModel.get();
-            res.json(records);
+            res.status(200).json(records);
         } catch (error) {
             console.error(error);
             res.status(500).json({ error: error.message });
@@ -19,7 +19,7 @@ export const productRecordController = {
             if (!record) {
                 return res.status(404).json({ message: "Product record not found" });
             }
-            res.json(record);
+            res.status(200).json(record);
         } catch (error) {
             console.error(error);
             res.status(500).json({ error: error.message });
@@ -66,7 +66,7 @@ export const productRecordController = {
             if (!result || result.affectedRows === 0) {
                 return res.status(404).json({ message: "Product record not found or no changes" });
             }
-            res.json({ message: "Product record updated successfully", id, ...updateData });
+            res.status(200).json({ message: "Product record updated successfully", id, ...updateData });
             dbExport();
         } catch (error) {
             console.error(error);
@@ -80,7 +80,7 @@ export const productRecordController = {
             if (!result || result.affectedRows === 0) {
                 return res.status(404).json({ message: "Product record not found" });
             }
-            res.json({ message: "Product record deleted successfully", id });
+            res.status(200).json({ message: "Product record deleted successfully", id });
             dbExport();
         } catch (error) {
             console.error(error);
@@ -94,7 +94,7 @@ export const productRecordController = {
             if (!records) {
                 return res.status(404).json({ message: "Product record not found" });
             }
-            res.json(records);
+            res.status(200).json(records);
         } catch (error) {
             console.error(error);
             res.status(500).json({ error: error.message });
@@ -107,7 +107,7 @@ export const productRecordController = {
             if (!records) {
                 return res.status(404).json({ message: "Product record not found" });
             }
-            res.json(records);
+            res.status(200).json(records);
         } catch (error) {
             console.error(error);
             res.status(500).json({ error: error.message });
@@ -119,7 +119,7 @@ export const productRecordController = {
             if (!records) {
                 return res.status(404).json({ message: "Product record not found" });
             }
-            res.json(records);
+            res.status(200).json(records);
         } catch (error) {
             console.error(error);
             res.status(500).json({ error: error.message });
@@ -131,7 +131,7 @@ export const productRecordController = {
             if (!records) {
                 return res.status(404).json({ message: "Product record not found" });
             }
-            res.json(records);
+            res.status(200).json(records);
         } catch (error) {
             console.error(error);
             res.status(500).json({ error: error.message });

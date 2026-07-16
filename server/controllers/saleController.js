@@ -5,7 +5,7 @@ export const saleController = {
     get: async (req, res) => {
         try {
             const sales = await saleModel.get();
-            res.json(sales);
+            res.status(200).json(sales);
         } catch (error) {
             console.error(error);
             res.status(500).json({ error: error.message });
@@ -18,7 +18,7 @@ export const saleController = {
             if (!sale) {
                 return res.status(404).json({ message: "Sale not found" });
             }
-            res.json(sale);
+            res.status(200).json(sale);
         } catch (error) {
             console.error(error);
             res.status(500).json({ error: error.message });
@@ -52,7 +52,7 @@ export const saleController = {
             if (!result || result.affectedRows === 0) {
                 return res.status(404).json({ message: "Sale not found" });
             }
-            res.json({ message: "Sale deleted successfully", id });
+            res.status(200).json({ message: "Sale deleted successfully", id });
             dbExport();
         } catch (error) {
             console.error(error);
@@ -63,7 +63,7 @@ export const saleController = {
         const { userId } = req.params;
         try {
             const sales = await saleModel.getByUser(userId);
-            res.json(sales);
+            res.status(200).json(sales);
         } catch (error) {
             console.error(error);
             res.status(500).json({ error: error.message });
@@ -73,7 +73,7 @@ export const saleController = {
         const { productId } = req.params;
         try {
             const sales = await saleModel.getByProduct(productId);
-            res.json(sales);
+            res.status(200).json(sales);
         } catch (error) {
             console.error(error);
             res.status(500).json({ error: error.message });
