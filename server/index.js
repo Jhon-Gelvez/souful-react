@@ -7,6 +7,7 @@ import productRoutes from "./routes/productRoutes.js";
 import imageRoutes from "./routes/imageRoutes.js";
 import productRecordRoutes from "./routes/productRecordRoutes.js";
 import saleRoutes from "./routes/saleRoutes.js";
+import { errorMiddelware, errorNotFoundHandler } from "./services/errorHandler.js";
 
 const PORT = process.env.PORT || 3001;
 const app = express();
@@ -28,6 +29,9 @@ app.get("/", (req, res) => {
         message: `Server running on port ${PORT} (˶>⩊<˶)`,
     });
 });
+
+app.use(errorMiddelware);
+app.use(errorNotFoundHandler);
 
 app.listen(PORT, () => {
     console.log(`Server running on http://localhost:${PORT} ₍^. .^₎⟆`);
