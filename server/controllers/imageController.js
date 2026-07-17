@@ -2,6 +2,7 @@ import { imageModel } from "../models/imageModel.js";
 import { deleteImage } from "../services/deleteImage.js";
 import { dbExport } from "../services/dbExport.js";
 import { buildUpdateData } from "../services/buildUpdateData.js";
+import { errorHandler } from "../services/errorHandler.js";
 
 export const imageController = {
     get: async (req, res) => {
@@ -9,8 +10,7 @@ export const imageController = {
             const images = await imageModel.get();
             res.status(200).json(images);
         } catch (error) {
-            console.error(error);
-            res.status(500).json({ error: error.message });
+            errorHandler(error, res);
         }
     },
     getById: async (req, res) => {
@@ -22,8 +22,7 @@ export const imageController = {
             }
             res.status(200).json(image);
         } catch (error) {
-            console.error(error);
-            res.status(500).json({ error: error.message });
+            errorHandler(error, res);
         }
     },
     create: async (req, res) => {
@@ -50,8 +49,7 @@ export const imageController = {
             });
             dbExport();
         } catch (error) {
-            console.error(error);
-            res.status(500).json({ error: error.message });
+            errorHandler(error, res);
         }
     },
     update: async (req, res) => {
@@ -72,8 +70,7 @@ export const imageController = {
             res.status(200).json({ message: "Image updated successfully", id, ...updateData });
             dbExport();
         } catch (error) {
-            console.error(error);
-            res.status(500).json({ error: error.message });
+            errorHandler(error, res);
         }
     },
     delete: async (req, res) => {
@@ -90,8 +87,7 @@ export const imageController = {
             res.status(200).json({ message: "Image deleted from DB and Cloudinary", id });
             dbExport();
         } catch (error) {
-            console.error(error);
-            res.status(500).json({ error: error.message });
+            errorHandler(error, res);
         }
     },
     getByPublicId: async (req, res) => {
@@ -103,8 +99,7 @@ export const imageController = {
             }
             res.status(200).json(image);
         } catch (error) {
-            console.error(error);
-            res.status(500).json({ error: error.message });
+            errorHandler(error, res);
         }
     },
 };

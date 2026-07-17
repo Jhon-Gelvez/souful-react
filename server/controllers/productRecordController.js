@@ -1,6 +1,7 @@
 import { productRecordModel } from "../models/productRecordModel.js";
 import { dbExport } from "../services/dbExport.js";
 import { buildUpdateData } from "../services/buildUpdateData.js";
+import { errorHandler } from "../services/errorHandler.js";
 
 export const productRecordController = {
     get: async (req, res) => {
@@ -8,8 +9,7 @@ export const productRecordController = {
             const records = await productRecordModel.get();
             res.status(200).json(records);
         } catch (error) {
-            console.error(error);
-            res.status(500).json({ error: error.message });
+            errorHandler(error, res);
         }
     },
     getById: async (req, res) => {
@@ -21,8 +21,7 @@ export const productRecordController = {
             }
             res.status(200).json(record);
         } catch (error) {
-            console.error(error);
-            res.status(500).json({ error: error.message });
+            errorHandler(error, res);
         }
     },
     create: async (req, res) => {
@@ -47,8 +46,7 @@ export const productRecordController = {
             });
             dbExport();
         } catch (error) {
-            console.error(error);
-            res.status(500).json({ error: error.message });
+            errorHandler(error, res);
         }
     },
     update: async (req, res) => {
@@ -69,8 +67,7 @@ export const productRecordController = {
             res.status(200).json({ message: "Product record updated successfully", id, ...updateData });
             dbExport();
         } catch (error) {
-            console.error(error);
-            res.status(500).json({ error: error.message });
+            errorHandler(error, res);
         }
     },
     delete: async (req, res) => {
@@ -83,8 +80,7 @@ export const productRecordController = {
             res.status(200).json({ message: "Product record deleted successfully", id });
             dbExport();
         } catch (error) {
-            console.error(error);
-            res.status(500).json({ error: error.message });
+            errorHandler(error, res);
         }
     },
     getByCategory: async (req, res) => {
@@ -96,8 +92,7 @@ export const productRecordController = {
             }
             res.status(200).json(records);
         } catch (error) {
-            console.error(error);
-            res.status(500).json({ error: error.message });
+            errorHandler(error, res);
         }
     },
     getByProduct: async (req, res) => {
@@ -109,8 +104,7 @@ export const productRecordController = {
             }
             res.status(200).json(records);
         } catch (error) {
-            console.error(error);
-            res.status(500).json({ error: error.message });
+            errorHandler(error, res);
         }
     },
     getByActive: async (req, res) => {
@@ -121,8 +115,7 @@ export const productRecordController = {
             }
             res.status(200).json(records);
         } catch (error) {
-            console.error(error);
-            res.status(500).json({ error: error.message });
+            errorHandler(error, res);
         }
     },
     getByInactive: async (req, res) => {
@@ -133,8 +126,7 @@ export const productRecordController = {
             }
             res.status(200).json(records);
         } catch (error) {
-            console.error(error);
-            res.status(500).json({ error: error.message });
+            errorHandler(error, res);
         }
     },
 };

@@ -1,5 +1,6 @@
 import { saleModel } from "../models/saleModel.js";
 import { dbExport } from "../services/dbExport.js";
+import { errorHandler } from "../services/errorHandler.js";
 
 export const saleController = {
     get: async (req, res) => {
@@ -7,8 +8,7 @@ export const saleController = {
             const sales = await saleModel.get();
             res.status(200).json(sales);
         } catch (error) {
-            console.error(error);
-            res.status(500).json({ error: error.message });
+            errorHandler(error, res);
         }
     },
     getById: async (req, res) => {
@@ -20,8 +20,7 @@ export const saleController = {
             }
             res.status(200).json(sale);
         } catch (error) {
-            console.error(error);
-            res.status(500).json({ error: error.message });
+            errorHandler(error, res);
         }
     },
     create: async (req, res) => {
@@ -41,8 +40,7 @@ export const saleController = {
             });
             dbExport();
         } catch (error) {
-            console.error(error);
-            res.status(500).json({ error: error.message });
+            errorHandler(error, res);
         }
     },
     delete: async (req, res) => {
@@ -55,8 +53,7 @@ export const saleController = {
             res.status(200).json({ message: "Sale deleted successfully", id });
             dbExport();
         } catch (error) {
-            console.error(error);
-            res.status(500).json({ error: error.message });
+            errorHandler(error, res);
         }
     },
     getByUser: async (req, res) => {
@@ -65,8 +62,7 @@ export const saleController = {
             const sales = await saleModel.getByUser(userId);
             res.status(200).json(sales);
         } catch (error) {
-            console.error(error);
-            res.status(500).json({ error: error.message });
+            errorHandler(error, res);
         }
     },
     getByProduct: async (req, res) => {
@@ -75,8 +71,7 @@ export const saleController = {
             const sales = await saleModel.getByProduct(productId);
             res.status(200).json(sales);
         } catch (error) {
-            console.error(error);
-            res.status(500).json({ error: error.message });
+            errorHandler(error, res);
         }
     },
 };

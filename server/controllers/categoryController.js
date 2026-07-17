@@ -1,5 +1,6 @@
 import { categoryModel } from "../models/categoryModel.js";
 import { dbExport } from "../services/dbExport.js";
+import { errorHandler } from "../services/errorHandler.js";
 
 export const categoryController = {
     get: async (req, res) => {
@@ -7,8 +8,7 @@ export const categoryController = {
             const categories = await categoryModel.get();
             res.status(200).json(categories);
         } catch (error) {
-            console.error(error);
-            res.status(500).json({ error: error.message });
+            errorHandler(error, res);
         }
     },
     getById: async (req, res) => {
@@ -20,8 +20,7 @@ export const categoryController = {
             }
             res.status(200).json(category);
         } catch (error) {
-            console.error(error);
-            res.status(500).json({ error: error.message });
+            errorHandler(error, res);
         }
     },
     create: async (req, res) => {
@@ -41,8 +40,7 @@ export const categoryController = {
             });
             dbExport();
         } catch (error) {
-            console.error(error);
-            res.status(500).json({ error: error.message });
+            errorHandler(error, res);
         }
     },
     update: async (req, res) => {
@@ -59,8 +57,7 @@ export const categoryController = {
             res.status(200).json({ message: "Category updated successfully", id, name });
             dbExport();
         } catch (error) {
-            console.error(error);
-            res.status(500).json({ error: error.message });
+            errorHandler(error, res);
         }
     },
     delete: async (req, res) => {
@@ -73,8 +70,7 @@ export const categoryController = {
             res.status(200).json({ message: "Category deleted successfully", id });
             dbExport();
         } catch (error) {
-            console.error(error);
-            res.status(500).json({ error: error.message });
+            errorHandler(error, res);
         }
     },
 };

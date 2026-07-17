@@ -9,7 +9,7 @@ export const errorMiddelware = (err, req, res, next) => {
 export const errorHandler = (error, res) => {
     console.error(`[${new Date().toISOString()}] ${error.message}`);
     console.error(error.stack);
-    res.status(500).json({ error: error.message });
+    res.status(500).json({ message: "Error interno en el servidor" });
 };
 
 export const errorNotFoundHandler = (req, res) => {

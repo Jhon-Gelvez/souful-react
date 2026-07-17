@@ -1,6 +1,7 @@
 import { productModel } from "../models/productModel.js";
 import { dbExport } from "../services/dbExport.js";
 import { buildUpdateData } from "../services/buildUpdateData.js";
+import { errorHandler } from "../services/errorHandler.js";
 
 export const productController = {
     get: async (req, res) => {
@@ -8,8 +9,7 @@ export const productController = {
             const products = await productModel.get();
             res.status(200).json(products);
         } catch (error) {
-            console.error(error);
-            res.status(500).json({ error: error.message });
+            errorHandler(error, res);
         }
     },
     getById: async (req, res) => {
@@ -21,8 +21,7 @@ export const productController = {
             }
             res.status(200).json(product);
         } catch (error) {
-            console.error(error);
-            res.status(500).json({ error: error.message });
+            errorHandler(error, res);
         }
     },
     create: async (req, res) => {
@@ -43,8 +42,7 @@ export const productController = {
             });
             dbExport();
         } catch (error) {
-            console.error(error);
-            res.status(500).json({ error: error.message });
+            errorHandler(error, res);
         }
     },
     update: async (req, res) => {
@@ -65,8 +63,7 @@ export const productController = {
             res.status(201).json({ message: "Product updated successfully", id, ...updateData });
             dbExport();
         } catch (error) {
-            console.error(error);
-            res.status(500).json({ error: error.message });
+            errorHandler(error, res);
         }
     },
     delete: async (req, res) => {
@@ -80,8 +77,7 @@ export const productController = {
             res.status(200).json({ message: "Product deleted successfully", id });
             dbExport();
         } catch (error) {
-            console.error(error);
-            res.status(500).json({ error: error.message });
+            errorHandler(error, res);
         }
     },
     getByName: async (req, res) => {
@@ -93,8 +89,7 @@ export const productController = {
             }
             res.status(200).json(product);
         } catch (error) {
-            console.error(error);
-            res.status(500).json({ error: error.message });
+            errorHandler(error, res);
         }
     },
 };
