@@ -1,83 +1,30 @@
-const URL = import.meta.env.VITE_URL;
+import { handleFetch } from "../services/handleFetch.js";
 
-export const getCategory = async (id) => {
-    try {
-        const response = await fetch(`${URL}/api/categories/${id}`, {
-            method: "GET",
-            headers: { "Content-Type": "application/json" },
-        });
+const BASE_URL = import.meta.env.VITE_URL;
+const API_URL = new URL("/api/categories", BASE_URL).toString();
 
-        if (!response.ok) {
-            throw new Error("Error al obtener el item");
-        }
-
-        return await response.json();
-    } catch (error) {
-        console.error(error);
-    }
-};
-
-export const listCategories = async () => {
-    try {
-        const response = await fetch(`${URL}/api/categories`);
-
-        if (!response.ok) {
-            throw new Error("Error al obtener el item");
-        }
-
-        const data = await response.json();
-
-        return data;
-    } catch (error) {
-        console.error("Error cargando categorías:", error);
-    }
-};
-export const createCategory = async (categoryData) => {
-    try {
-        const response = await fetch(`${URL}/api/categories`, {
+export const categoryApi = {
+    get: async () => {
+        return handleFetch(API_URL);
+    },
+    getById: async (id) => {
+        return handleFetch(`${API_URL}/${id}`, { method: "GET", headers: HEADERS });
+    },
+    create: async (data) => {
+        return handleFetch(API_URL, {
             method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(categoryData),
+            headers: HEADERS,
+            body: JSON.stringify(data),
         });
-
-        if (!response.ok) {
-            throw new Error("Error al obtener la categoria");
-        }
-
-        return await response.json();
-    } catch (error) {
-        console.error(error);
-    }
-};
-export const updateCategory = async (id, categoryData) => {
-    try {
-        const response = await fetch(`${URL}/api/categories/${id}`, {
+    },
+    update: async (id, data) => {
+        return handleFetch(`${API_URL}/${id}`, {
             method: "PATCH",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(categoryData),
+            headers: HEADERS,
+            body: JSON.stringify(data),
         });
-
-        if (!response.ok) {
-            throw new Error("Error al obtener la categoria");
-        }
-
-        return await response.json();
-    } catch (error) {
-        console.error(error);
-    }
-};
-export const deleteCategory = async (id) => {
-    try {
-        const response = await fetch(`${URL}/api/categories/${id}`, {
-            method: "DELETE",
-        });
-
-        if (!response.ok) {
-            throw new Error("Error al obtener el item");
-        }
-
-        return await response.json();
-    } catch (error) {
-        console.error(error);
-    }
+    },
+    delete: async (id) => {
+        return handleFetch(`${API_URL}/${id}`, { method: "DELETE" });
+    },
 };
