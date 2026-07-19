@@ -2,6 +2,12 @@ export const errorMiddelware = (err, req, res, next) => {
     if (err.type === "entity.parse.failed") {
         return res.status(400).json({ error: "JSON inválido en el body" });
     }
+    if (err.name === "MulterError") {
+        return res.status(400).json({ error: err.message });
+    }
+    if (err.message === "Solo se permiten archivos de imagen") {
+        return res.status(400).json({ error: err.message });
+    }
     console.error(`[${new Date().toISOString()}] ${err.message}`);
     res.status(500).json({ error: err.message });
 };

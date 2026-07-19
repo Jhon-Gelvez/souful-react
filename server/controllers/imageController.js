@@ -1,4 +1,5 @@
 import { imageModel } from "../models/imageModel.js";
+import { uploadImage } from "../services/uploadImage.js";
 import { deleteImage } from "../services/deleteImage.js";
 import { dbExport } from "../services/dbExport.js";
 import { buildUpdateData } from "../services/buildUpdateData.js";
@@ -26,24 +27,44 @@ export const imageController = {
         }
     },
     create: async (req, res) => {
-        const { title, alt, image_url, public_id, file_size, mime_type, dimensions } = req.body;
-        if (!title || !alt || !image_url || !public_id || !file_size || !mime_type || !dimensions) {
+        if (!req.file) {
+            return res.status(400).json({ message: "No file provided" });
+        }
+
+        const { title, alt, category } = req.body;
+        if (!title || !alt) {
             return res.status(400).json({ message: "Fields missing" });
         }
+
         try {
-            const result = await imageModel.create({ title, alt, image_url, public_id, file_size, mime_type, dimensions });
+            const cloudResult = await uploadImage(req.file.buffer, { title, alt, category });
+
+            const optimizedUrl = cloudResult.secure_url.replace("/upload/", "/upload/f_auto,q_auto/");
+            const mime_type = `${cloudResult.resource_type}/${cloudResult.format}`;
+            const dimensions = `${cloudResult.width}x${cloudResult.height}`;
+
+            const result = await imageModel.create({
+                title,
+                alt,
+                image_url: optimizedUrl,
+                public_id: cloudResult.public_id,
+                file_size: cloudResult.bytes,
+                mime_type,
+                dimensions,
+            });
 
             if (!result || result.affectedRows === 0) {
                 return res.status(400).json({ message: "Image not created" });
             }
+
             res.status(201).json({
                 message: "Image created successfully",
                 imageId: result.insertId,
                 title,
                 alt,
-                image_url,
-                public_id,
-                file_size,
+                image_url: optimizedUrl,
+                public_id: cloudResult.public_id,
+                file_size: cloudResult.bytes,
                 mime_type,
                 dimensions,
             });
