@@ -1,4 +1,4 @@
-// todo limpir el form al terminar una request exitosa
+// todo dejar solo lo relacionado con el form sacar jsx general
 
 import { useContext } from "react";
 import { InputFile } from "./InputFile";
@@ -10,8 +10,8 @@ import { handleForm } from "../../../hook/handleForm";
 import { categoriesContext } from "../../../context/categoriesContext";
 
 export const Form = () => {
-    const { handleSubmit, handleFileChange, handleFormChange } = handleForm();
     const { categories } = useContext(categoriesContext);
+    const { handleSubmit, handleFileChange, handleFormChange } = handleForm(categories);
     return (
         <main className="flex flex-col justify-center items-center w-full text-primary mx-auto">
             <div className="rounded-xl pb-2 px-3 sm:p-8 sm:pb-4 shadow-[0_0_3rem_rgba(0,0,0)] shadow-black bg-background-dark">
@@ -51,13 +51,12 @@ export const Form = () => {
                             disabled
                             className="bg-background-dark text-white"
                         >
-                            Selecciona categoría
+                            Selecciona categoria
                         </option>
                         {categories.map((cat) => (
-                            // El value es el ID para la DB, el texto es el nombre para el usuario
                             <option
-                                key={cat.id}
-                                value={cat.id}
+                                key={cat.id_category}
+                                value={cat.id_category}
                                 className="bg-background-dark text-white"
                             >
                                 {cat.name}

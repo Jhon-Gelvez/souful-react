@@ -17,8 +17,7 @@ export const imagesApi = {
     create: async (data) => {
         return handleFetch(API_URL, {
             method: "POST",
-            headers: HEADERS,
-            body: JSON.stringify(data),
+            body: data,
         });
     },
     update: async (id, data) => {
