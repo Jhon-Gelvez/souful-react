@@ -1,6 +1,6 @@
 // todo dejar solo lo relacionado con el form sacar jsx general
 
-import { useContext } from "react";
+import { useState, useContext } from "react";
 import { InputFile } from "./InputFile";
 import { IoSend } from "react-icons/io5";
 import { Label } from "./Label";
@@ -8,10 +8,12 @@ import { Input } from "./Input";
 import { Button } from "../common/Button";
 import { handleForm } from "../../../hook/handleForm";
 import { categoriesContext } from "../../../context/categoriesContext";
+import { Notification } from "../common/Notification.jsx";
 
 export const Form = () => {
     const { categories } = useContext(categoriesContext);
-    const { handleSubmit, handleFileChange, handleFormChange } = handleForm(categories);
+    const [notification, setNotification] = useState(null);
+    const { handleSubmit, handleFileChange, handleFormChange } = handleForm(categories, setNotification);
     return (
         <main className="flex flex-col justify-center items-center w-full text-primary mx-auto">
             <div className="rounded-xl pb-2 px-3 sm:p-8 sm:pb-4 shadow-[0_0_3rem_rgba(0,0,0)] shadow-black bg-background-dark">
@@ -69,6 +71,13 @@ export const Form = () => {
                     </div>
                 </form>
             </div>
+            {notification && (
+                <Notification
+                    message={notification.message}
+                    type={notification.type}
+                    onClose={() => setNotification(null)}
+                />
+            )}
         </main>
     );
 };
