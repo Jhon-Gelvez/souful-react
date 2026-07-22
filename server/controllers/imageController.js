@@ -32,7 +32,7 @@ export const imageController = {
         }
 
         const { title, alt, category } = req.body;
-        if (!title || !alt) {
+        if (!title || !alt || !category) {
             return res.status(400).json({ message: "Fields missing" });
         }
 
