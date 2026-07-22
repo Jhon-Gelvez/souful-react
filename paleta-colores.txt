@@ -1,5 +1,0 @@
-Nombre,Hexadecimal,Uso sugerido
-Primary,#2BEE79,"Botones principales, precios, acentos y selecciones."
-Background Light,#F6F8F7,Fondo en modo claro (un blanco grisáceo muy suave).
-Background Dark,#102217,Fondo principal en modo oscuro (verde muy oscuro).
-Surface Dark,#1C2E24,"Tarjetas, barras de navegación o elementos elevados en modo oscuro."

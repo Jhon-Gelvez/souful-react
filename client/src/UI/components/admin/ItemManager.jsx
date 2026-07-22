@@ -1,27 +1,17 @@
 // todo la funcion handleFormChange se repite aca y en handleForm
 
 import { useState, useContext } from "react";
-import { getItem, listItems, createItem, updateItem, deleteItem } from "../../../api/itemApi";
+import { productRecordsApi } from "../../../api/productRecordsApi.js";
 import { SearchForm } from "./SearchForm";
 import { InfoItem } from "./InfoItem";
 import { EditForm } from "./EditForm";
 import { Label } from "./Label";
 import { categoriesContext } from "../../../context/categoriesContext";
 
-// estructura de un item
-// alt
-// category_id
-// created_at
-// dimensions
-// file_size
-// id
-// image_url
-// is_active
-// mime_type
-// name_product
-// price
-// public_id
-// updated_at
+const STATES = {
+    idle: "idle",
+    editing: "editing",
+};
 
 export const ItemManager = () => {
     const { categories } = useContext(categoriesContext);
