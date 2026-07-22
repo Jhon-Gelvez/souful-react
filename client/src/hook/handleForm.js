@@ -4,7 +4,7 @@ import { handleUploadFile } from "./handleUploadFile.js";
 import { productsApi } from "../api/productsApi.js";
 import { productRecordsApi } from "../api/productRecordsApi.js";
 
-export const handleForm = (categories = []) => {
+export const handleForm = (categories = [], onNotification) => {
     let formData = {
         title: "",
         description: "",
@@ -36,7 +36,10 @@ export const handleForm = (categories = []) => {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        if (!selectedFile) return alert("Please select an image");
+        if (!selectedFile) {
+            if (onNotification) onNotification({ message: "Please select an image", type: "error" });
+            return;
+        }
 
         try {
             const imageResult = await uploadImage(selectedFile, formData);
@@ -53,9 +56,10 @@ export const handleForm = (categories = []) => {
                 is_active: 1,
             });
 
-            alert("Product created successfully!");
+            if (onNotification) onNotification({ message: "Product created successfully!", type: "success" });
         } catch (error) {
             console.error("Error in process:", error);
+            if (onNotification) onNotification({ message: "Error creating product: " + error.message, type: "error" });
         }
     };
 
