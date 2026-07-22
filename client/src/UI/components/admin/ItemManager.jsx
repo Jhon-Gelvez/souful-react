@@ -69,9 +69,9 @@ export const ItemManager = () => {
                     return;
                 }
 
-                await imagesApi.delete(record.id_image);
-
                 await productRecordsApi.delete(id);
+
+                await imagesApi.delete(record.id_image);
 
                 await productsApi.delete(record.id_product);
 
