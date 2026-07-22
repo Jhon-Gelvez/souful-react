@@ -28,7 +28,7 @@ CREATE TABLE `categories` (
   `name` varchar(100) NOT NULL,
   `created_at` timestamp NULL DEFAULT current_timestamp(),
   PRIMARY KEY (`id_category`)
-) ENGINE=InnoDB AUTO_INCREMENT=235 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=236 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -44,7 +44,8 @@ INSERT INTO `categories` VALUES
 (3,'muñecas','2026-02-10 15:45:36'),
 (4,'objetos','2026-02-10 16:21:26'),
 (6,'amigurumis','2026-03-13 14:26:13'),
-(219,'test2','2026-07-16 15:38:45');
+(219,'test1','2026-07-16 15:38:45'),
+(235,'test4','2026-07-22 12:46:18');
 /*!40000 ALTER TABLE `categories` ENABLE KEYS */;
 UNLOCK TABLES;
 COMMIT;
@@ -88,7 +89,7 @@ INSERT INTO `images` VALUES
 (5,'ramo de flores','ramo tejido con girasoles tulipanes y rozas','https://res.cloudinary.com/dnucajsxn/image/upload/f_auto,q_auto/v1782083773/hnhbkedrrx4syljhhmff.jpg','hnhbkedrrx4syljhhmff',175203,'image/jpg','1200x1600','2026-06-21 23:16:13','2026-07-07 13:32:07'),
 (6,'muneca','muneca tejida con vestido rojo','https://res.cloudinary.com/dnucajsxn/image/upload/f_auto,q_auto/v1782083608/nehcro7wtiepthwbhymf.jpg','nehcro7wtiepthwbhymf',82903,'image/jpg','899x1599','2026-06-21 23:13:29','2026-06-21 23:13:29'),
 (7,'inozuke','muneco tejido de innozuke','https://res.cloudinary.com/dnucajsxn/image/upload/v1782086405/kfhewgsg5ds2g1wvhzz2.jpg','kfhewgsg5ds2g1wvhzz2',173615,'image/jpg','1600x1200','2026-06-21 23:14:05','2026-06-27 19:01:30'),
-(242,NULL,'test_sale_alt','test_sale_image.jpg','test_sale_image',NULL,NULL,NULL,'2026-07-16 15:38:45','2026-07-16 15:38:45');
+(242,NULL,'test props','test_sale_image.jpg','test_sale_image',NULL,NULL,NULL,'2026-07-16 15:38:45','2026-07-22 14:52:49');
 /*!40000 ALTER TABLE `images` ENABLE KEYS */;
 UNLOCK TABLES;
 COMMIT;
@@ -169,7 +170,7 @@ INSERT INTO `products` VALUES
 (5,'ramo de flores',60000.00,'2026-07-08 16:47:51'),
 (6,'muneca',15000.00,'2026-07-08 16:47:51'),
 (7,'inozuke',15000.00,'2026-07-08 16:47:51'),
-(242,'test_sale_product',15000.00,'2026-07-16 15:38:45');
+(242,'test_sale_product1',2.00,'2026-07-16 15:38:45');
 /*!40000 ALTER TABLE `products` ENABLE KEYS */;
 UNLOCK TABLES;
 COMMIT;
@@ -252,4 +253,4 @@ SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*M!100616 SET NOTE_VERBOSITY=@OLD_NOTE_VERBOSITY */;
 
--- Dump completed on 2026-07-21 14:43:51
+-- Dump completed on 2026-07-22 10:10:26
