@@ -70,7 +70,7 @@ CREATE TABLE `images` (
   `updated_at` timestamp NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   PRIMARY KEY (`id_image`),
   UNIQUE KEY `public_id` (`public_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=259 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=261 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -85,7 +85,6 @@ INSERT INTO `images` VALUES
 (2,'manilla de loro','manilla de loro hecha en pillar','https://res.cloudinary.com/dnucajsxn/image/upload/f_auto,q_auto/v1782083857/w5xiidjgzcpzjjakxloj.jpg','w5xiidjgzcpzjjakxloj',45936,'image/jpg','481x641','2026-06-21 23:17:37','2026-07-07 13:25:47'),
 (3,'manillas cruz','3  manillas tejidas con diferentes disenos','https://res.cloudinary.com/dnucajsxn/image/upload/f_auto,q_auto/v1782083517/v4m4l8dxvijq3gter3ec.jpg','v4m4l8dxvijq3gter3ec',177435,'image/jpg','1200x1600','2026-06-21 23:11:57','2026-06-21 23:11:57'),
 (4,'llavero de piña','llavero tejido de una pina','https://res.cloudinary.com/dnucajsxn/image/upload/v1782086376/gemy5soddxecn0atff3d.jpg','gemy5soddxecn0atff3d',136860,'image/jpg','1600x1200','2026-06-21 23:14:48','2026-07-07 13:31:26'),
-(5,'ramo de flores','ramo tejido con girasoles tulipanes y rozas','https://res.cloudinary.com/dnucajsxn/image/upload/f_auto,q_auto/v1782083773/hnhbkedrrx4syljhhmff.jpg','hnhbkedrrx4syljhhmff',175203,'image/jpg','1200x1600','2026-06-21 23:16:13','2026-07-07 13:32:07'),
 (6,'muneca','muneca tejida con vestido rojo','https://res.cloudinary.com/dnucajsxn/image/upload/f_auto,q_auto/v1782083608/nehcro7wtiepthwbhymf.jpg','nehcro7wtiepthwbhymf',82903,'image/jpg','899x1599','2026-06-21 23:13:29','2026-06-21 23:13:29'),
 (7,'inozuke','muneco tejido de innozuke','https://res.cloudinary.com/dnucajsxn/image/upload/v1782086405/kfhewgsg5ds2g1wvhzz2.jpg','kfhewgsg5ds2g1wvhzz2',173615,'image/jpg','1600x1200','2026-06-21 23:14:05','2026-06-27 19:01:30'),
 (242,NULL,'test props','test_sale_image.jpg','test_sale_image',NULL,NULL,NULL,'2026-07-16 15:38:45','2026-07-22 14:52:49');
@@ -114,7 +113,7 @@ CREATE TABLE `product_records` (
   CONSTRAINT `fk_records_categories` FOREIGN KEY (`id_category`) REFERENCES `categories` (`id_category`),
   CONSTRAINT `fk_records_images` FOREIGN KEY (`id_image`) REFERENCES `images` (`id_image`),
   CONSTRAINT `fk_records_products` FOREIGN KEY (`id_product`) REFERENCES `products` (`id_product`)
-) ENGINE=InnoDB AUTO_INCREMENT=163 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=165 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -126,8 +125,7 @@ LOCK TABLES `product_records` WRITE;
 /*!40000 ALTER TABLE `product_records` DISABLE KEYS */;
 INSERT INTO `product_records` VALUES
 (1,4,4,4,1),
-(2,5,5,4,1),
-(3,7,7,3,1),
+(3,7,7,6,1),
 (4,6,6,3,1),
 (5,1,1,4,1),
 (6,3,3,4,1),
@@ -151,7 +149,7 @@ CREATE TABLE `products` (
   `price` decimal(12,2) NOT NULL,
   `created_at` timestamp NULL DEFAULT current_timestamp(),
   PRIMARY KEY (`id_product`)
-) ENGINE=InnoDB AUTO_INCREMENT=259 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=261 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -166,10 +164,9 @@ INSERT INTO `products` VALUES
 (2,'manilla de loro',15000.00,'2026-07-08 16:47:51'),
 (3,'manillas cruz',30000.00,'2026-07-08 16:47:51'),
 (4,'llavero de piña',10000.00,'2026-07-08 16:47:51'),
-(5,'ramo de flores',60000.00,'2026-07-08 16:47:51'),
 (6,'muneca',15000.00,'2026-07-08 16:47:51'),
 (7,'inozuke',15000.00,'2026-07-08 16:47:51'),
-(242,'test_sale_product1',2.00,'2026-07-16 15:38:45');
+(242,'test_sale_product1',3.00,'2026-07-16 15:38:45');
 /*!40000 ALTER TABLE `products` ENABLE KEYS */;
 UNLOCK TABLES;
 COMMIT;
@@ -252,4 +249,4 @@ SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*M!100616 SET NOTE_VERBOSITY=@OLD_NOTE_VERBOSITY */;
 
--- Dump completed on 2026-07-22 10:37:32
+-- Dump completed on 2026-07-22 11:22:46
