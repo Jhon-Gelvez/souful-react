@@ -1,210 +1,217 @@
-// todo la funcion handleFormChange se repite aca y en handleForm
-
 import { useState, useContext } from "react";
 import { productRecordsApi } from "../../../api/productRecordsApi.js";
+import { imagesApi } from "../../../api/imagesApi.js";
+import { productsApi } from "../../../api/productsApi.js";
 import { SearchForm } from "./SearchForm";
 import { InfoItem } from "./InfoItem";
 import { EditForm } from "./EditForm";
 import { Label } from "./Label";
 import { categoriesContext } from "../../../context/categoriesContext";
+import { productRecordsContext } from "../../../context/productRecordsContext";
+import { Notification } from "../common/Notification.jsx";
 
 const STATES = {
     idle: "idle",
     editing: "editing",
 };
 
+const TYPE_NOTIFICACION = {
+    success: "success",
+    error: "error",
+    info: "info",
+};
+
 export const ItemManager = () => {
     const { categories } = useContext(categoriesContext);
-    const [editing, setEditing] = useState(false);
-    const [results, setResults] = useState([]);
-    const [singleItem, setSingleItem] = useState(null);
-    // Estado para el formulario (Crear y Editar)
-    const [formData, setFormData] = useState({ name_product: "", alt: "", price: "" });
-    const [editingId, setEditingId] = useState(null);
-    // input settings
-    // pasa dinamicamente un array con los input que se deben render en el formulario de edicion
-    // el type del input esta hardodeado
+    const { productRecords, refreshProductRecords } = useContext(productRecordsContext);
+    const [selectedItemId, setSelectedItemId] = useState(-1);
+    const [mode, setMode] = useState(STATES.idle);
+    const [formData, setFormData] = useState({ product_name: "", alt: "", price: "" });
+    const [notification, setNotification] = useState(null);
 
-    const InputSettings = singleItem
+    const selectedItem = productRecords.find((i) => i.id_record === selectedItemId) || null;
+
+    const displayedItems = selectedItemId === -1 ? [] : selectedItemId === null ? productRecords : productRecords.filter((i) => i.id_record === selectedItemId);
+
+    const inputSettings = selectedItem
         ? [
-              {
-                  htmlFor: "name_product",
-                  textLabel: "Nombre del producto",
-                  id: "name_product",
-                  name: "name_product",
-                  placeholder: singleItem.name_product,
-                  type: "text",
-              },
-              {
-                  htmlFor: "alt",
-                  textLabel: "Descripción",
-                  id: "alt",
-                  name: "alt",
-                  placeholder: singleItem.alt,
-                  type: "text",
-              },
-              {
-                  htmlFor: "price",
-                  textLabel: "Precio",
-                  id: "price",
-                  name: "price",
-                  placeholder: singleItem.price?.toString(),
-                  type: "number",
-              },
+              { htmlFor: "product_name", textLabel: "Nombre del producto", id: "product_name", name: "product_name", placeholder: selectedItem.product_name, type: "text" },
+              { htmlFor: "alt", textLabel: "Descripcion", id: "alt", name: "alt", placeholder: selectedItem.alt, type: "text" },
+              { htmlFor: "price", textLabel: "Precio", id: "price", name: "price", placeholder: selectedItem.price?.toString(), type: "number" },
           ]
         : [];
 
-    // --- OPERACIONES ---
+    const handleList = () => {
+        setSelectedItemId(null);
+        setMode(STATES.idle);
+    };
 
-    const handleDelete = async (id) => {
-        if (window.confirm("¿Seguro que quieres borrar este ítem?")) {
-            await deleteItem(id);
-            alert("imagen borrada");
-            handleListAll();
-            if (singleItem?.public_id === id) setSingleItem(null);
+    const handleSearch = (id) => {
+        const found = productRecords.find((i) => i.id_record === Number(id));
+        if (found) {
+            setSelectedItemId(found.id_record);
         }
+        setMode(STATES.idle);
     };
 
     const handleEdit = (item) => {
-        setEditing(true);
-        setSingleItem(item);
-        setResults([]);
-        setEditingId(item.public_id || item.id);
+        setMode(STATES.editing);
+        setSelectedItemId(item.id_record);
+        setFormData({ product_name: item.product_name, alt: item.alt || "", price: item.price || "" });
     };
 
-    const handleOnChange = (e) => {
-        let { name, value } = e.target;
-        value = name === "category_id" ? parseInt(value) : value;
-        setFormData({ ...formData, [name]: value });
+    const handleDelete = async (id) => {
+        if (window.confirm("Seguro que quieres borrar este item?")) {
+            try {
+                const record = await productRecordsApi.getById(id);
+                if (!record) {
+                    setNotification({ message: "No hay cambios para enviar", type: TYPE_NOTIFICACION.error });
+                    return;
+                }
+
+                await imagesApi.delete(record.id_image);
+
+                await productRecordsApi.delete(id);
+
+                await productsApi.delete(record.id_product);
+
+                setSelectedItemId(-1);
+                setMode(STATES.idle);
+                await refreshProductRecords();
+                setNotification({ message: "Item eliminado", type: TYPE_NOTIFICACION.success });
+            } catch (error) {
+                setNotification({ message: "Error al eliminar: " + error.message, type: TYPE_NOTIFICACION.error });
+            }
+        }
+    };
+
+    const executeUpdate = async (updates, updateFn, entityName) => {
+        if (!updates || Object.keys(updates).length === 0) return { success: false, skipped: true };
+
+        const result = await updateFn();
+        if (typeof result === "string") {
+            return { success: false, error: `${entityName}: ${result}` };
+        }
+
+        return { success: true };
+    };
+
+    const handleSubmitUpdate = async (e) => {
+        e.preventDefault();
+        if (!selectedItemId || !selectedItem) return;
+
+        const name = formData.product_name?.trim();
+        const price = formData.price?.trim();
+        const alt = formData.alt?.trim();
+
+        const productUpdates = {};
+        const imageUpdates = {};
+        const recordUpdates = {};
+
+        if (name && name !== selectedItem.product_name?.trim()) productUpdates.name = name;
+        if (price && Number(price) !== Number(selectedItem.price)) productUpdates.price = price;
+        if (alt && alt !== (selectedItem.alt || "").trim()) imageUpdates.alt = alt;
+        if (formData.id_category && Number(formData.id_category) !== Number(selectedItem.id_category)) recordUpdates.id_category = formData.id_category;
+
+        const hasUpdates = Object.keys(productUpdates).length > 0 || Object.keys(imageUpdates).length > 0 || Object.keys(recordUpdates).length > 0;
+
+        if (!hasUpdates) {
+            setNotification({ message: "No hay cambios para enviar", type: TYPE_NOTIFICACION.info });
+            return;
+        }
+
+        const operations = [
+            { updates: productUpdates, fn: () => productsApi.update(selectedItem.id_product, productUpdates), label: "Producto" },
+            { updates: imageUpdates, fn: () => imagesApi.update(selectedItem.id_image, imageUpdates), label: "Imagen" },
+            { updates: recordUpdates, fn: () => productRecordsApi.update(selectedItemId, recordUpdates), label: "Registro" },
+        ];
+
+        let successCount = 0;
+        const errorMessages = [];
+
+        for (const { updates, fn, label } of operations) {
+            const res = await executeUpdate(updates, fn, label);
+            if (res.success) successCount++;
+            if (res.error) errorMessages.push(res.error);
+        }
+
+        setFormData({ product_name: "", alt: "", price: "" });
+        setMode(STATES.idle);
+        setSelectedItemId(-1);
+        await refreshProductRecords();
+
+        if (successCount > 0) {
+            setNotification({ message: "Item actualizado", type: TYPE_NOTIFICACION.success });
+        } else {
+            setNotification({ message: "Error al actualizar", type: TYPE_NOTIFICACION.error });
+        }
     };
 
     const handleCopy = (text) => {
         navigator.clipboard.writeText(text);
     };
 
-    const handleSearch = async (searchId) => {
-        setEditing(false);
-        if (!searchId.trim()) return;
-        setFormData({ name_product: "", alt: "", price: "" });
-        const data = await getItem(searchId);
-        if (data) {
-            // Usamos data[0] si es un array, si no el objeto directo
-            const item = Array.isArray(data) ? data[0] : data;
-            setSingleItem(item);
-            setResults([]);
-        }
-    };
-
-    const handleListAll = async () => {
-        const data = await listItems();
-        if (data) {
-            setResults(data);
-            setEditing(false);
-            setSingleItem(null);
-            setFormData({ name_product: "", alt: "", price: "" });
-        }
-    };
-
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        if (editingId) {
-            const formDataClean = Object.keys(formData).reduce((accumulator, key) => {
-                if (formData[key]) {
-                    accumulator[key] = formData[key];
-                }
-                return accumulator;
-            }, {});
-
-            if (Object.keys(formDataClean).length === 0) {
-                console.log("No hay cambios para enviar");
-                alert("No hay cambios para enviar");
-
-                return;
-            }
-
-            console.log(`data que se le envia al server \n ${JSON.stringify(formDataClean)}`);
-            const response = await updateItem(editingId, formDataClean);
-            if (!response.ok) console.error(response);
-            alert("item actualizado");
-            setEditingId(null);
-        }
-        setFormData({ name_product: "", price: "", public_id: "" });
-        // al hacer la edicion que ponga el item editado en la misma vista cuando se busca un item solo
-        handleSearch(editingId);
-        setEditingId(false);
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setFormData((prev) => ({ ...prev, [name]: value }));
     };
 
     return (
         <div className="mx-auto pt-6 space-y-6">
             <div className="flex flex-col justify-center items-center w-fit text-primary mx-auto shadow-[0_0_3rem_rgba(0,0,0)] rounded-xl p-4 ">
                 <SearchForm
-                    textLabel={"Buscar item por ID"}
+                    textLabel={"Buscar item por ID de registro"}
                     onSearch={handleSearch}
-                    onListAll={handleListAll}
+                    onListAll={handleList}
                 />
 
-                {/* 3. Resultados */}
                 <div className="space-y-4">
-                    {/* Caso: Búsqueda individual */}
-                    {singleItem && (
-                        <InfoItem
-                            name={singleItem.name_product}
-                            price={singleItem.price}
-                            public_id={singleItem.public_id}
-                            image_url={singleItem.image_url}
-                            onCopy={handleCopy}
-                            onDelete={handleDelete}
-                            onEdit={handleEdit}
-                            singleItem={singleItem}
-                        />
-                    )}
-
-                    {/* Caso: Lista completa */}
-                    <ul>
-                        {results &&
-                            results.map((item, i) => (
-                                <li key={item.public_id}>
+                    {mode === STATES.idle && displayedItems.length > 0 && (
+                        <ul>
+                            {displayedItems.map((item) => (
+                                <li key={item.id_record}>
                                     <InfoItem
-                                        name={item.name_product}
+                                        id_record={item.id_record}
+                                        name={item.product_name}
                                         price={item.price}
                                         public_id={item.public_id}
                                         image_url={item.image_url}
                                         onCopy={handleCopy}
                                         onDelete={handleDelete}
                                         onEdit={handleEdit}
-                                        singleItem={results[i]}
+                                        singleItem={item}
                                     />
                                 </li>
                             ))}
-                    </ul>
+                        </ul>
+                    )}
                 </div>
             </div>
             <div>
-                {editing && (
+                {mode === STATES.editing && selectedItem && (
                     <EditForm
-                        InputSettings={InputSettings}
-                        onSubmit={handleSubmit}
-                        onChange={handleOnChange}
+                        InputSettings={inputSettings}
+                        onSubmit={handleSubmitUpdate}
+                        onChange={handleChange}
                     >
                         <Label text="Categoria del producto" />
                         <select
-                            name="category_id"
-                            defaultValue={singleItem?.category_id || ""}
-                            onChange={handleOnChange}
-                            className="border border-white  rounded-lg py-1.5 pl-1 caret-white text-white mb-2 w-full"
+                            name="id_category"
+                            defaultValue={selectedItem.id_category || ""}
+                            onChange={handleChange}
+                            className="border border-white rounded-lg py-1.5 pl-1 caret-white text-white mb-2 w-full"
                         >
                             <option
                                 value=""
                                 disabled
                                 className="bg-background-dark text-white"
                             >
-                                Selecciona categoría
+                                Selecciona categoria
                             </option>
                             {categories.map((cat) => (
-                                // El value es el ID para la DB, el texto es el nombre para el usuario
                                 <option
-                                    key={cat.id}
-                                    value={cat.id}
+                                    key={cat.id_category}
+                                    value={cat.id_category}
                                     className="bg-background-dark text-white"
                                 >
                                     {cat.name}
@@ -214,6 +221,13 @@ export const ItemManager = () => {
                     </EditForm>
                 )}
             </div>
+            {notification && (
+                <Notification
+                    message={notification.message}
+                    type={notification.type}
+                    onClose={() => setNotification(null)}
+                />
+            )}
         </div>
     );
 };
