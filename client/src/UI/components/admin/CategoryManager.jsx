@@ -1,80 +1,119 @@
 import { useState, useContext } from "react";
-import { listCategories, createCategory, deleteCategory, getCategory, updateCategory } from "../../../api/categoryApi";
+import { categoriesApi } from "../../../api/categoriesApi";
 import { SearchForm } from "./SearchForm";
 import { EditForm } from "./EditForm";
 import { CreateForm } from "./CreateForm";
 import { InfoCategory } from "./InfoCategory";
 import { categoriesContext } from "../../../context/categoriesContext";
+import { Notification } from "../common/Notification.jsx";
 
 export const CategoryManager = () => {
-    const { refreshCategories } = useContext(categoriesContext);
-    const [items, setItems] = useState([]);
-    const [mode, setMode] = useState("idle"); // idle | creating | editing
+    const STATES = {
+        idle: "idle",
+        creating: "creating",
+        editing: "editing",
+    };
+
+    const TYPE_NOTIFICACION = {
+        success: "success",
+        error: "error",
+        info: "info",
+    };
+
+    const { categories, refreshCategories } = useContext(categoriesContext);
+    const [selectedCategoryId, setSelectedCategoryId] = useState(-1);
+    const [mode, setMode] = useState(STATES.idle);
     const [formData, setFormData] = useState({ name: "" });
+    const [notification, setNotification] = useState(null);
 
-    const handleListAll = async () => {
-        const data = await listCategories();
-        if (data) {
-            setItems(data);
-        }
-        setMode("idle");
+    const displayedCategories =
+        selectedCategoryId === -1 ? [] : selectedCategoryId === null ? categories : categories.filter((c) => c.id_category === selectedCategoryId);
+
+    const selectedCategory = categories.find((c) => c.id_category === selectedCategoryId);
+
+    const handleList = () => {
+        setSelectedCategoryId(null);
+        setMode(STATES.idle);
     };
 
-    const handleSearch = async (id) => {
-        const data = await getCategory(id);
-        setItems(data);
-        setMode("idle");
+    const handleSearch = (id) => {
+        const found = categories.find((c) => c.id_category === Number(id));
+        if (found) {
+            setSelectedCategoryId(found.id_category);
+        }
+        setMode(STATES.idle);
     };
 
-    const handleCreate = async (e) => {
-        e.preventDefault();
-
-        if (!formData.name.trim()) return;
-
-        const result = await createCategory({ name: formData.name });
-        if (result) {
-            setFormData({ name: "" });
-            setMode("idle");
-            handleSearch(result.id);
-            refreshCategories();
-        }
+    const handleCreate = () => {
+        setMode(STATES.creating);
+        setSelectedCategoryId(-1);
+        setFormData({ name: "" });
     };
 
     const handleEdit = (cat) => {
-        setMode("editing");
-        setItems([cat]);
+        setMode(STATES.editing);
+        setSelectedCategoryId(cat.id_category);
         setFormData({ name: cat.name });
     };
 
     const handleDelete = async (id) => {
-        if (window.confirm("¿Estás seguro de eliminar esta categoría?")) {
-            await deleteCategory(id);
-            handleListAll();
-            refreshCategories();
+        if (window.confirm("Estas seguro de eliminar esta categoria?")) {
+            try {
+                const result = await categoriesApi.delete(id);
+                if (typeof result === "string") {
+                    setNotification({ message: "Error al eliminar: " + result, type: TYPE_NOTIFICACION.error });
+                    return;
+                }
+                setSelectedCategoryId(-1);
+                setMode(STATES.idle);
+                await refreshCategories();
+                setNotification({ message: "Categoria eliminada", type: TYPE_NOTIFICACION.success });
+            } catch (error) {
+                setNotification({ message: "Error al eliminar: " + error.message, type: TYPE_NOTIFICACION.error });
+            }
         }
     };
 
-    const handleSubmitEdit = async (e) => {
+    const handleSubmitCreate = async (e) => {
         e.preventDefault();
+
         if (!formData.name.trim()) return;
 
-        const result = await updateCategory(items[0].id, { name: formData.name });
+        const result = await categoriesApi.create({ name: formData.name });
         if (result) {
             setFormData({ name: "" });
-            setMode("idle");
-            await handleSearch(result.id);
-            refreshCategories();
+            setMode(STATES.idle);
+            await refreshCategories();
+            setSelectedCategoryId(result.categoryId);
         }
     };
 
-    const handleOnChange = (e) => {
-        setFormData({ name: e.target.value });
+    const handleSubmitUpdate = async (e) => {
+        e.preventDefault();
+        if (!selectedCategoryId || !selectedCategory) return;
+
+        const name = formData.name?.trim();
+
+        if (!name || name === selectedCategory.name?.trim()) {
+            setNotification({ message: "No hay cambios para enviar", type: TYPE_NOTIFICACION.info });
+            return;
+        }
+
+        const result = await categoriesApi.update(selectedCategoryId, { name });
+        if (typeof result === "string") {
+            setNotification({ message: "Error al actualizar: " + result, type: TYPE_NOTIFICACION.error });
+            return;
+        }
+
+        setFormData({ name: "" });
+        setMode(STATES.idle);
+        setSelectedCategoryId(-1);
+        await refreshCategories();
+        setNotification({ message: "Categoria actualizada", type: TYPE_NOTIFICACION.success });
     };
 
-    const handleCreatingState = () => {
-        setMode("creating");
-        setItems([]);
-        setFormData({ name: "" });
+    const handleChange = (e) => {
+        setFormData({ name: e.target.value });
     };
 
     const handleCopy = (text) => {
@@ -83,22 +122,22 @@ export const CategoryManager = () => {
 
     return (
         <div className="mx-auto pb-6 space-y-6">
-            <div className="flex flex-col justify-center items-center w-fit text-primary mx-auto shadow-[0_0_3rem_rgba(0,0,0)] rounded-xl p-4 ">
+            <div className="flex flex-col justify-center category-center w-fit text-primary mx-auto shadow-[0_0_3rem_rgba(0,0,0)] rounded-xl p-4 ">
                 <SearchForm
                     create
-                    onCreate={handleCreatingState}
+                    onCreate={handleCreate}
                     textLabel={"Buscar categoria por ID"}
                     onSearch={handleSearch}
-                    onListAll={handleListAll}
+                    onListAll={handleList}
                 />
 
                 <div className="space-y-4">
-                    {mode === "idle" && items.length > 0 && (
+                    {mode === STATES.idle && displayedCategories.length > 0 && (
                         <ul>
-                            {items.map((item, i) => (
-                                <li key={i}>
+                            {displayedCategories.map((category) => (
+                                <li key={category.id_category}>
                                     <InfoCategory
-                                        category={item}
+                                        category={category}
                                         onCopy={handleCopy}
                                         onEdit={handleEdit}
                                         onDelete={handleDelete}
@@ -110,38 +149,49 @@ export const CategoryManager = () => {
                 </div>
             </div>
             <div>
-                {mode === "editing" && (
+                {mode === STATES.editing && selectedCategory && (
                     <EditForm
                         label="Editar Categoria"
-                        InputSettings={[{
-                            htmlFor: "name",
-                            textLabel: "Nombre de la categoria",
-                            id: "name",
-                            name: "name",
-                            placeholder: items[0].name,
-                            type: "text",
-                        }]}
-                        onSubmit={handleSubmitEdit}
-                        onChange={handleOnChange}
+                        InputSettings={[
+                            {
+                                htmlFor: "name",
+                                textLabel: "Nombre de la categoria",
+                                id: "name",
+                                name: "name",
+                                placeholder: selectedCategory.name,
+                                type: "text",
+                            },
+                        ]}
+                        onSubmit={handleSubmitUpdate}
+                        onChange={handleChange}
                     />
                 )}
             </div>
             <div>
-                {mode === "creating" && (
+                {mode === STATES.creating && (
                     <CreateForm
-                        InputSettings={[{
-                            htmlFor: "name",
-                            textLabel: "Nombre de la categoria",
-                            id: "name",
-                            name: "name",
-                            placeholder: "Nombre de la categoria",
-                            type: "text",
-                        }]}
-                        onSubmit={handleCreate}
-                        onChange={handleOnChange}
+                        InputSettings={[
+                            {
+                                htmlFor: "name",
+                                textLabel: "Nombre de la categoria",
+                                id: "name",
+                                name: "name",
+                                placeholder: "Nombre de la categoria",
+                                type: "text",
+                            },
+                        ]}
+                        onSubmit={handleSubmitCreate}
+                        onChange={handleChange}
                     />
                 )}
             </div>
+            {notification && (
+                <Notification
+                    message={notification.message}
+                    type={notification.type}
+                    onClose={() => setNotification(null)}
+                />
+            )}
         </div>
     );
 };
