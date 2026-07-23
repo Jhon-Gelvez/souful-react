@@ -6,7 +6,7 @@ export const ModalShopping = ({ item, onClose }) => {
     const [message, setMessage] = useState("");
 
     const handleWhatsApp = () => {
-        const mensajeCompleto = `Hola, estoy interesado en este producto:\n\n*Nombre:* ${item?.name_product || "Producto"}\n*Precio:* $${item?.price || "0.00"}\n*URL:* ${item?.image_url || ""}\n\n${message ? `Mensaje adicional: ${message}` : "¿Podrían darme más información?"}`;
+        const mensajeCompleto = `Hola, estoy interesado en este producto:\n\n*Nombre:* ${item?.product_name || "Producto"}\n*Precio:* $${item?.price || "0.00"}\n*URL:* ${item?.image_url || ""}\n\n${message ? `Mensaje adicional: ${message}` : "¿Podrían darme más información?"}`;
         const mensajeCodificado = encodeURIComponent(mensajeCompleto);
         const urlWhatsApp = `https://wa.me/${PHONE_NUMBER}?text=${mensajeCodificado}`;
         window.open(urlWhatsApp, "_blank");
@@ -60,7 +60,7 @@ export const ModalShopping = ({ item, onClose }) => {
                         </svg>
                     </div>
                     <div className="min-w-0 grow">
-                        <p className="font-semibold text-white text-sm truncate">{item?.name_product || "Producto"}</p>
+                        <p className="font-semibold text-white text-sm truncate">{item?.product_name || "Producto"}</p>
                         <p className="text-primary font-bold text-sm">${item?.price || "0.00"}</p>
                     </div>
                 </div>
