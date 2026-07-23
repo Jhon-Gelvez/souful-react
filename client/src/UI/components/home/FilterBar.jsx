@@ -41,8 +41,8 @@ export const FilterBar = () => {
             />
             {categories.map((cat) => (
                 <FilterButton
-                    key={cat.id}
-                    Icon={getCategoryIcon(cat.id)}
+                    key={cat.id_category}
+                    Icon={getCategoryIcon(cat.id_category)}
                     text={cat.name}
                     onClick={() => handleCategoryFilter(cat.name)}
                 />
