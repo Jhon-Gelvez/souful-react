@@ -22,8 +22,8 @@ export const ModalProduct = () => {
             </div>
 
             <div className="w-full flex flex-col justify-start px-1">
-                <h3 className="text-white font-semibold block">{selectedItem.name_product}</h3>
-                <CategoryIcon icon={getCategoryIcon(selectedItem.category_id)} />
+                <h3 className="text-white font-semibold block">{selectedItem.product_name}</h3>
+                <CategoryIcon icon={getCategoryIcon(selectedItem.id_category)} />
                 <span className="text-gray-400 font-bold block">{selectedItem.alt}</span>
             </div>
             <div className="w-full flex flex-row justify-between items-center text-primary px-1 pb-2">
