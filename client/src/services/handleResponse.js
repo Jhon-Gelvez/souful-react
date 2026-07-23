@@ -1,3 +1,5 @@
+// fix lanzar una exepcion
+
 export const handleResponse = async (response) => {
     if (!response.ok) {
         let errorMessage = "Unknown error";
