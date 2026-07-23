@@ -1,19 +1,19 @@
 import { useState, useEffect } from "react";
 import { productRecordsApi } from "../../api/productRecordsApi.js";
 import { categoriesApi } from "../../api/categoriesApi.js";
-import { Header } from "../components/common/Header";
-import { FilterBar } from "../components/home/FilterBar";
-import { BottomNavbar } from "../components/home/BottomNavbar";
-import { ProductGrid } from "../components/home/ProductGrid";
-import { Footer } from "../components/common/Footer";
-import { ModalView } from "../components/home/ModalView";
-import { ModalProduct } from "../components/home/ModalProduct";
-import { ModalShopping } from "../components/home/ModalShopping";
-import { handleModal } from "../../hook/handleModal";
-import { modalProductContext } from "../../context/modalProductContext";
-import { modalShoppingContext } from "../../context/modalShoppingContext";
-import { categoryIconContext } from "../../context/categoryIconContext";
-import { categoryIconMap, defaultIcon } from "../../data/categoryIcons";
+import { Header } from "../components/common/Header.jsx";
+import { FilterBar } from "../components/home/FilterBar.jsx";
+import { BottomNavbar } from "../components/home/BottomNavbar.jsx";
+import { ProductGrid } from "../components/home/ProductGrid.jsx";
+import { Footer } from "../components/common/Footer.jsx";
+import { ModalView } from "../components/home/ModalView.jsx";
+import { ModalProduct } from "../components/home/ModalProduct.jsx";
+import { ModalShopping } from "../components/home/ModalShopping.jsx";
+import { handleModal } from "../../hook/handleModal.js";
+import { modalProductContext } from "../../context/modalProductContext.js";
+import { modalShoppingContext } from "../../context/modalShoppingContext.js";
+import { categoryIconContext } from "../../context/categoryIconContext.js";
+import { categoryIconMap, defaultIcon } from "../../data/categoryIcons.js";
 
 export function Home() {
     const [records, setRecords] = useState([]);
