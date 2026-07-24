@@ -1,8 +1,7 @@
 import { useState, useContext } from "react";
 import { categoriesApi } from "../../../api/categoriesApi";
 import { SearchForm } from "./SearchForm";
-import { EditForm } from "./EditForm";
-import { CreateForm } from "./CreateForm";
+import { FormFields } from "./FormFields";
 import { InfoCategory } from "./InfoCategory";
 import { categoriesContext } from "../../../context/categoriesContext";
 import { Notification } from "../common/Notification.jsx";
@@ -150,8 +149,8 @@ export const CategoryManager = () => {
             </div>
             <div>
                 {mode === STATES.editing && selectedCategory && (
-                    <EditForm
-                        label="Editar Categoria"
+                    <FormFields
+                        title="Editar Categoria"
                         InputSettings={[
                             {
                                 htmlFor: "name",
@@ -169,7 +168,8 @@ export const CategoryManager = () => {
             </div>
             <div>
                 {mode === STATES.creating && (
-                    <CreateForm
+                    <FormFields
+                        title="Crear categoria"
                         InputSettings={[
                             {
                                 htmlFor: "name",
