@@ -4,7 +4,7 @@ import { imagesApi } from "../../../api/imagesApi.js";
 import { productsApi } from "../../../api/productsApi.js";
 import { SearchForm } from "./SearchForm";
 import { InfoItem } from "./InfoItem";
-import { EditForm } from "./EditForm";
+import { FormFields } from "./FormFields";
 import { Label } from "./Label";
 import { categoriesContext } from "../../../context/categoriesContext";
 import { productRecordsContext } from "../../../context/productRecordsContext";
@@ -35,9 +35,9 @@ export const ItemManager = () => {
 
     const inputSettings = selectedItem
         ? [
-              { htmlFor: "product_name", textLabel: "Nombre del producto", id: "product_name", name: "product_name", placeholder: selectedItem.product_name, type: "text" },
-              { htmlFor: "alt", textLabel: "Descripcion", id: "alt", name: "alt", placeholder: selectedItem.alt, type: "text" },
-              { htmlFor: "price", textLabel: "Precio", id: "price", name: "price", placeholder: selectedItem.price?.toString(), type: "number" },
+              { htmlFor: "product_name", textLabel: "Nombre del producto", id: "product_name", name: "product_name", value: formData.product_name, placeholder: selectedItem.product_name, type: "text" },
+              { htmlFor: "alt", textLabel: "Descripcion", id: "alt", name: "alt", value: formData.alt, placeholder: selectedItem.alt, type: "text" },
+              { htmlFor: "price", textLabel: "Precio", id: "price", name: "price", value: formData.price, placeholder: selectedItem.price?.toString(), type: "number" },
           ]
         : [];
 
@@ -176,6 +176,7 @@ export const ItemManager = () => {
                                         price={item.price}
                                         public_id={item.public_id}
                                         image_url={item.image_url}
+                                        category_name={item.category_name}
                                         onCopy={handleCopy}
                                         onDelete={handleDelete}
                                         onEdit={handleEdit}
@@ -189,7 +190,8 @@ export const ItemManager = () => {
             </div>
             <div>
                 {mode === STATES.editing && selectedItem && (
-                    <EditForm
+                    <FormFields
+                        title="Editar producto"
                         InputSettings={inputSettings}
                         onSubmit={handleSubmitUpdate}
                         onChange={handleChange}
@@ -218,7 +220,7 @@ export const ItemManager = () => {
                                 </option>
                             ))}
                         </select>
-                    </EditForm>
+                    </FormFields>
                 )}
             </div>
             {notification && (
