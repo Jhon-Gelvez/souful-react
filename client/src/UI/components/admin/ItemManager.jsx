@@ -196,8 +196,9 @@ export const ItemManager = () => {
                         onSubmit={handleSubmitUpdate}
                         onChange={handleChange}
                     >
-                        <Label text="Categoria del producto" />
+                        <Label htmlFor="id_category" text="Categoria del producto" />
                         <select
+                            id="id_category"
                             name="id_category"
                             defaultValue={selectedItem.id_category || ""}
                             onChange={handleChange}
