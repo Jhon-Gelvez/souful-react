@@ -66,11 +66,17 @@ export const ModalShopping = ({ item, onClose }) => {
                 </div>
 
                 <div>
-                    <label className="block text-xs font-semibold text-gray-400 uppercase tracking-wider mb-1.5">Mensaje Adicional</label>
+                    <label
+                        htmlFor="additional-message"
+                        className="block text-xs font-semibold text-gray-400 uppercase tracking-wider mb-1.5"
+                    >
+                        Mensaje Adicional
+                    </label>
                     <textarea
                         rows="2"
                         value={message}
                         onChange={(e) => setMessage(e.target.value)}
+                        id="additional-message"
                         className="w-full text-sm border border-white/20 rounded-lg p-2.5 bg-background-dark text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent resize-none min-h-20 max-h-37.5"
                         placeholder="Ej: ¿Tienen envío gratis a mi dirección?"
                     ></textarea>
