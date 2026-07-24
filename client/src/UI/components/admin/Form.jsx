@@ -16,7 +16,7 @@ export const Form = () => {
     const { formData, previewUrl, uploading, handleFormChange, handleFileChange, handleSubmit } = useProductForm(categories, setNotification);
     return (
         <main className="flex flex-col justify-center items-center w-full text-primary mx-auto">
-            <div className="rounded-xl pb-2 px-3 sm:p-8 sm:pb-4 shadow-[0_0_3rem_rgba(0,0,0)] shadow-black bg-background-dark">
+            <div className="rounded-xl pb-2 px-3 sm:p-8 sm:pb-4 shadow-[0_0_3rem_rgba(0,0,0)] shadow-black bg-background-dark w-md">
                 <h1 className="text-3xl font-bold text-center my-2">Pagina para el Admin</h1>
                 <p className="text-xl text-center my-3">sube aca tus imagenes</p>
                 <form
@@ -28,22 +28,31 @@ export const Form = () => {
                         previewUrl={previewUrl}
                         uploading={uploading}
                     />
-                    <Label htmlFor="title" text="Nombre del producto" />
+                    <Label
+                        htmlFor="title"
+                        text="Nombre del producto"
+                    />
                     <Input
                         id="title"
                         name="title"
                         value={formData.title}
                         setOnChange={handleFormChange}
                     />
-                    <Label htmlFor="description" text="Descripcion del producto" />
+                    <Label
+                        htmlFor="description"
+                        text="Descripcion del producto"
+                    />
                     <textarea
                         id="description"
                         name="description"
                         value={formData.description}
                         onChange={handleFormChange}
-                        className="text-white p-2 mb-3 border-white border rounded-lg w-full max-w-full resize-none block field-sizing-content"
+                        className="text-white p-2 mb-3 border-white border rounded-lg w-full max-w-full resize-none block field-sizing-content min-w-0 wrap-break-word overflow-x-hidden"
                     />
-                    <Label htmlFor="price" text="Precio del producto" />
+                    <Label
+                        htmlFor="price"
+                        text="Precio del producto"
+                    />
                     <Input
                         id="price"
                         name="price"
@@ -51,7 +60,10 @@ export const Form = () => {
                         value={formData.price}
                         setOnChange={handleFormChange}
                     />
-                    <Label htmlFor="category_id" text="Categoria del producto" />
+                    <Label
+                        htmlFor="category_id"
+                        text="Categoria del producto"
+                    />
                     <select
                         id="category_id"
                         name="category_id"
