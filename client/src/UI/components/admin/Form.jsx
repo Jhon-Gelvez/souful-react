@@ -2,18 +2,18 @@
 
 import { useState, useContext } from "react";
 import { InputFile } from "./InputFile";
-import { IoSend } from "react-icons/io5";
 import { Label } from "./Label";
 import { Input } from "./Input";
 import { Button } from "../common/Button";
-import { handleForm } from "../../../hook/handleForm";
+import { IoSend } from "react-icons/io5";
+import { useProductForm } from "../../../hook/useProductForm";
 import { categoriesContext } from "../../../context/categoriesContext";
 import { Notification } from "../common/Notification.jsx";
 
 export const Form = () => {
     const { categories } = useContext(categoriesContext);
     const [notification, setNotification] = useState(null);
-    const { handleSubmit, handleFileChange, handleFormChange } = handleForm(categories, setNotification);
+    const { formData, previewUrl, uploading, handleFormChange, handleFileChange, handleSubmit } = useProductForm(categories, setNotification);
     return (
         <main className="flex flex-col justify-center items-center w-full text-primary mx-auto">
             <div className="rounded-xl pb-2 px-3 sm:p-8 sm:pb-4 shadow-[0_0_3rem_rgba(0,0,0)] shadow-black bg-background-dark">
@@ -23,30 +23,41 @@ export const Form = () => {
                     onSubmit={handleSubmit}
                     className="flex flex-col w-auto"
                 >
-                    <InputFile setOnChange={handleFileChange} />
-                    <Label text="Nombre del producto" />
+                    <InputFile
+                        onChange={handleFileChange}
+                        previewUrl={previewUrl}
+                        uploading={uploading}
+                    />
+                    <Label htmlFor="title" text="Nombre del producto" />
                     <Input
+                        id="title"
                         name="title"
+                        value={formData.title}
                         setOnChange={handleFormChange}
                     />
-                    <Label text="Descripcion del producto" />
+                    <Label htmlFor="description" text="Descripcion del producto" />
                     <textarea
+                        id="description"
                         name="description"
+                        value={formData.description}
                         onChange={handleFormChange}
-                        className="text-white p-2 mb-3 border-white border rounded-lg w-full max-w-89.5 resize-none block field-sizing-content"
+                        className="text-white p-2 mb-3 border-white border rounded-lg w-full max-w-full resize-none block field-sizing-content"
                     />
-                    <Label text="Precio del producto" />
+                    <Label htmlFor="price" text="Precio del producto" />
                     <Input
+                        id="price"
                         name="price"
                         type="number"
+                        value={formData.price}
                         setOnChange={handleFormChange}
                     />
-                    <Label text="Categoria del producto" />
+                    <Label htmlFor="category_id" text="Categoria del producto" />
                     <select
+                        id="category_id"
                         name="category_id"
-                        defaultValue=""
+                        value={formData.category_id}
                         onChange={handleFormChange}
-                        className="border border-white  rounded-lg py-1.5 pl-1 caret-white text-white mb-2 w-full"
+                        className="border border-white rounded-lg py-1.5 pl-1 caret-white text-white mb-2 w-full"
                     >
                         <option
                             value=""
