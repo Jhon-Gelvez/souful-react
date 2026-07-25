@@ -39,8 +39,8 @@ export const Admin = () => {
             <productRecordsContext.Provider value={{ productRecords, refreshProductRecords }}>
                 <main className="flex flex-col justify-center items-center w-full text-primary mx-auto">
                     <div className="rounded-xl pb-2 px-3 sm:p-8 sm:pb-4 shadow-[0_0_3rem_rgba(0,0,0)] shadow-black bg-background-dark w-md">
-                        <h1 className="text-3xl font-bold text-center my-2">Pagina para el Admin</h1>
-                        <p className="text-xl text-center my-3">sube aca tus imagenes</p>
+                        <h1 className="text-3xl font-bold text-center my-2">Panel de Administración</h1>
+                        <p className="text-xl text-center my-3">Sube una imagen!!</p>
                         <Form />
                     </div>
                 </main>
