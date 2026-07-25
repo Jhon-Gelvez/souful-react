@@ -1,9 +1,6 @@
 import Tippy from "@tippyjs/react";
 import "tippy.js/dist/tippy.css";
-
-// todo
-// ancho del texto de la image_url
-// fix tippy
+import "tippy.js/animations/shift-away.css";
 
 export const InfoItem = ({ id_record = null, name = "", price = "", public_id = "", image_url = "", category_name = "", singleItem = null, onCopy = null, onEdit = null, onDelete = null }) => {
     return (
@@ -13,7 +10,7 @@ export const InfoItem = ({ id_record = null, name = "", price = "", public_id = 
                     <p className="font-medium text-white">{name}</p>
                     <p className="text-sm text-white">
                         ${price}
-                        <Tippy content={"Clip para copiar"}>
+                        <Tippy animation="shift-away" theme="soulful" content={"Clip para copiar"}>
                             <span
                                 onClick={() => onCopy(id_record)}
                                 className="text-xs uppercase ml-2 cursor-pointer"
@@ -21,7 +18,7 @@ export const InfoItem = ({ id_record = null, name = "", price = "", public_id = 
                                 id: {id_record}
                             </span>
                         </Tippy>
-                        <Tippy content={"Clip para copiar"}>
+                        <Tippy animation="shift-away" theme="soulful" content={"Clip para copiar"}>
                             <span
                                 onClick={() => onCopy(public_id)}
                                 className="text-xs uppercase ml-2 cursor-pointer"
@@ -35,7 +32,7 @@ export const InfoItem = ({ id_record = null, name = "", price = "", public_id = 
                             {category_name}
                         </p>
                     )}
-                    <Tippy content={"Clip para copiar"}>
+                    <Tippy animation="shift-away" theme="soulful" content={"Clip para copiar"}>
                         <span
                             onClick={() => onCopy(image_url)}
                             className="text-primary underline cursor-pointer truncate block max-w-62.5 mt-1"

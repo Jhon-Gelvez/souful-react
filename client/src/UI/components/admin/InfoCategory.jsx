@@ -1,9 +1,6 @@
 import Tippy from "@tippyjs/react";
 import "tippy.js/dist/tippy.css";
-
-// todo
-// ancho del texto de la image_url
-// fix tippy
+import "tippy.js/animations/shift-away.css";
 
 export const InfoCategory = ({ category = null, onCopy = null, onEdit = null, onDelete = null }) => {
     return (
@@ -12,7 +9,7 @@ export const InfoCategory = ({ category = null, onCopy = null, onEdit = null, on
                 <div className="">
                     <p className="font-medium text-white">{category.name}</p>
                     <p className="text-sm text-white">
-                        <Tippy content={"Clip para copiar"}>
+                        <Tippy animation="shift-away" theme="soulful" content={"Clip para copiar"}>
                             <span
                                 onClick={() => onCopy(category.id_category)}
                                 className="text-xs uppercase cursor-pointer"

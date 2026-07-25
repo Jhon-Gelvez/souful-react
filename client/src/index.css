@@ -35,3 +35,16 @@ body {
     -webkit-appearance: none;
     margin: 0;
 }
+
+.tippy-box[data-theme~="soulful"] {
+    background-color: var(--color-surface-dark);
+    color: white;
+    border: 1px solid color-mix(in srgb, var(--color-primary) 40%, transparent);
+    font-size: 0.75rem;
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.tippy-box[data-theme~="soulful"] .tippy-arrow {
+    color: var(--color-surface-dark);
+}
