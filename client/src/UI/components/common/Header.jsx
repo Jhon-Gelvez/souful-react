@@ -1,4 +1,3 @@
-// todo cambiar el icono por una x que limpie el texto escrito y deshaga la busqueda
 import { useState } from "react";
 import { HiSearch, HiX } from "react-icons/hi";
 import { Button } from "./Button";
@@ -20,6 +19,12 @@ export function Header({ onSearch = null }) {
         } else {
             setSearch(true);
         }
+    };
+
+    const handleChange = (e) => {
+        const value = e.target.value;
+        setTerm(value);
+        onSearch(value.toLowerCase().trim());
     };
 
     return (
@@ -44,11 +49,11 @@ export function Header({ onSearch = null }) {
             <div className="mr-2 mt-2">
                 {search && (
                     <Input
-                        setOnChange={(e) => {
-                            const value = e.target.value;
-                            setTerm(value);
-                            onSearch(value.toLowerCase().trim());
-                        }}
+                        name="search"
+                        id="search"
+                        value={term}
+                        setOnChange={handleChange}
+                        autoFocus
                     />
                 )}
             </div>
