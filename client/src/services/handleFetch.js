@@ -1,15 +1,18 @@
-// In a new file, e.g., ../services/apiClient.js
-import { handleResponse } from "./handleResponse.js";
+const handleResponseError = async (response) => {
+    if (!response.ok) {
+        let errorMessage = "Unknown error";
+        try {
+            const errorData = await response.json();
+            errorMessage = errorData.message || errorMessage;
+        } catch {
+            errorMessage = response.statusText;
+        }
+        throw new Error(`Fetch error ${response.status}: ${errorMessage}`);
+    }
+    return await response.json();
+};
 
 export const handleFetch = async (url, options = {}) => {
-    try {
-        const response = await fetch(url, options);
-        return await handleResponse(response);
-    } catch (error) {
-        return {
-            ok: false,
-            error: "Network error",
-            message: error.message
-        };
-    }
+    const response = await fetch(url, options);
+    return await handleResponseError(response);
 };
