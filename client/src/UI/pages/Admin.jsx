@@ -12,13 +12,21 @@ export const Admin = () => {
     const [productRecords, setProductRecords] = useState([]);
 
     const refreshCategories = async () => {
-        const data = await categoriesApi.get();
-        if (data) setCategories(data);
+        try {
+            const data = await categoriesApi.get();
+            setCategories(data);
+        } catch (error) {
+            console.error("Error loading categories:", error);
+        }
     };
 
     const refreshProductRecords = async () => {
-        const data = await productRecordsApi.get();
-        if (data) setProductRecords(data);
+        try {
+            const data = await productRecordsApi.get();
+            setProductRecords(data);
+        } catch (error) {
+            console.error("Error loading product records:", error);
+        }
     };
 
     useEffect(() => {

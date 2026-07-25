@@ -28,13 +28,21 @@ export function Home() {
     const { isOpenModal: isOpenModalShopping, openModal: openModalShopping, closeModal: closeModalShopping, selectedItem: selectedShopping } = modalShopping;
 
     const getRecords = async () => {
-        const results = await productRecordsApi.get();
-        setRecords(results);
+        try {
+            const results = await productRecordsApi.get();
+            setRecords(results);
+        } catch (error) {
+            console.error("Error loading records:", error);
+        }
     };
 
     const getCategories = async () => {
-        const results = await categoriesApi.get();
-        setCategories(results);
+        try {
+            const results = await categoriesApi.get();
+            setCategories(results);
+        } catch (error) {
+            console.error("Error loading categories:", error);
+        }
     };
 
     useEffect(() => {
