@@ -58,11 +58,7 @@ export const CategoryManager = () => {
     const handleDelete = async (id) => {
         if (window.confirm("Estas seguro de eliminar esta categoria?")) {
             try {
-                const result = await categoriesApi.delete(id);
-                if (typeof result === "string") {
-                    setNotification({ message: "Error al eliminar: " + result, type: TYPE_NOTIFICACION.error });
-                    return;
-                }
+                await categoriesApi.delete(id);
                 setSelectedCategoryId(-1);
                 setMode(STATES.idle);
                 await refreshCategories();
@@ -78,12 +74,14 @@ export const CategoryManager = () => {
 
         if (!formData.name.trim()) return;
 
-        const result = await categoriesApi.create({ name: formData.name });
-        if (result) {
+        try {
+            const result = await categoriesApi.create({ name: formData.name });
             setFormData({ name: "" });
             setMode(STATES.idle);
             await refreshCategories();
             setSelectedCategoryId(result.categoryId);
+        } catch (error) {
+            setNotification({ message: "Error al crear: " + error.message, type: TYPE_NOTIFICACION.error });
         }
     };
 
@@ -98,17 +96,16 @@ export const CategoryManager = () => {
             return;
         }
 
-        const result = await categoriesApi.update(selectedCategoryId, { name });
-        if (typeof result === "string") {
-            setNotification({ message: "Error al actualizar: " + result, type: TYPE_NOTIFICACION.error });
-            return;
+        try {
+            await categoriesApi.update(selectedCategoryId, { name });
+            setFormData({ name: "" });
+            setMode(STATES.idle);
+            setSelectedCategoryId(-1);
+            await refreshCategories();
+            setNotification({ message: "Categoria actualizada", type: TYPE_NOTIFICACION.success });
+        } catch (error) {
+            setNotification({ message: "Error al actualizar: " + error.message, type: TYPE_NOTIFICACION.error });
         }
-
-        setFormData({ name: "" });
-        setMode(STATES.idle);
-        setSelectedCategoryId(-1);
-        await refreshCategories();
-        setNotification({ message: "Categoria actualizada", type: TYPE_NOTIFICACION.success });
     };
 
     const handleChange = (e) => {

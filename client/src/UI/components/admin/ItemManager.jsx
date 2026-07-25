@@ -85,15 +85,10 @@ export const ItemManager = () => {
         }
     };
 
-    const executeUpdate = async (updates, updateFn, entityName) => {
-        if (!updates || Object.keys(updates).length === 0) return { success: false, skipped: true };
+    const executeUpdate = async (updates, updateFn) => {
+        if (!updates || Object.keys(updates).length === 0) return;
 
-        const result = await updateFn();
-        if (typeof result === "string") {
-            return { success: false, error: `${entityName}: ${result}` };
-        }
-
-        return { success: true };
+        await updateFn();
     };
 
     const handleSubmitUpdate = async (e) => {
@@ -120,30 +115,24 @@ export const ItemManager = () => {
             return;
         }
 
-        const operations = [
-            { updates: productUpdates, fn: () => productsApi.update(selectedItem.id_product, productUpdates), label: "Producto" },
-            { updates: imageUpdates, fn: () => imagesApi.update(selectedItem.id_image, imageUpdates), label: "Imagen" },
-            { updates: recordUpdates, fn: () => productRecordsApi.update(selectedItemId, recordUpdates), label: "Registro" },
-        ];
+        try {
+            const operations = [
+                { updates: productUpdates, fn: () => productsApi.update(selectedItem.id_product, productUpdates) },
+                { updates: imageUpdates, fn: () => imagesApi.update(selectedItem.id_image, imageUpdates) },
+                { updates: recordUpdates, fn: () => productRecordsApi.update(selectedItemId, recordUpdates) },
+            ];
 
-        let successCount = 0;
-        const errorMessages = [];
+            for (const { updates, fn } of operations) {
+                await executeUpdate(updates, fn);
+            }
 
-        for (const { updates, fn, label } of operations) {
-            const res = await executeUpdate(updates, fn, label);
-            if (res.success) successCount++;
-            if (res.error) errorMessages.push(res.error);
-        }
-
-        setFormData({ product_name: "", alt: "", price: "" });
-        setMode(STATES.idle);
-        setSelectedItemId(-1);
-        await refreshProductRecords();
-
-        if (successCount > 0) {
+            setFormData({ product_name: "", alt: "", price: "" });
+            setMode(STATES.idle);
+            setSelectedItemId(-1);
+            await refreshProductRecords();
             setNotification({ message: "Item actualizado", type: TYPE_NOTIFICACION.success });
-        } else {
-            setNotification({ message: "Error al actualizar", type: TYPE_NOTIFICACION.error });
+        } catch (error) {
+            setNotification({ message: "Error al actualizar: " + error.message, type: TYPE_NOTIFICACION.error });
         }
     };
 
