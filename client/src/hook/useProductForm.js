@@ -48,9 +48,6 @@ export const useProductForm = (categories = [], onNotification) => {
             uploadData.append("category", cat?.name || "");
 
             const imageResult = await imagesApi.create(uploadData);
-            if (typeof imageResult === "string" || imageResult?.error) {
-                throw new Error(imageResult.message || imageResult || "Error uploading image");
-            }
 
             const productResult = await productsApi.create({
                 name: formData.title,
