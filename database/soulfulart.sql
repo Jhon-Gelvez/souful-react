@@ -69,7 +69,7 @@ CREATE TABLE `images` (
   `updated_at` timestamp NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   PRIMARY KEY (`id_image`),
   UNIQUE KEY `public_id` (`public_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=267 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=268 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -87,7 +87,8 @@ INSERT INTO `images` VALUES
 (6,'muneca','muneca tejida con vestido rojo','https://res.cloudinary.com/dnucajsxn/image/upload/f_auto,q_auto/v1782083608/nehcro7wtiepthwbhymf.jpg','nehcro7wtiepthwbhymf',82903,'image/jpg','899x1599','2026-06-21 23:13:29','2026-06-21 23:13:29'),
 (7,'inozuke','muneco tejido de innozuke','https://res.cloudinary.com/dnucajsxn/image/upload/v1782086405/kfhewgsg5ds2g1wvhzz2.jpg','kfhewgsg5ds2g1wvhzz2',173615,'image/jpg','1600x1200','2026-06-21 23:14:05','2026-06-27 19:01:30'),
 (262,'dftdfgdfgsdfgs','fhsgdghdfghdfht','https://res.cloudinary.com/dnucajsxn/image/upload/f_auto,q_auto/v1784845974/fhfbnhtgjtgmlct7xgkt.jpg','fhfbnhtgjtgmlct7xgkt',34855,'image/jpg','736x396','2026-07-23 22:32:55','2026-07-23 22:32:55'),
-(263,'bfghjtynbfhjntyghjygmn','bghjmnv bhnjmv hjmnykjhkmygu','https://res.cloudinary.com/dnucajsxn/image/upload/f_auto,q_auto/v1784847324/blwbhlbj5duq9frdqhrz.jpg','blwbhlbj5duq9frdqhrz',1527500,'image/jpg','3840x2160','2026-07-23 22:55:24','2026-07-23 22:55:24');
+(263,'bfghjtynbfhjntyghjygmn','bghjmnv bhnjmv hjmnykjhkmygu','https://res.cloudinary.com/dnucajsxn/image/upload/f_auto,q_auto/v1784847324/blwbhlbj5duq9frdqhrz.jpg','blwbhlbj5duq9frdqhrz',1527500,'image/jpg','3840x2160','2026-07-23 22:55:24','2026-07-23 22:55:24'),
+(267,'Harry Potter','llavero amigurumi Harry Potter','https://res.cloudinary.com/dnucajsxn/image/upload/f_auto,q_auto/v1785101409/ltp01ehmpqwqdj2woay9.jpg','ltp01ehmpqwqdj2woay9',103341,'image/jpg','1200x1600','2026-07-26 21:30:10','2026-07-26 21:30:10');
 /*!40000 ALTER TABLE `images` ENABLE KEYS */;
 UNLOCK TABLES;
 COMMIT;
@@ -113,7 +114,7 @@ CREATE TABLE `product_records` (
   CONSTRAINT `fk_records_categories` FOREIGN KEY (`id_category`) REFERENCES `categories` (`id_category`),
   CONSTRAINT `fk_records_images` FOREIGN KEY (`id_image`) REFERENCES `images` (`id_image`),
   CONSTRAINT `fk_records_products` FOREIGN KEY (`id_product`) REFERENCES `products` (`id_product`)
-) ENGINE=InnoDB AUTO_INCREMENT=169 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=170 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -129,7 +130,8 @@ INSERT INTO `product_records` VALUES
 (4,6,6,3,1),
 (5,1,1,4,1),
 (6,3,3,4,1),
-(7,2,2,2,1);
+(7,2,2,2,1),
+(169,265,267,6,1);
 /*!40000 ALTER TABLE `product_records` ENABLE KEYS */;
 UNLOCK TABLES;
 COMMIT;
@@ -148,7 +150,7 @@ CREATE TABLE `products` (
   `price` decimal(12,2) NOT NULL,
   `created_at` timestamp NULL DEFAULT current_timestamp(),
   PRIMARY KEY (`id_product`)
-) ENGINE=InnoDB AUTO_INCREMENT=265 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=266 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -164,7 +166,8 @@ INSERT INTO `products` VALUES
 (3,'manillas cruz',30000.00,'2026-07-08 16:47:51'),
 (4,'llavero de piña',10000.00,'2026-07-08 16:47:51'),
 (6,'muneca',15000.00,'2026-07-08 16:47:51'),
-(7,'inozuke',15000.00,'2026-07-08 16:47:51');
+(7,'inozuke',15000.00,'2026-07-08 16:47:51'),
+(265,'Harry Potter',20000.00,'2026-07-26 21:30:10');
 /*!40000 ALTER TABLE `products` ENABLE KEYS */;
 UNLOCK TABLES;
 COMMIT;
@@ -247,4 +250,4 @@ SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*M!100616 SET NOTE_VERBOSITY=@OLD_NOTE_VERBOSITY */;
 
--- Dump completed on 2026-07-26 14:58:47
+-- Dump completed on 2026-07-26 16:30:12
