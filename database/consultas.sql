@@ -12,3 +12,12 @@ SELECT * FROM images;
 SELECT * FROM product_records;
 
 DELETE FROM images WHERE id_image = 263;
+
+-- consultas dia 5/08/2026
+
+select * from images;
+select * from product_records;
+
+delete from product_records where id_record = 1;
+DELETE FROM images WHERE id_image = '4';
+delete from products where id_product = 4;
